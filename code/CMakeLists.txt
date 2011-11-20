@@ -1,0 +1,6 @@
+# Project name
+PROJECT (CS249A_ASSIGNMENT_2_CODE)
+
+INCLUDE_DIRECTORIES(fwk)
+
+SUBDIRS(engine rep test)
