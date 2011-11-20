@@ -6,7 +6,7 @@ OBJECTS = ActivityImpl.o ActivityReactor.o
 default:	example
 
 example: example.o $(OBJECTS)
-	 $(CC) $(CPPFLAGS) -o example example.o $(OBJECTS)
+	 $(CC) $(CPPFLAGS) -o ../bin/ActivityExample example.o $(OBJECTS)
 	 @echo
 
 clean:
