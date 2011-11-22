@@ -1,7 +1,6 @@
 #ifndef LOCATION_H_
 #define LOCATION_H_
 
-
 #include "NamedInterface.h"
 #include "Ptr.h"
 #include "Segment.h"
@@ -72,10 +71,10 @@ namespace Shipping {
             typedef Fwk::Ptr<Customer::Notifiee const> PtrConst;
             typedef Fwk::Ptr<Customer::Notifiee> Ptr;
 
-            virtual void onAtttributeUpdate(Customer::PtrConst) {};
+            virtual void onAtttributeUpdate();
 
             virtual ~Notifiee();
-            Notifiee(std::string _name);
+            Notifiee(std::string _name, Customer* _notifier);
         };
 
         void notifieeIs(const string &_name, Notifiee* _notifiee);

@@ -75,28 +75,42 @@ void Customer::transferRateIs(TransferRate _transferRate) {
     FWK_DEBUG(name() <<  "transferRateIs " << _transferRate.value());
     if (transferRate_ == _transferRate) return;
     transferRate_ = _transferRate;
-    if (notifiee_) notifiee_->onAtttributeUpdate(this);
+    if (notifiee_) notifiee_->onAtttributeUpdate();
 }
 
 void Customer::shipmentSizeIs(PackageCount _shipmentSize) {
     FWK_DEBUG(name() <<  "shipmentSizeIs " << _shipmentSize.value());
     if (shipmentSize_ == _shipmentSize) return;
     shipmentSize_ = _shipmentSize;
-    if (notifiee_) notifiee_->onAtttributeUpdate(this);
+    if (notifiee_) notifiee_->onAtttributeUpdate();
 }
 
 void Customer::destinationIs(const string &_destination) {
     FWK_DEBUG(name() <<  "destinationIs " << _destination);
     if (destination_ == _destination) return;
     destination_ = _destination;
-    if (notifiee_) notifiee_->onAtttributeUpdate(this);
+    if (notifiee_) notifiee_->onAtttributeUpdate();
 }
 
 void Customer::recievedPackagesIs(PackageCount _recievedPackages) {
     FWK_DEBUG(name() << " recievedPackagesIs " << _recievedPackages.value());
     if (recievedPackages_ == _recievedPackages) return;
     recievedPackages_ = _recievedPackages;
-    if (notifiee_) notifiee_->onAtttributeUpdate(this);
+    //if (notifiee_) notifiee_->onAtttributeUpdate(this);
+}
+
+void Customer::averageLatencyIs(Latency _averageLatency) {
+    FWK_DEBUG(name() << " averageLatencyIs " << _averageLatency.value());
+    if (averageLatency_ == _averageLatency) return;
+    averageLatency_ = _averageLatency;
+    //if (notifiee_) notifiee_->onAtttributeUpdate(this);
+}
+
+void Customer::totalCostIs(Dollars _totalCost) {
+    FWK_DEBUG(name() << " totalCostIs " << _totalCost.value());
+    if (totalCost_ == _totalCost) return;
+    totalCost_ = _totalCost;
+    //if (notifiee_) notifiee_->onAtttributeUpdate(this);
 }
 
 Port::Port(const string &_name) 

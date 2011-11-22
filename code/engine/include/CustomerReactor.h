@@ -4,19 +4,21 @@
 #include "Location.h"
 #include "Activity.h"
 
+using namespace Shipping;
+
 class CustomerReactor : public Customer::Notifiee {
 public:
     typedef Fwk::Ptr<CustomerReactor const> PtrConst;
     typedef Fwk::Ptr<CustomerReactor> Ptr;
     
-    CustomerReactor(Fwk::Activity::Manager* _activityManager);
+    CustomerReactor(const string &_name, Customer* _notifier);
     ~CustomerReactor();
 
-    virtual void onAttributeUpdate(Customer::PtrConst);
+    virtual void onAttributeUpdate();
 
 protected:
     CustomerReactor(const CustomerReactor&);
-    const Fwk::Activity::Manager* activityManager_;
+    const Customer *notifier_;
 };
 
 #endif
