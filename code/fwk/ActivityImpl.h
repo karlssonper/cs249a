@@ -13,7 +13,6 @@ namespace Fwk {
 
     Fwk::Ptr<Activity::Manager> activityManagerInstance();
 
-
     //Comparison class for activities   
     class ActivityComp : public binary_function<Activity::Ptr, Activity::Ptr, bool> {
     public:
@@ -48,7 +47,7 @@ namespace Fwk {
 
         virtual Notifiee::Ptr notifiee() const { return notifiee_; }
 
-        virtual void notifieeIs(Notifiee* n) {
+        virtual void notifieeIs(const string &_name, Notifiee* n) {
             ActivityImpl* me = const_cast<ActivityImpl*>(this);
             me->notifiee_ = n;
         }

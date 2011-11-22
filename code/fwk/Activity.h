@@ -47,7 +47,7 @@ namespace Fwk {
 
         virtual Fwk::Ptr<Notifiee> notifiee() const = 0;
 
-        virtual void notifieeIs(const string &name, Notifiee* n) = 0;
+        virtual void notifieeIs(const string &_name, Notifiee* n) = 0;
 
     protected:
         Activity(const string &name)
