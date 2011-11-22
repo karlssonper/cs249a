@@ -78,23 +78,23 @@ namespace Shipping {
             Notifiee(std::string _name);
         };
 
-        void notifieeIs(string _name, Notifiee*);
+        void notifieeIs(const string &_name, Notifiee* _notifiee);
 
         // accessors
-        TransferRate transferRate() { return transferRate_; }
-        PackageSize packageSize() { return packageSize_; }
-        string destination() { return destination_; }
-        PackageCount recievedPackages() { return recievedPackages_; }
-        Latency averageLatency() { return averageLatency_; }
-        Dollars totalCost() { return totalCost_; }
+        TransferRate transferRate() const { return transferRate_; }
+        PackageCount shipmentSize() const { return shipmentSize_; }
+        string destination() const { return destination_; }
+        PackageCount recievedPackages() const { return recievedPackages_; }
+        Latency averageLatency() const { return averageLatency_; }
+        Dollars totalCost() const { return totalCost_; }
 
         // mutators
-        void transferRateIs();
-        void packageSizeIs();
-        void destinationIs();
-        void revievedPackagesIs();
-        void averageLatencyIs();
-        void totalCostIs();
+        void transferRateIs(TransferRate _transferRate);
+        void shipmentSizeIs(PackageCount _shipmentSize);
+        void destinationIs(const string &_destination);
+        void recievedPackagesIs(PackageCount _recievedPackages);
+        void averageLatencyIs(Latency _averageLatency);
+        void totalCostIs(Dollars _totalCost);
 
     protected:
         Customer(const string &_name);
@@ -103,7 +103,7 @@ namespace Shipping {
 
         // for producing customers
         TransferRate transferRate_;
-        PackageSize packageSize_;
+        PackageCount shipmentSize_;
         string destination_;
 
         // for recieving customers

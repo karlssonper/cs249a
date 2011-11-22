@@ -67,6 +67,38 @@ Customer::Ptr Customer::CustomerNew(const string &_name) {
     return p;
 }
 
+void Customer::notifieeIs(const string &_name, Notifiee* _notifiee) {
+    notifiee_ = _notifiee;
+}
+
+void Customer::transferRateIs(TransferRate _transferRate) {
+    FWK_DEBUG(name() <<  "transferRateIs " << _transferRate.value());
+    if (transferRate_ == _transferRate) return;
+    transferRate_ = _transferRate;
+    if (notifiee_) notifiee_->onAtttributeUpdate(this);
+}
+
+void Customer::shipmentSizeIs(PackageCount _shipmentSize) {
+    FWK_DEBUG(name() <<  "shipmentSizeIs " << _shipmentSize.value());
+    if (shipmentSize_ == _shipmentSize) return;
+    shipmentSize_ = _shipmentSize;
+    if (notifiee_) notifiee_->onAtttributeUpdate(this);
+}
+
+void Customer::destinationIs(const string &_destination) {
+    FWK_DEBUG(name() <<  "destinationIs " << _destination);
+    if (destination_ == _destination) return;
+    destination_ = _destination;
+    if (notifiee_) notifiee_->onAtttributeUpdate(this);
+}
+
+void Customer::recievedPackagesIs(PackageCount _recievedPackages) {
+    FWK_DEBUG(name() << " recievedPackagesIs " << _recievedPackages.value());
+    if (recievedPackages_ == _recievedPackages) return;
+    recievedPackages_ = _recievedPackages;
+    if (notifiee_) notifiee_->onAtttributeUpdate(this);
+}
+
 Port::Port(const string &_name) 
     : Location(_name, port()) {
         FWK_DEBUG("Port constructor with name " << _name);
