@@ -7,6 +7,7 @@
 #include "Segment.h"
 #include <string>
 #include <list>
+#include "Activity.h"
 
 using std::string;
 using std::list;
@@ -56,6 +57,7 @@ namespace Shipping {
         Location();
         list<Segment::Ptr> outSegment_;
         LocationType type_;
+        const Fwk::Activity::Manager* activityManager_;
     };   
 
     class Customer : public Location {
@@ -64,6 +66,19 @@ namespace Shipping {
         typedef Fwk::Ptr<Customer> Ptr;
         virtual ~Customer();
         static Ptr CustomerNew(const string &_name);
+
+        class Notifiee : public Fwk::BaseNotifiee<Customer> {
+        public:
+            typedef Fwk::Ptr<Customer::Notifiee const> PtrConst;
+            typedef Fwk::Ptr<Customer::Notifiee> Ptr;
+
+            virtual void onAtttributeUpdate(Customer::PtrConst) {};
+
+            virtual ~Notifiee();
+            Notifiee(std::string _name);
+        };
+
+        void notifieeIs(string _name, Notifiee*);
 
         // accessors
         TransferRate transferRate() { return transferRate_; }
@@ -81,7 +96,6 @@ namespace Shipping {
         void averageLatencyIs();
         void totalCostIs();
 
-
     protected:
         Customer(const string &_name);
         Customer();
@@ -96,6 +110,8 @@ namespace Shipping {
         PackageCount recievedPackages_;
         Latency averageLatency_;
         Dollars totalCost_;
+
+        Notifiee* notifiee_;
     };
 
     class Port : public Location {
