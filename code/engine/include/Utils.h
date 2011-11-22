@@ -73,6 +73,32 @@ namespace Shipping {
         PackageCapacity() : Ordinal<PackageCapacity, unsigned int>(1) {}
         PackageCapacity(unsigned int value) : Ordinal<PackageCapacity, unsigned int>(value) {}
     };
+
+    class TransferRate : public Ordinal<TransferRate, unsigned int> {
+    public:
+        TransferRate() : Ordinal<TransferRate, unsigned int>(0) {}
+        TransferRate(unsigned int value) : Ordinal<TransferRate, unsigned int>(value) {}
+    };
+
+    class PackageSize : public Ordinal<PackageSize, unsigned int> {
+    public:
+        PackageSize() : Ordinal<PackageSize, unsigned int>(0) {}
+        PackageSize(unsigned int value) : Ordinal<PackageSize, unsigned int>(value) {}
+    };
+
+    class PackageCount : public Ordinal<PackageCount, unsigned int> {
+    public:
+        PackageCount() : Ordinal<PackageCount, unsigned int>(0) {}
+        PackageCount(unsigned int value) : Ordinal<PackageCount, unsigned int>(value) {}
+    };
+
+    class Latency : public Ordinal<Latency, double> {
+    public:
+        Latency() : Ordinal<Latency, double>(0) {}
+        Latency(unsigned int value) : Ordinal<Latency, double>(value) {}
+    };
+
+
 }
 
 #endif /* UTILS_H_ */

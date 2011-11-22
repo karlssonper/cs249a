@@ -64,10 +64,38 @@ namespace Shipping {
         typedef Fwk::Ptr<Customer> Ptr;
         virtual ~Customer();
         static Ptr CustomerNew(const string &_name);
+
+        // accessors
+        TransferRate transferRate() { return transferRate_; }
+        PackageSize packageSize() { return packageSize_; }
+        string destination() { return destination_; }
+        PackageCount recievedPackages() { return recievedPackages_; }
+        Latency averageLatency() { return averageLatency_; }
+        Dollars totalCost() { return totalCost_; }
+
+        // mutators
+        void transferRateIs();
+        void packageSizeIs();
+        void destinationIs();
+        void revievedPackagesIs();
+        void averageLatencyIs();
+        void totalCostIs();
+
+
     protected:
         Customer(const string &_name);
         Customer();
         Customer(const Customer&);
+
+        // for producing customers
+        TransferRate transferRate_;
+        PackageSize packageSize_;
+        string destination_;
+
+        // for recieving customers
+        PackageCount recievedPackages_;
+        Latency averageLatency_;
+        Dollars totalCost_;
     };
 
     class Port : public Location {
