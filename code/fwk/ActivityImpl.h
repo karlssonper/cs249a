@@ -7,11 +7,12 @@
 
 #include "Activity.h"
 
-using namespace std;
+namespace Fwk {
 
-Fwk::Ptr<Activity::Manager> activityManagerInstance();
+    using namespace std;
 
-namespace ActivityImpl {
+    Fwk::Ptr<Activity::Manager> activityManagerInstance();
+
 
     //Comparison class for activities   
     class ActivityComp : public binary_function<Activity::Ptr, Activity::Ptr, bool> {
@@ -47,7 +48,7 @@ namespace ActivityImpl {
 
         virtual Notifiee::Ptr notifiee() const { return notifiee_; }
 
-        virtual void lastNotifieeIs(Notifiee* n) {
+        virtual void notifieeIs(Notifiee* n) {
             ActivityImpl* me = const_cast<ActivityImpl*>(this);
             me->notifiee_ = n;
         }
@@ -95,6 +96,8 @@ namespace ActivityImpl {
         static Fwk::Ptr<Activity::Manager> activityInstance_;	
 
     };
+
+
 
 }
 

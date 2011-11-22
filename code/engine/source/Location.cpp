@@ -1,10 +1,11 @@
 #include "Location.h"
 #include "Debug.h"
+#include "Activity.h"
 
 using namespace Shipping;
 
 Location::Location(const string &_name, LocationType _type) 
-    : Fwk::NamedInterface(_name), type_(_type) {
+    : Fwk::NamedInterface(_name), type_(_type), activityManager_(Fwk::activityManagerInstance().ptr()) {
         FWK_DEBUG("Location constructor with name " << _name);
 }
 

@@ -3,12 +3,14 @@
 
 #include "ActivityImpl.h"
 
+#ifdef WIN32
+    
+#endif
 
-Fwk::Ptr<Activity::Manager> activityManagerInstance() {
-    return ActivityImpl::ManagerImpl::activityManagerInstance();
+Fwk::Ptr<Fwk::Activity::Manager> activityManagerInstance() {
 }
 
-namespace ActivityImpl {
+namespace Fwk {
     //Definition of static member
     Fwk::Ptr<Activity::Manager> ManagerImpl::activityInstance_ = NULL;
     
@@ -89,3 +91,4 @@ namespace ActivityImpl {
     }
 
 } //end namespace ActivityImpl
+

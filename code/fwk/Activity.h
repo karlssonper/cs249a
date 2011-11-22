@@ -2,10 +2,8 @@
 #define __ACTIVITY_H__
 
 #include <string>
-
-#include "PtrInterface.h"
 #include "Ptr.h"
-
+#include "NamedInterface.h"
 #include "Nominal.h"
 #include "BaseNotifiee.h"
 
@@ -20,7 +18,7 @@ namespace Fwk {
         {}
     };
 
-    class Activity : public Fwk::PtrInterface<Activity> {
+    class Activity : public Fwk::NamedInterface {
     public:
         typedef Fwk::Ptr<Activity> Ptr;
 
@@ -29,7 +27,7 @@ namespace Fwk {
         public:
             typedef Fwk::Ptr<Notifiee> Ptr;
 
-            Notifiee(Activity* act) : Fwk::BaseNotifiee<Activity>(act) {}
+            Notifiee(Activity* act) : Fwk::BaseNotifiee<Activity>(name(),act) {}
 
             virtual void onNextTime() {}
             virtual void onStatus() {}
@@ -49,17 +47,12 @@ namespace Fwk {
 
         virtual Fwk::Ptr<Notifiee> notifiee() const = 0;
 
-        virtual void lastNotifieeIs(Notifiee* n) = 0;
-
-        virtual string name() const { return name_; }
+        virtual void notifieeIs(const string &name, Notifiee* n) = 0;
 
     protected:
         Activity(const string &name)
-            : name_(name)
-        {}
+            : NamedInterface(name) {}
 
-    private:
-        string name_;
 
     };
 
