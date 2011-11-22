@@ -7,11 +7,13 @@
 
 #include "Activity.h"
 
+
+
 namespace Fwk {
 
-    using namespace std;
+    Fwk::Ptr<Fwk::Activity::Manager> activityManagerInstance();
 
-    Fwk::Ptr<Activity::Manager> activityManagerInstance();
+    using namespace std;
 
     //Comparison class for activities   
     class ActivityComp : public binary_function<Activity::Ptr, Activity::Ptr, bool> {

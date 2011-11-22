@@ -11,7 +11,7 @@ public:
     typedef Fwk::Ptr<CustomerReactor> Ptr;
     
     CustomerReactor(const string &_name, Customer* _notifier);
-    ~CustomerReactor();
+    ~CustomerReactor() {}
 
     virtual void onAttributeUpdate();
 

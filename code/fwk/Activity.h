@@ -79,6 +79,6 @@ namespace Fwk {
 
     extern Fwk::Ptr<Activity::Manager> activityManagerInstance();
 
-}
+} // fwk
 
 #endif
