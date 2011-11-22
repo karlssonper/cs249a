@@ -9,13 +9,14 @@
 #define SHIPPINGACTIVITYREACTOR_H_
 
 #include "Engine.h"
+#include "Utils.h"
 
 namespace Shipping {
 
 class ShippingActivityReactor : public Activity::Notifiee{
 public:
-    ShippingActivityReactor(Fwk::Ptr<Activity::Manager> manager, Activity*
-                activity, EngineManager * engine_);
+    ShippingActivityReactor(Fwk::Ptr<Activity::Manager>, Activity*,
+            EngineManager *, PackageCount);
 
        void onStatus();
 protected:
@@ -26,6 +27,8 @@ protected:
            moving_ = 1,
            idle_ = 2
        };
+       PackageCount packages_;
+
        Conn::PtrConst conn_;
        EntityManager::Ptr entityManager_;
        Position position_;

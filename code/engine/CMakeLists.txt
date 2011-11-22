@@ -10,7 +10,9 @@ SET(SOURCE source/Location
            source/Engine 
            source/Fleet 
            source/Stats 
-           source/Conn )
+           source/Conn
+           source/ActivityImpl
+           source/CustomerReactor)
 
 ADD_LIBRARY(engine_shared SHARED ${SOURCE})
 ADD_LIBRARY(engine STATIC ${SOURCE})

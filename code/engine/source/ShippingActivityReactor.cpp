@@ -12,12 +12,14 @@ using namespace Shipping;
 ShippingActivityReactor::ShippingActivityReactor(
         Fwk::Ptr<Activity::Manager> manager,
         Activity* activity,
-        EngineManager * engine_) :
+        EngineManager * _engine,
+        PackageCount _packages) :
             Notifiee(activity),
             activity_(activity),
             activityManager_(manager),
-            conn_(engine_->conn().ptr()),
-            entityManager_(engine_->entityManager())
+            conn_(_engine->conn().ptr()),
+            entityManager_(_engine->entityManager())
+            packages_(_packages),
             position_(created_)
 {
 }

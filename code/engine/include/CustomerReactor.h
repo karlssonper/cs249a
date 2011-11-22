@@ -2,8 +2,7 @@
 #define CUSTOMERREACTOR_H
 
 #include "Location.h"
-#include "Activity.h"
-
+#include "ActivityImpl.h"
 using namespace Shipping;
 
 class CustomerReactor : public Customer::Notifiee {
