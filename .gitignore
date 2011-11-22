@@ -1,0 +1,11 @@
+build*
+bin
+lib
+vs
+Debug
+Release
+ipch
+*.sdf
+vs2010
+*.suo
+*.sln
