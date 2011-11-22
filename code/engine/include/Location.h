@@ -56,7 +56,7 @@ namespace Shipping {
         Location();
         list<Segment::Ptr> outSegment_;
         LocationType type_;
-        const Fwk::Activity::Manager* activityManager_;
+        
     };   
 
     class Customer : public Location {

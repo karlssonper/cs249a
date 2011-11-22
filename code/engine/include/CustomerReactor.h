@@ -19,6 +19,7 @@ public:
 protected:
     CustomerReactor(const CustomerReactor&);
     const Customer *notifier_;
+    Fwk::Activity::Manager* activityManager_;
 };
 
 #endif

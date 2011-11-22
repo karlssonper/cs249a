@@ -5,7 +5,7 @@
 using namespace Shipping;
 
 Location::Location(const string &_name, LocationType _type) 
-    : Fwk::NamedInterface(_name), type_(_type), activityManager_(Fwk::activityManagerInstance().ptr()) {
+    : Fwk::NamedInterface(_name), type_(_type) {
         FWK_DEBUG("Location constructor with name " << _name);
 }
 
