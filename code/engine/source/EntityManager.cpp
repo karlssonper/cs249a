@@ -439,7 +439,6 @@ void EntityManager::customerTransferRateIs(const string &_customerName, Transfer
 
 }
 
-
 void EntityManager::customerShipmentSizeIs(const string &_customerName, PackageCount _shipmentSize) {
      FWK_DEBUG("EntityManager::customerShipmentSizeIs on " << _customerName);
 
@@ -478,4 +477,80 @@ void EntityManager::customerDestinationIs(const string &_customerName, const str
     Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
     p->destinationIs(_destination);
     // note: notifiee is notified by the customer object itself
+}
+
+void EntityManager::customerRecievedShipmentsIs(const string &_customerName, ShipmentCount _recievedShipments) {
+    FWK_DEBUG("EntityManager::customerRecievedShipmentsIs on " << _customerName);
+
+    map<string, Location::Ptr>::iterator it;
+    it = location_.find(_customerName);
+    if (it == location_.end()) {
+        FWK_DEBUG("EntityManager::customerRecievedShipmentsIs: " << _customerName << " not found, nothing to do.");
+        return;
+    }
+
+    if (it->second->type() != Location::customer()) {
+        FWK_DEBUG("EntityManager::customerRecievedShipmentsIs: " << _customerName << " is not a customer.");
+        return;
+    }
+
+    Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
+    p->recievedShipmentsIs(_recievedShipments);
+}
+
+void EntityManager::customerRecievedShipmentsInc(const string &_customerName) {
+    FWK_DEBUG("EntityManager::customerRecievedShipmentsInc on " << _customerName);
+
+    map<string, Location::Ptr>::iterator it;
+    it = location_.find(_customerName);
+    if (it == location_.end()) {
+        FWK_DEBUG("EntityManager::customerRecievedShipmentsInc: " << _customerName << " not found, nothing to do.");
+        return;
+    }
+
+    if (it->second->type() != Location::customer()) {
+        FWK_DEBUG("EntityManager::customerRecievedShipmentsInc: " << _customerName << " is not a customer.");
+        return;
+    }
+
+    Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
+    p->recievedShipmentsInc();
+}
+
+void EntityManager::customerAverageLatencyIs(const string &_customerName, Latency _averageLatency) {
+FWK_DEBUG("EntityManager::customerAverageLatencyIs on " << _customerName);
+
+    map<string, Location::Ptr>::iterator it;
+    it = location_.find(_customerName);
+    if (it == location_.end()) {
+        FWK_DEBUG("EntityManager::customerAverageLatencyIs: " << _customerName << " not found, nothing to do.");
+        return;
+    }
+
+    if (it->second->type() != Location::customer()) {
+        FWK_DEBUG("EntityManager::customerAverageLatencyIs: " << _customerName << " is not a customer.");
+        return;
+    }
+
+    Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
+    p->averageLatencyIs(_averageLatency);
+}
+
+void EntityManager::customerTotalCostIs(const string &_customerName, Dollars _totalCost) {
+FWK_DEBUG("EntityManager::customerTotalCostIs on " << _customerName);
+
+    map<string, Location::Ptr>::iterator it;
+    it = location_.find(_customerName);
+    if (it == location_.end()) {
+        FWK_DEBUG("EntityManager::customerTotalCostIs: " << _customerName << " not found, nothing to do.");
+        return;
+    }
+
+    if (it->second->type() != Location::customer()) {
+        FWK_DEBUG("EntityManager::customerTotalCostIs: " << _customerName << " is not a customer.");
+        return;
+    }
+
+    Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
+    p->totalCostIs(_totalCost);
 }
