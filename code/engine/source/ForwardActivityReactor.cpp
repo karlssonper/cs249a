@@ -33,12 +33,11 @@ void ForwardActivityReactor::onStatus() {
         case Fwk::Activity::executing: {
             removeActivePackagesFromSegment();
             if (shipment_->waitingPackages().value() == 0){
-                //DONE
+                segment_->shipmentDeq();
+                return;
             }
-
-            PackageCount availablePackages = segment_->activePackages();
-
-
+            addActivePackagesToSegment();
+            forwardActivity();
             PackageCount packagesPerTransport;
             switch(segment_->type()){
                 case Segment::boatSegment_:
@@ -54,9 +53,8 @@ void ForwardActivityReactor::onStatus() {
                     break;
             }
 
-
             shipment_->transferedPackagesInc(PackageCount());
-            if (shipment_->waitingPackages() == shipment_->totalPackages()){
+            if (shipment_->waitingPackages() == shipment_->packages()){
                 //dequeue segment
                 //entityManager->location->newSegment
                 activity_->statusIs(Fwk::Activity::deleted);
@@ -77,4 +75,20 @@ void ForwardActivityReactor::removeActivePackagesFromSegment() {
         //segment_->packagesDec(activePackages_.value());
         activePackages_ = 0;
     }
+};
+
+void ForwardActivityReactor::addActivePackagesToSegment() {
+    PackageCount availableCapacity = segment_->capacity().value() -
+                                     segment_->activePackages().value();
+    if (shipment_->waitingPackages() > availableCapacity) {
+        segment_->activePackageInc(availableCapacity);
+        shipment_->transferedPackagesInc(availableCapacity);
+    } else {
+        segment_->activePackageInc(shipment_->waitingPackages());
+        shipment_->transferedPackagesInc(shipment_->waitingPackages());
+    }
+};
+
+void ForwardActivityReactor::forwardActivity() {
+
 };

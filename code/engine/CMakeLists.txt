@@ -12,6 +12,7 @@ SET(SOURCE source/Location
            source/Stats 
            source/Conn
            source/ActivityImpl
+           source/Shipment
            source/ForwardActivityReactor
            source/CustomerReactor)
 

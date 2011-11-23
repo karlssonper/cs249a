@@ -20,12 +20,12 @@ public:
     typedef Fwk::Ptr<Shipment const> PtrConst;
     typedef Fwk::Ptr<Shipment> Ptr;
     Shipment(PackageCount _packages, Fwk::Ptr<Location const> _dest);
-    PackageCount waitingPackages() const { return waiting_; } ;
+    PackageCount waitingPackages() const {
+        return total_.value() - transfered_.value(); } ;
     PackageCount transferedPackages() const { return transfered_; } ;
-    PackageCount totalPackages() const { return total_; } ;
+    PackageCount packages() const { return total_; } ;
     void transferedPackagesInc(PackageCount p);
 protected:
-    PackageCount waiting_;
     PackageCount transfered_;
     const PackageCount total_;
     Fwk::Ptr<Location const> dest_;

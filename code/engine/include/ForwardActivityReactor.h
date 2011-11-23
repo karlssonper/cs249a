@@ -31,6 +31,8 @@ protected:
        Fwk::Ptr<Segment> segment_;
        PackageCount activePackages_;
        void removeActivePackagesFromSegment();
+       void addActivePackagesToSegment();
+       void forwardActivity();
 };
 }//end namespace Shipping
 

@@ -61,7 +61,7 @@ namespace Shipping {
         ExpediteSupport expediteSupport() const { return expediteSupport_; }
         SegmentType type() const { return type_; }
         PackageCount activePackages() const { return activePackages_;};
-
+        PackageCount capacity() const { return capacity_;};
 
         // mutators
         void sourceIs(const string &_source);
@@ -69,6 +69,7 @@ namespace Shipping {
         void returnSegmentIs(const string &_returnSegment);
         void difficultyIs(SegmentDifficulty _difficulty) ;
         void expediteSupportIs(ExpediteSupport _expediteSupport);
+        void capacityIs(PackageCount c);
         void activePackageInc(PackageCount c);
         void activePackageDec(PackageCount c);
         void shipmentEnq(Fwk::Ptr<Shipment>);
@@ -83,6 +84,7 @@ namespace Shipping {
         Miles length_;
         string returnSegment_;
         SegmentDifficulty difficulty_;
+        PackageCount capacity_;
         PackageCount activePackages_;
         ExpediteSupport expediteSupport_;
         SegmentType type_;
