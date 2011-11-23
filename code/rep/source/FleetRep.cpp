@@ -59,7 +59,7 @@ void FleetRep::attributeIs(const string& name, const string& _v) {
         engineManager_->fleet()->costIs(fleetAttribute.vehicle, dpm);
     } else if (fleetAttribute.prop == "capacity") {
         unsigned int capacity = atoi(_v.c_str());
-        PackageCapacity pc(capacity);
+        PackageCount pc(capacity);
         engineManager_->fleet()->capacityIs(fleetAttribute.vehicle, pc);
     } else {
         cerr << "FleetRep error: Invalid property." << endl;

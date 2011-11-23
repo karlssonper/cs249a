@@ -10,10 +10,10 @@
 
 #include "Activity.h"
 #include "Utils.h"
+#include "Fleet.h"
+#include "Segment.h"
 
 namespace Shipping{
-class Segment;
-class Fleet;
 class Shipment;
 class ForwardActivityReactor : public Fwk::Activity::Notifiee {
 public:
@@ -33,6 +33,8 @@ protected:
        void removeActivePackagesFromSegment();
        void addActivePackagesToSegment();
        void forwardActivity();
+       Fleet::Vehicle segTypeToFleetVehicle(Segment::SegmentType);
+
 };
 }//end namespace Shipping
 

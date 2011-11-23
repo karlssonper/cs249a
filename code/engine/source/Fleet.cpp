@@ -36,7 +36,7 @@ void Fleet::costIs(Vehicle _vehicle, DollarsPerMile _cost) {
     vehicleData_[_vehicle].cost_ = _cost;
 }
 
-void Fleet::capacityIs(Vehicle _vehicle, PackageCapacity _capacity) {
+void Fleet::capacityIs(Vehicle _vehicle, PackageCount _capacity) {
     FWK_DEBUG("Fleet::capacityIs on" << name());
     vehicleData_[_vehicle].capacity_ = _capacity;
 }

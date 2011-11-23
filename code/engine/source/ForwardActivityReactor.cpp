@@ -7,8 +7,7 @@
 
 #include "ForwardActivityReactor.h"
 #include "Shipment.h"
-#include "Fleet.h"
-#include "Segment.h"
+
 
 using namespace Shipping;
 
@@ -39,31 +38,6 @@ void ForwardActivityReactor::onStatus() {
             addActivePackagesToSegment();
             forwardActivity();
             PackageCount packagesPerTransport;
-            switch(segment_->type()){
-                case Segment::boatSegment_:
-                        packagesPerTransport = fleet_->capacity(Fleet::boat()).value();
-                        break;
-                case Segment::planeSegment_:
-                        packagesPerTransport = fleet_->capacity(Fleet::plane()).value();
-                        break;
-                case Segment::truckSegment_:
-                        packagesPerTransport = fleet_->capacity(Fleet::truck()).value();
-                        break;
-                default:
-                    break;
-            }
-
-            shipment_->transferedPackagesInc(PackageCount());
-            if (shipment_->waitingPackages() == shipment_->packages()){
-                //dequeue segment
-                //entityManager->location->newSegment
-                activity_->statusIs(Fwk::Activity::deleted);
-            } else {
-                //activity_->nextTimeIs(Hours(activity_->nextTime().value() + rate_));
-                activity_->statusIs(Fwk::Activity::nextTimeScheduled);
-            }
-
-            break;
         }
     }
 }
@@ -78,17 +52,47 @@ void ForwardActivityReactor::removeActivePackagesFromSegment() {
 };
 
 void ForwardActivityReactor::addActivePackagesToSegment() {
-    PackageCount availableCapacity = segment_->capacity().value() -
-                                     segment_->activePackages().value();
+    PackageCount availableSegmentCapacity = segment_->capacity().value() -
+                                            segment_->activePackages().value();
+
+    PackageCount availableVehicleCapacity = fleet_->capacity(
+            segTypeToFleetVehicle(segment_->type())
+         );
+
+    PackageCount availableCapacity =
+            availableVehicleCapacity <  availableSegmentCapacity ?
+                    availableVehicleCapacity : availableSegmentCapacity;
+
     if (shipment_->waitingPackages() > availableCapacity) {
         segment_->activePackageInc(availableCapacity);
         shipment_->transferedPackagesInc(availableCapacity);
+        activePackages_ = availableCapacity;
     } else {
         segment_->activePackageInc(shipment_->waitingPackages());
         shipment_->transferedPackagesInc(shipment_->waitingPackages());
+        activePackages_ = shipment_->waitingPackages();
     }
 };
 
 void ForwardActivityReactor::forwardActivity() {
+    MilesPerHour speed = fleet_->speed(segTypeToFleetVehicle(segment_->type()));
+    Miles length = segment_->length();
 
+    activity_->nextTimeIs(
+            Fwk::Time(activity_->nextTime().value() +speed.value() / length.value())
+            );
+};
+
+Fleet::Vehicle ForwardActivityReactor::segTypeToFleetVehicle(
+        Segment::SegmentType st) {
+    switch(st){
+        case Segment::boatSegment_:
+            return Fleet::boat();
+        case Segment::planeSegment_:
+            return Fleet::plane();
+        case Segment::truckSegment_:
+            return Fleet::truck();
+        default:
+            return Fleet::undefined();
+    }
 };

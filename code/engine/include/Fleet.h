@@ -20,7 +20,7 @@ public:
     struct Data {
         MilesPerHour speed_;
         DollarsPerMile cost_;
-        PackageCapacity capacity_;
+        PackageCount capacity_;
     };
 
     enum Vehicle {
@@ -39,8 +39,8 @@ public:
     void speedIs(Vehicle _vehicle, MilesPerHour _speed);
     DollarsPerMile cost(Vehicle _vehicle) const { return vehicleData_[_vehicle].cost_; }
     void costIs(Vehicle _vehicle, DollarsPerMile _cost);
-    PackageCapacity capacity(Vehicle _vehicle) const { return vehicleData_[_vehicle].capacity_; }
-    void capacityIs(Vehicle _vehicle, PackageCapacity capacity_);
+    PackageCount capacity(Vehicle _vehicle) const { return vehicleData_[_vehicle].capacity_; }
+    void capacityIs(Vehicle _vehicle, PackageCount capacity_);
 
     virtual ~Fleet();
     static Fleet::Ptr FleetNew(const string &_name);
