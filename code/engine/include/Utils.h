@@ -68,12 +68,6 @@ namespace Shipping {
         }
     };
 
-    class PackageCapacity : public Ordinal<PackageCapacity, unsigned int> {
-    public:
-        PackageCapacity() : Ordinal<PackageCapacity, unsigned int>(1) {}
-        PackageCapacity(unsigned int value) : Ordinal<PackageCapacity, unsigned int>(value) {}
-    };
-
     class TransferRate : public Ordinal<TransferRate, unsigned int> {
     public:
         TransferRate() : Ordinal<TransferRate, unsigned int>(0) {}

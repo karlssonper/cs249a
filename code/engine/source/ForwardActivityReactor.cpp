@@ -27,18 +27,25 @@ ForwardActivityReactor::ForwardActivityReactor(
 {
 
 }
+
 void ForwardActivityReactor::onStatus() {
     switch (activity_->status()) {
         case Fwk::Activity::executing: {
             removeActivePackagesFromSegment();
             if (shipment_->waitingPackages().value() == 0){
                 segment_->shipmentDeq();
+
+                //ADD TO NEXT LOCATION
+
                 return;
             }
             addActivePackagesToSegment();
             forwardActivity();
-            PackageCount packagesPerTransport;
+            break;
         }
+        case Fwk::Activity::nextTimeScheduled:
+            manager_->lastActivityIs(activity_);
+            break;
     }
 }
 
@@ -79,8 +86,9 @@ void ForwardActivityReactor::forwardActivity() {
     Miles length = segment_->length();
 
     activity_->nextTimeIs(
-            Fwk::Time(activity_->nextTime().value() +speed.value() / length.value())
-            );
+        Fwk::Time(activity_->nextTime().value() +speed.value() / length.value())
+        );
+    activity_->statusIs(Fwk::Activity::nextTimeScheduled);
 };
 
 Fleet::Vehicle ForwardActivityReactor::segTypeToFleetVehicle(
