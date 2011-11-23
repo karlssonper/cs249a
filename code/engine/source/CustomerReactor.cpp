@@ -16,7 +16,6 @@ CustomerReactor::Ptr CustomerReactor::CustomerReactorNew(const string &_name, Cu
     FWK_DEBUG("CustomerReactorNew " << _name);
     CustomerReactor::Ptr p = new CustomerReactor(_name, _notifier);
     return p;
-    FWK_DEBUG("CustomerReactorNew returning p");
 }
 
 void CustomerReactor::onAttributeUpdate() {

@@ -106,25 +106,26 @@ void Customer::destinationIs(const string &_destination) {
     }
 }
 
-void Customer::recievedPackagesIs(PackageCount _recievedPackages) {
-    FWK_DEBUG(name() << " recievedPackagesIs " << _recievedPackages.value());
-    if (recievedPackages_ == _recievedPackages) return;
-    recievedPackages_ = _recievedPackages;
-    //if (notifiee_) notifiee_->onAtttributeUpdate(this);
+void Customer::recievedShipmentsIs(ShipmentCount _recievedShipments) {
+    FWK_DEBUG(name() << " recievedPackagesIs " << _recievedShipments.value());
+    if (recievedShipments_ == _recievedShipments) return;
+    recievedShipments_ = _recievedShipments;
+}
+
+void Customer::recievedShipmentsInc() {
+    recievedShipments_++;
 }
 
 void Customer::averageLatencyIs(Latency _averageLatency) {
     FWK_DEBUG(name() << " averageLatencyIs " << _averageLatency.value());
     if (averageLatency_ == _averageLatency) return;
     averageLatency_ = _averageLatency;
-    //if (notifiee_) notifiee_->onAtttributeUpdate(this);
 }
 
 void Customer::totalCostIs(Dollars _totalCost) {
     FWK_DEBUG(name() << " totalCostIs " << _totalCost.value());
     if (totalCost_ == _totalCost) return;
     totalCost_ = _totalCost;
-    //if (notifiee_) notifiee_->onAtttributeUpdate(this);
 }
 
 Port::Port(const string &_name) 

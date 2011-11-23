@@ -51,7 +51,7 @@ void InjectActivityReactor::onStatus() {
         break;
     case Fwk::Activity::free:
         FWK_DEBUG(name() << " enqueueing itself");
-        activity_->nextTimeIs(Fwk::Time(activity_->nextTime().value() + transferRate_.value()));
+        activity_->nextTimeIs(Fwk::Time(activity_->nextTime().value() + 24.0/double(transferRate_.value())));
         activity_->statusIs(Fwk::Activity::nextTimeScheduled);
         break;
     case Fwk::Activity::nextTimeScheduled:

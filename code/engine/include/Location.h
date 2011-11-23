@@ -83,7 +83,7 @@ namespace Shipping {
         TransferRate transferRate() const { return transferRate_; }
         PackageCount shipmentSize() const { return shipmentSize_; }
         string destination() const { return destination_; }
-        PackageCount recievedPackages() const { return recievedPackages_; }
+        ShipmentCount recievedShipments() const { return recievedShipments_; }
         Latency averageLatency() const { return averageLatency_; }
         Dollars totalCost() const { return totalCost_; }
 
@@ -91,7 +91,8 @@ namespace Shipping {
         void transferRateIs(TransferRate _transferRate);
         void shipmentSizeIs(PackageCount _shipmentSize);
         void destinationIs(const string &_destination);
-        void recievedPackagesIs(PackageCount _recievedPackages);
+        void recievedShipmentsIs(ShipmentCount _recievedShipments);
+        void recievedShipmentsInc();
         void averageLatencyIs(Latency _averageLatency);
         void totalCostIs(Dollars _totalCost);
 
@@ -106,7 +107,7 @@ namespace Shipping {
         string destination_;
 
         // for recieving customers
-        PackageCount recievedPackages_;
+        ShipmentCount recievedShipments_;
         Latency averageLatency_;
         Dollars totalCost_;
 
