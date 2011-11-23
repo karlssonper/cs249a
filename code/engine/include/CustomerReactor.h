@@ -9,16 +9,26 @@ class CustomerReactor : public Customer::Notifiee {
 public:
     typedef Fwk::Ptr<CustomerReactor const> PtrConst;
     typedef Fwk::Ptr<CustomerReactor> Ptr;
+
+    enum Status {
+        notActive_ = 0,
+        active_ = 1
+    };
+
+    static CustomerReactor::Status notActive() { return Status::notActive_; }
+    static CustomerReactor::Status active() { return Status::active_; }
     
-    CustomerReactor(const string &_name, Customer* _notifier);
-    ~CustomerReactor() {}
+    static CustomerReactor::Ptr CustomerReactorNew(const string& _name, Customer *_notifier);
+
+    ~CustomerReactor();
 
     virtual void onAttributeUpdate();
 
 protected:
+    Status status_;
+    CustomerReactor(const string &_name, Customer* _notifier);
     CustomerReactor(const CustomerReactor&);
-    const Customer *notifier_;
-    Fwk::Activity::Manager* activityManager_;
+    const Fwk::Activity::Manager* activityManager_;
 };
 
 #endif

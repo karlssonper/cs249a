@@ -45,6 +45,21 @@ void EntityManager::locationIs(string _name, Location::Ptr _location) {
     }
 }
 
+void EntityManager::customerReactorIs(const string &_name, CustomerReactor::Ptr _customerReactor) {
+    FWK_DEBUG("EntityManager::customerReactorIs with name " << _name);
+
+    if (customerReactor_.find(_name) != customerReactor_.end()) {
+        cerr << "EntityManager::customerReactorIs: " << _name << " is already a location." << endl;
+        return;
+    }
+
+    FWK_DEBUG("EntityManager::customerReactorIs inserting " << _name);
+    customerReactor_.insert(make_pair(_name, _customerReactor));
+
+}
+
+
+
 void EntityManager::segmentSourceIs(const string &_segmentName, 
     const string &_sourceName) {
 
@@ -402,5 +417,65 @@ void EntityManager::segmentDel(const string& _name) {
     segment_.erase(it);
 }
 
+void EntityManager::customerTransferRateIs(const string &_customerName, TransferRate _transferRate) {
+
+    FWK_DEBUG("EntityManager::customerTransferRateIs on " << _customerName);
+
+    map<string, Location::Ptr>::iterator it;
+    it = location_.find(_customerName);
+    if (it == location_.end()) {
+        FWK_DEBUG("EntityManager::customerTransferRateIs: " << _customerName << " not found, nothing to do.");
+        return;
+    }
+
+    if (it->second->type() != Location::customer()) {
+        FWK_DEBUG("EntityManager::customerTransferRateIs: " << _customerName << " is not a customer.");
+        return;
+    }
+
+    Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
+    p->transferRateIs(_transferRate);
+    // note: notifiee is notified by the customer object itself
+
+}
 
 
+void EntityManager::customerShipmentSizeIs(const string &_customerName, PackageCount _shipmentSize) {
+     FWK_DEBUG("EntityManager::customerShipmentSizeIs on " << _customerName);
+
+    map<string, Location::Ptr>::iterator it;
+    it = location_.find(_customerName);
+    if (it == location_.end()) {
+        FWK_DEBUG("EntityManager::customerShipmentSizeIs: " << _customerName << " not found, nothing to do.");
+        return;
+    }
+
+    if (it->second->type() != Location::customer()) {
+        FWK_DEBUG("EntityManager::customerShipmentSizeIs: " << _customerName << " is not a customer.");
+        return;
+    }
+
+   Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
+    p->shipmentSizeIs(_shipmentSize);
+    // note: notifiee is notified by the customer object itself
+}
+
+void EntityManager::customerDestinationIs(const string &_customerName, const string &_destination) {
+    FWK_DEBUG("EntityManager::customerDestinationIs on " << _customerName);
+
+    map<string, Location::Ptr>::iterator it;
+    it = location_.find(_customerName);
+    if (it == location_.end()) {
+        FWK_DEBUG("EntityManager::customerDestinationIs: " << _customerName << " not found, nothing to do.");
+        return;
+    }
+
+    if (it->second->type() != Location::customer()) {
+        FWK_DEBUG("EntityManager::customerDestinationIs: " << _customerName << " is not a customer.");
+        return;
+    }
+
+    Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
+    p->destinationIs(_destination);
+    // note: notifiee is notified by the customer object itself
+}

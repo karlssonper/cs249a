@@ -1,6 +1,7 @@
 #include "Location.h"
 #include "Debug.h"
 #include "Activity.h"
+#include "CustomerReactor.h"
 
 using namespace Shipping;
 
@@ -55,6 +56,10 @@ void Location::outSegmentDel(Segment::Ptr _p) {
 Customer::Customer(const string &_name) 
     : Location(_name,customer()) {
         FWK_DEBUG("Customer constructor with name " << _name);
+        string reactorName = _name;
+        reactorName.append("Reactor");
+    CustomerReactor::Ptr p = CustomerReactor::CustomerReactorNew(reactorName,this);
+    notifieeIs("unusedName",p);
 }
 
 Customer::~Customer(){
@@ -67,29 +72,38 @@ Customer::Ptr Customer::CustomerNew(const string &_name) {
     return p;
 }
 
-void Customer::notifieeIs(const string &_name, Notifiee* _notifiee) {
+Customer::Notifiee::Notifiee(const string &_name, Customer* _notifier)
+    : BaseNotifiee<Customer>(_name, _notifier) {}
+
+void Customer::notifieeIs(const string &_name, Notifiee::Ptr _notifiee) {
+    FWK_DEBUG("Customer::notifieeIs on " << name());
     notifiee_ = _notifiee;
+    if (notifiee_) FWK_DEBUG("Notifiee: " << notifiee_->name());
+    else FWK_DEBUG("Notifiee removed");
 }
 
 void Customer::transferRateIs(TransferRate _transferRate) {
-    FWK_DEBUG(name() <<  "transferRateIs " << _transferRate.value());
+    FWK_DEBUG(name() <<  " transferRateIs " << _transferRate.value());
     if (transferRate_ == _transferRate) return;
     transferRate_ = _transferRate;
     if (notifiee_) notifiee_->onAtttributeUpdate();
 }
 
 void Customer::shipmentSizeIs(PackageCount _shipmentSize) {
-    FWK_DEBUG(name() <<  "shipmentSizeIs " << _shipmentSize.value());
+    FWK_DEBUG(name() <<  " shipmentSizeIs " << _shipmentSize.value());
     if (shipmentSize_ == _shipmentSize) return;
     shipmentSize_ = _shipmentSize;
     if (notifiee_) notifiee_->onAtttributeUpdate();
 }
 
 void Customer::destinationIs(const string &_destination) {
-    FWK_DEBUG(name() <<  "destinationIs " << _destination);
+    FWK_DEBUG(name() <<  " destinationIs " << _destination);
     if (destination_ == _destination) return;
     destination_ = _destination;
-    if (notifiee_) notifiee_->onAtttributeUpdate();
+    if (notifiee_) {
+        FWK_DEBUG("Customer:destinationIs notifying " << notifiee_->name());
+        notifiee_->onAtttributeUpdate();
+    }
 }
 
 void Customer::recievedPackagesIs(PackageCount _recievedPackages) {

@@ -4,13 +4,18 @@
 #include <string>
 #include "Location.h"
 #include "CustomerReactor.h"
+#include "Engine.h"
 
 using namespace Shipping;
 
 int main() {
 
+    EngineManager::Ptr engineManager = EngineManager::EngineManagerNew("engineManager");
     Customer::Ptr someCustomer = Customer::CustomerNew("someCustomer");
-    CustomerReactor::Ptr someCustomerReactor = new CustomerReactor("someCustomerReactor", someCustomer.ptr());
+    engineManager->entityManager()->locationIs("someCustomer", someCustomer);
+
+    engineManager->entityManager()->customerDestinationIs("someCustomer","someDestination");
+
 
 
     return 0;

@@ -6,6 +6,7 @@
 #include "Ptr.h"
 #include "Segment.h"
 #include "Location.h"
+#include "CustomerReactor.h"
 #include <string>
 #include <map>
 
@@ -61,6 +62,7 @@ namespace Shipping {
         // mutators
         void segmentIs(string _name, Segment::Ptr _segment);
         void locationIs(string _name, Location::Ptr _location);
+        void customerReactorIs(const string &_name, CustomerReactor::Ptr _customerReactor);
         void locationDel(const string &_name);
         void segmentDel(const string &_name);
         void segmentSourceIs(const string &_segmentName, const string &_sourceName);
@@ -68,6 +70,9 @@ namespace Shipping {
         void segmentDifficultyIs(const string &_segmentName, SegmentDifficulty _sd);
         void segmentLengthIs(const string &_segmentName, Miles _length);
         void segmentExpediteSupportIs(const string &_segmentName,Segment::ExpediteSupport _exp);
+        void customerTransferRateIs(const string &_customerName, TransferRate _transferRate);
+        void customerShipmentSizeIs(const string &_customerName, PackageCount _shipmentSize);
+        void customerDestinationIs(const string &_customerName, const string &_destination);
 
         virtual ~EntityManager();
         static EntityManager::Ptr EntityManagerNew(std::string _name) {
@@ -81,6 +86,7 @@ namespace Shipping {
         EntityManager(std::string &);
         map<string, Segment::Ptr> segment_;
         map<string, Location::Ptr> location_;
+        map<string, CustomerReactor::Ptr> customerReactor_;
         map<string, EntityManager::Notifiee::Ptr> notifiee_;
     };
 }

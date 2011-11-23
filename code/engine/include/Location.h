@@ -71,14 +71,13 @@ namespace Shipping {
             typedef Fwk::Ptr<Customer::Notifiee const> PtrConst;
             typedef Fwk::Ptr<Customer::Notifiee> Ptr;
 
-            virtual void onAtttributeUpdate() {}
+            virtual void onAtttributeUpdate() {};
 
             virtual ~Notifiee() {}
-            Notifiee(std::string _name, Customer* _notifier) 
-            : BaseNotifiee<Customer>(_name, _notifier) {}
+            Notifiee(const std::string &_name, Customer* _notifier);
         };
 
-        void notifieeIs(const string &_name, Notifiee* _notifiee);
+        void notifieeIs(const string &_name, Notifiee::Ptr _notifiee);
 
         // accessors
         TransferRate transferRate() const { return transferRate_; }
@@ -111,7 +110,7 @@ namespace Shipping {
         Latency averageLatency_;
         Dollars totalCost_;
 
-        Notifiee* notifiee_;
+        Notifiee::Ptr notifiee_;
     };
 
     class Port : public Location {
