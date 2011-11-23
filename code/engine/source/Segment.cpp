@@ -1,5 +1,6 @@
 #include "Segment.h"
 #include "Debug.h"
+#include "Shipment.h"
 
 using namespace Shipping;
 
@@ -15,6 +16,25 @@ Fwk::NamedInterface(_name),
 Segment::~Segment(){
     FWK_DEBUG("Segment::~Segment() with name: " << name());
 };
+
+void Segment::activePackageInc(PackageCount c) {
+    FWK_DEBUG("Segment::activePackageInc with name: " << name());
+    activePackages_ = activePackages_.value() + c.value();
+}
+void Segment::activePackageDec(PackageCount c) {
+    FWK_DEBUG("Segment::activePackageDec with name: " << name());
+    activePackages_ = activePackages_.value() - c.value();
+}
+
+void Segment::shipmentEnq(Fwk::Ptr<Shipment> _s) {
+    FWK_DEBUG("Segment::shipmentEnq with name: " << name());
+    shipment_.push(_s);
+}
+
+void Segment::shipmentDeq() {
+    FWK_DEBUG("Segment::shipmentEnq with name: " << name());
+    shipment_.pop();
+}
 
 void Segment::sourceIs(const string &_source) {
     FWK_DEBUG("Segment::sourceIs: " << _source);

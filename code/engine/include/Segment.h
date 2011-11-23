@@ -10,9 +10,10 @@
 #include "Nominal.h"
 #include "NamedInterface.h"
 #include "Utils.h"
+#include <queue>
 
 namespace Shipping {
-
+    class Shipment;
     class SegmentDifficulty : public Ordinal<SegmentDifficulty, float> {
     public:
         SegmentDifficulty() : Ordinal<SegmentDifficulty, float>(1.f) {}
@@ -59,6 +60,8 @@ namespace Shipping {
         SegmentDifficulty difficulty() const { return difficulty_;};
         ExpediteSupport expediteSupport() const { return expediteSupport_; }
         SegmentType type() const { return type_; }
+        PackageCount activePackages() const { return activePackages_;};
+
 
         // mutators
         void sourceIs(const string &_source);
@@ -66,15 +69,21 @@ namespace Shipping {
         void returnSegmentIs(const string &_returnSegment);
         void difficultyIs(SegmentDifficulty _difficulty) ;
         void expediteSupportIs(ExpediteSupport _expediteSupport);
+        void activePackageInc(PackageCount c);
+        void activePackageDec(PackageCount c);
+        void shipmentEnq(Fwk::Ptr<Shipment>);
+        void shipmentDeq();
 
     protected:
         Segment(const string &_name, SegmentType _st);
         Segment();
         Segment(const Segment&);
+        std::queue<Fwk::Ptr<Shipment> > shipment_;
         string source_;
         Miles length_;
         string returnSegment_;
         SegmentDifficulty difficulty_;
+        PackageCount activePackages_;
         ExpediteSupport expediteSupport_;
         SegmentType type_;
     };

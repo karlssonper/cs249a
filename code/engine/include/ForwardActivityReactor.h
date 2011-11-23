@@ -9,6 +9,7 @@
 #define FORWARDACTIVITYREACTOR_H_
 
 #include "Activity.h"
+#include "Utils.h"
 
 namespace Shipping{
 class Segment;
@@ -28,6 +29,8 @@ protected:
        Fwk::Ptr<Fleet const> fleet_;
        Fwk::Ptr<Shipment> shipment_;
        Fwk::Ptr<Segment> segment_;
+       PackageCount activePackages_;
+       void removeActivePackagesFromSegment();
 };
 }//end namespace Shipping
 

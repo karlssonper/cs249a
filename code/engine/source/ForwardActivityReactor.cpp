@@ -31,6 +31,14 @@ ForwardActivityReactor::ForwardActivityReactor(
 void ForwardActivityReactor::onStatus() {
     switch (activity_->status()) {
         case Fwk::Activity::executing: {
+            removeActivePackagesFromSegment();
+            if (shipment_->waitingPackages().value() == 0){
+                //DONE
+            }
+
+            PackageCount availablePackages = segment_->activePackages();
+
+
             PackageCount packagesPerTransport;
             switch(segment_->type()){
                 case Segment::boatSegment_:
@@ -61,3 +69,12 @@ void ForwardActivityReactor::onStatus() {
         }
     }
 }
+
+void ForwardActivityReactor::removeActivePackagesFromSegment() {
+    FWK_DEBUG("ForwardActivityReactor::removeActivePackagesFromSegment");
+    if (activePackages_.value() > 0) {
+        FWK_DEBUG("Removing " << activePackages_.value() << " packages.");
+        //segment_->packagesDec(activePackages_.value());
+        activePackages_ = 0;
+    }
+};
