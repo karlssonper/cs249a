@@ -3,6 +3,9 @@
 
 #include "Location.h"
 #include "ActivityImpl.h"
+#include "Activity.h"
+#include "ActivityReactor.h"
+
 using namespace Shipping;
 
 class CustomerReactor : public Customer::Notifiee {
@@ -28,7 +31,9 @@ protected:
     Status status_;
     CustomerReactor(const string &_name, Customer* _notifier);
     CustomerReactor(const CustomerReactor&);
-    const Fwk::Activity::Manager* activityManager_;
+    Fwk::Activity::Manager::Ptr activityManager_;
+    Fwk::Activity::Ptr activity_;
+    InjectActivityReactor* injectReactor_;
 };
 
 #endif

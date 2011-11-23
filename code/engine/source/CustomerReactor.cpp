@@ -1,5 +1,7 @@
 #include "CustomerReactor.h"
 #include "Location.h"
+#include "Activity.h"
+#include "ActivityReactor.h"
 
 using namespace Shipping;
 
@@ -25,17 +27,27 @@ void CustomerReactor::onAttributeUpdate() {
             notifier()->destination() != "" &&
             notifier()->shipmentSize().value() != 0) {
                 FWK_DEBUG("All three attribs set, setting CustomerReactor to active");
-                status_ == active();
-                //start injecting
+
+                status_ = active();
+                string injectorName = name();
+                injectorName.append("Injector");
+                activity_ = activityManager_->activityNew(injectorName);
+                injectorName.append("Reactor");
+                injectReactor_ = new InjectActivityReactor(injectorName, activityManager_, activity_, 2.0);
+                activity_->notifieeIs(injectorName, injectReactor_);
+                activity_->statusIs(Fwk::Activity::nextTimeScheduled);
+
+
         } else {
             FWK_DEBUG("All three attribs not set");
         }
     } else if (status_ == active()) {
-        if (notifier()->transferRate().value() != 0 ||
-            notifier()->destination() != "" ||
-            notifier()->shipmentSize().value() != 0) {
+        FWK_DEBUG("CustomerReactor active");
+        if (notifier()->transferRate().value() == 0 ||
+            notifier()->destination() == "" ||
+            notifier()->shipmentSize().value() == 0) {
                 FWK_DEBUG("All three attribs not set, setting CustomerReactor to notActive");
-                status_ == notActive();
+                status_ = notActive();
                 //stop injecting
         } else {
             FWK_DEBUG("All three attribs still set");
