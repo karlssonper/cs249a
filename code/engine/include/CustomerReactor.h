@@ -4,7 +4,7 @@
 #include "Location.h"
 #include "ActivityImpl.h"
 #include "Activity.h"
-#include "ActivityReactor.h"
+#include "InjectActivityReactor.h"
 
 using namespace Shipping;
 
