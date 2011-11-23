@@ -8,14 +8,26 @@
 #ifndef FORWARDACTIVITYREACTOR_H_
 #define FORWARDACTIVITYREACTOR_H_
 
+#include "Activity.h"
+
 namespace Shipping{
-class ForwardActivityReactor : public Activity::Notifiee {
+class Segment;
+class Fleet;
+class Shipment;
+class ForwardActivityReactor : public Fwk::Activity::Notifiee {
 public:
-    ForwardActivityReactor(Fwk::Ptr<Activity::Manager>, Activity*);
+    ForwardActivityReactor(Fwk::Ptr<Fwk::Activity::Manager>,
+                           Fwk::Activity*,
+                           Fwk::Ptr<Fleet const>,
+                           Fwk::Ptr<Segment> ,
+                           Fwk::Ptr<Shipment>);
     virtual void onStatus();
 protected:
-       Activity::Ptr activity_;
-       Fwk::Ptr<Activity::Manager> manager_;
+       Fwk::Activity::Ptr activity_;
+       Fwk::Ptr<Fwk::Activity::Manager> manager_;
+       Fwk::Ptr<Fleet const> fleet_;
+       Fwk::Ptr<Shipment> shipment_;
+       Fwk::Ptr<Segment> segment_;
 };
 }//end namespace Shipping
 

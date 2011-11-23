@@ -1,7 +1,6 @@
 #include "CustomerReactor.h"
 #include "Location.h"
 
-
 using namespace Shipping;
 
 CustomerReactor::CustomerReactor(const string &_name, Customer* _notifier) 

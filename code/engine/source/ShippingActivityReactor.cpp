@@ -50,8 +50,6 @@ void ShippingActivityReactor::onStatus(){
             //add myself to be scheduled
             manager_->lastActivityIs(activity_);
             break;
-
-            break;
         }
         default: {
 

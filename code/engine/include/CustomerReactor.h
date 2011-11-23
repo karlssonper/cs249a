@@ -15,8 +15,8 @@ public:
         active_ = 1
     };
 
-    static CustomerReactor::Status notActive() { return Status::notActive_; }
-    static CustomerReactor::Status active() { return Status::active_; }
+    static CustomerReactor::Status notActive() { return notActive_; }
+    static CustomerReactor::Status active() { return active_; }
     
     static CustomerReactor::Ptr CustomerReactorNew(const string& _name, Customer *_notifier);
 

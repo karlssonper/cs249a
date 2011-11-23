@@ -7,11 +7,10 @@
 
 #endif
 
-Fwk::Ptr<Fwk::Activity::Manager> activityManagerInstance() {
-    return Fwk::ManagerImpl::activityManagerInstance();
-}
-
 namespace Fwk {
+    Fwk::Ptr<Fwk::Activity::Manager> activityManagerInstance() {
+        return Fwk::ManagerImpl::activityManagerInstance();
+    }
 
     //Definition of static member
     Fwk::Ptr<Activity::Manager> ManagerImpl::activityInstance_ = NULL;

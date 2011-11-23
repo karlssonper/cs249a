@@ -29,6 +29,7 @@ protected:
        };
        PackageCount packages_;
 
+
        Conn::PtrConst conn_;
        EntityManager::Ptr entityManager_;
        Position position_;

@@ -12,6 +12,7 @@ SET(SOURCE source/Location
            source/Stats 
            source/Conn
            source/ActivityImpl
+           source/ForwardActivityReactor
            source/CustomerReactor)
 
 ADD_LIBRARY(engine_shared SHARED ${SOURCE})

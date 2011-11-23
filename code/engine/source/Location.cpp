@@ -73,7 +73,7 @@ Customer::Ptr Customer::CustomerNew(const string &_name) {
 }
 
 Customer::Notifiee::Notifiee(const string &_name, Customer* _notifier)
-    : BaseNotifiee<Customer>(_name, _notifier) {}
+    : Fwk::BaseNotifiee<Customer>(_name, _notifier) {}
 
 void Customer::notifieeIs(const string &_name, Notifiee::Ptr _notifiee) {
     FWK_DEBUG("Customer::notifieeIs on " << name());
