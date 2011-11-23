@@ -18,7 +18,6 @@ CustomerReactor::Ptr CustomerReactor::CustomerReactorNew(const string &_name, Cu
 }
 
 void CustomerReactor::onAttributeUpdate() {
-    std::cout << "I'm alive down here" << std::endl;
     FWK_DEBUG("CustomerReactor onAttributeUpdate");  
     if (status_ == notActive()) {
         FWK_DEBUG("CustomerReactor not active");

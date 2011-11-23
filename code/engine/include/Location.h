@@ -71,7 +71,7 @@ namespace Shipping {
             typedef Fwk::Ptr<Customer::Notifiee const> PtrConst;
             typedef Fwk::Ptr<Customer::Notifiee> Ptr;
 
-            virtual void onAtttributeUpdate() {};
+            virtual void onAttributeUpdate() {};
 
             virtual ~Notifiee() {}
             Notifiee(const std::string &_name, Customer* _notifier);

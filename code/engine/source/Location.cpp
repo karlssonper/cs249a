@@ -86,14 +86,14 @@ void Customer::transferRateIs(TransferRate _transferRate) {
     FWK_DEBUG(name() <<  " transferRateIs " << _transferRate.value());
     if (transferRate_ == _transferRate) return;
     transferRate_ = _transferRate;
-    if (notifiee_) notifiee_->onAtttributeUpdate();
+    if (notifiee_) notifiee_->onAttributeUpdate();
 }
 
 void Customer::shipmentSizeIs(PackageCount _shipmentSize) {
     FWK_DEBUG(name() <<  " shipmentSizeIs " << _shipmentSize.value());
     if (shipmentSize_ == _shipmentSize) return;
     shipmentSize_ = _shipmentSize;
-    if (notifiee_) notifiee_->onAtttributeUpdate();
+    if (notifiee_) notifiee_->onAttributeUpdate();
 }
 
 void Customer::destinationIs(const string &_destination) {
@@ -102,7 +102,7 @@ void Customer::destinationIs(const string &_destination) {
     destination_ = _destination;
     if (notifiee_) {
         FWK_DEBUG("Customer:destinationIs notifying " << notifiee_->name());
-        notifiee_->onAtttributeUpdate();
+        notifiee_->onAttributeUpdate();
     }
 }
 
