@@ -27,19 +27,26 @@ void CustomerReactor::onAttributeUpdate() {
             notifier()->destination() != "" &&
             notifier()->shipmentSize().value() != 0) {
                 FWK_DEBUG("All three attribs set, setting CustomerReactor to active");
-
                 status_ = active();
                 string injectorName = name();
                 injectorName.append("Injector");
-                activity_ = activityManager_->activityNew(injectorName);
+                if (!activity_) {
+                    FWK_DEBUG("Creating new Activity");
+                    activity_ = activityManager_->activityNew(injectorName);
+                }
                 injectorName.append("Reactor");
-                injectReactor_ = new InjectActivityReactor(injectorName, activityManager_, activity_, 2.0);
+                FWK_DEBUG("Creating new InjectActivityReactor");
+                injectReactor_ = new InjectActivityReactor(
+                    injectorName, 
+                    activityManager_,
+                    activity_, 
+                    notifier()->destination(),
+                    notifier()->transferRate(),
+                    notifier()->shipmentSize());
                 activity_->notifieeIs(injectorName, injectReactor_);
                 activity_->statusIs(Fwk::Activity::nextTimeScheduled);
-
-
         } else {
-            FWK_DEBUG("All three attribs not set");
+            FWK_DEBUG("All three attribs not set, doing nothing");
         }
     } else if (status_ == active()) {
         FWK_DEBUG("CustomerReactor active");
@@ -48,10 +55,15 @@ void CustomerReactor::onAttributeUpdate() {
             notifier()->shipmentSize().value() == 0) {
                 FWK_DEBUG("All three attribs not set, setting CustomerReactor to notActive");
                 status_ = notActive();
-                //stop injecting
+                activity_->notifieeIs("",0);
+                activityManager_->activityDel(activity_->name());
+                activity_ = NULL;
+                injectReactor_ = NULL;
         } else {
-            FWK_DEBUG("All three attribs still set");
-            // update injection
+            FWK_DEBUG("All three attribs still set, updating values");
+            injectReactor_->destinationIs(notifier()->destination());
+            injectReactor_->shipmentSizeIs(notifier()->shipmentSize());
+            injectReactor_->transferRateIs(notifier()->transferRate());
         }
     }
 }
