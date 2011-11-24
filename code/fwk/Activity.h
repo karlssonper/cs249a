@@ -8,7 +8,7 @@
 #include "BaseNotifiee.h"
 
 using std::string;
-namespace Fwk {
+namespace  {
 /* Define the type 'Time' */
 class Time : public Ordinal<Time,double> {
 public:
@@ -16,16 +16,16 @@ public:
     {}
 };
 
-class Activity : public Fwk::NamedInterface {
+class Activity : public NamedInterface {
 public:
-    typedef Fwk::Ptr<Activity> Ptr;
+    typedef ::Ptr<Activity> Ptr;
 
     /* Notifiee class for Activities */
-    class Notifiee : public Fwk::BaseNotifiee<Activity> {
+    class Notifiee : public ::BaseNotifiee<Activity> {
     public:
-        typedef Fwk::Ptr<Notifiee> Ptr;
+        typedef ::Ptr<Notifiee> Ptr;
         Notifiee(const string &_name, Activity* act)
-            : Fwk::BaseNotifiee<Activity>(_name,act) {}
+            : ::BaseNotifiee<Activity>(_name,act) {}
         virtual void onNextTime() {}
         virtual void onStatus() {}
     };
@@ -39,11 +39,11 @@ public:
         }
     };
 
-    class Manager : public Fwk::PtrInterface<Activity::Manager> {
+    class Manager : public NamedInterface {
     public:
-        typedef Fwk::Ptr<Activity::Manager> Ptr;
-        virtual Fwk::Ptr<Activity> activityNew(const string &name) = 0;
-        virtual Fwk::Ptr<Activity> activity(const string &name) const = 0;
+        typedef ::Ptr<Activity::Manager> Ptr;
+        virtual ::Ptr<Activity> activityNew(const string &name) = 0;
+        virtual ::Ptr<Activity> activity(const string &name) const = 0;
         virtual void activityDel(const string &name) = 0;
         virtual void lastActivityIs(Activity::Ptr) = 0;
         virtual Time now() const = 0;
@@ -53,10 +53,10 @@ public:
     enum Status {
         free, waiting, ready, executing, nextTimeScheduled, deleted
     };
-    Activity(const string& name, Fwk::Ptr<class Manager> manager)
+    Activity(const string& name, ::Ptr<class Manager> manager)
         : NamedInterface(name), status_(free), nextTime_(0.0),
           notifiee_(NULL), manager_(manager) {}
-    Fwk::Ptr<class Manager> manager() const { return manager_; }
+    ::Ptr<class Manager> manager() const { return manager_; }
     virtual Status status() const { return status_; }
     virtual void statusIs(Status s) {
         status_ = s;
@@ -83,7 +83,7 @@ protected:
     Status status_;
     Time nextTime_;
     Notifiee* notifiee_;
-    Fwk::Ptr<class Manager> manager_;
+    ::Ptr<class Manager> manager_;
 };
 
 } // fwk
