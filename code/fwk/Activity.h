@@ -8,7 +8,7 @@
 #include "BaseNotifiee.h"
 
 using std::string;
-namespace  {
+namespace Fwk{
 /* Define the type 'Time' */
 class Time : public Ordinal<Time,double> {
 public:
@@ -48,6 +48,8 @@ public:
         virtual void lastActivityIs(Activity::Ptr) = 0;
         virtual Time now() const = 0;
         virtual void nowIs(Time) = 0;
+    protected:
+        Manager(const string &name) : NamedInterface(name) {};
     };
 
     enum Status {
