@@ -29,6 +29,19 @@ Segment::Notifiee::Notifiee(std::string _name, Segment * seg) :
     FWK_DEBUG("Segment::Notifiee::Notifiee() with name: " << name());
 };
 
+void Segment::Notifiee::onShipmentEnq(Shipment::Ptr p) {
+
+};
+
+void Segment::Notifiee::onShipmentDeq() {
+};
+
+void Segment::Notifiee::onActivePackageInc(PackageCount pc) {
+};
+
+void Segment::Notifiee::onActivePackageDec(PackageCount pc) {
+}
+
 void Segment::notifieeIs(string _name, Notifiee* _p) {
     FWK_DEBUG("Segment::notifieeIs, name " << _name );
 

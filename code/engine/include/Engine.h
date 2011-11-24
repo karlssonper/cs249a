@@ -36,7 +36,7 @@ namespace Shipping {
         Conn::Ptr conn_;
         Fleet::Ptr fleet_;
         Stats::Ptr stats_;
-        EntityManager::Ptr entityManager_;
+        Fwk::Ptr<EntityManager> entityManager_;
         Fwk::Ptr<VirtualTimeActivityManager> virtualTimeActivityManager_;
     };
 
