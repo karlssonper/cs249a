@@ -13,7 +13,7 @@ using namespace Shipping;
 int main() {
 
     EngineManager::Ptr engineManager = EngineManager::EngineManagerNew("engineManager");
-    Customer::Ptr someCustomer = Customer::CustomerNew("someCustomer");
+    Customer::Ptr someCustomer = Customer::CustomerNew("someCustomer", engineManager->entityManager());
     engineManager->entityManager()->locationIs("someCustomer", someCustomer);
 
     engineManager->entityManager()->customerDestinationIs("someCustomer","someDestination");
