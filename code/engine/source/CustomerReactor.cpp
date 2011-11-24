@@ -1,6 +1,5 @@
 #include "CustomerReactor.h"
 #include "Location.h"
-#include "Activity.h"
 #include "InjectActivityReactor.h"
 
 using namespace Shipping;

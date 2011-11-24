@@ -1,6 +1,5 @@
 #include "Location.h"
 #include "Debug.h"
-#include "Activity.h"
 #include "CustomerReactor.h"
 
 using namespace Shipping;

@@ -6,7 +6,6 @@
 #include "Segment.h"
 #include <string>
 #include <list>
-#include "ActivityImpl.h"
 
 using std::string;
 using std::list;

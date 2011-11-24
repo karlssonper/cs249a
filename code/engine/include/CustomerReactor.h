@@ -2,7 +2,6 @@
 #define CUSTOMERREACTOR_H
 
 #include "Location.h"
-#include "ActivityImpl.h"
 #include "Activity.h"
 #include "InjectActivityReactor.h"
 
