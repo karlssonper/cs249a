@@ -18,13 +18,13 @@ namespace Shipping {
 
         void onStatus();
 
-        Shipping::VirtualManager::Ptr manager() { return virtualManager_; }
+        Shipping::VirtualManager::Ptr virtualManager() { return virtualManager_; }
         Fwk::Activity::Ptr activity() { return activity_; }
         string destination() { return destination_; }
         Shipping::TransferRate transferRate() { return transferRate_; }
         Shipping::PackageCount shipmentSize() { return shipmentSize_; }
 
-        void managerIs(Shipping::VirtualManager::Ptr _virtualManager);
+        void virtualManagerIs(Shipping::VirtualManager::Ptr _virtualManager);
         void activityIs(Fwk::Activity::Ptr _activity);
         void destinationIs(const string &_destination);
         void transferRateIs(Shipping::TransferRate _transferRate);
