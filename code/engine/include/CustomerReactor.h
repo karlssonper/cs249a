@@ -2,11 +2,11 @@
 #define CUSTOMERREACTOR_H
 
 #include "Location.h"
-#include "Activity.h"
-#include "InjectActivityReactor.h"
 
 using namespace Shipping;
-
+class InjectActivityReactor;
+class Activity;
+class VirtualTimeActivityManager;
 class CustomerReactor : public Customer::Notifiee {
 public:
     typedef Fwk::Ptr<CustomerReactor const> PtrConst;
@@ -30,8 +30,8 @@ protected:
     Status status_;
     CustomerReactor(const string &_name, Customer* _notifier);
     CustomerReactor(const CustomerReactor&);
-    Fwk::Activity::Manager::Ptr activityManager_;
-    Fwk::Activity::Ptr activity_;
+    Fwk::Ptr<VirtualTimeActivityManager> activityManager_;
+    Fwk::Ptr<Activity> activity_;
     InjectActivityReactor* injectReactor_;
 };
 

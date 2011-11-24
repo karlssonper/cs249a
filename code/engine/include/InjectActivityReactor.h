@@ -1,16 +1,17 @@
 #ifndef INJECTACTIVITYREACTOR_H
 #define INJECTACTIVITYREACTOR_H
 
-#include "Location.h"
-#include "VirtualManager.h"
+#include "Activity.h"
+#include "VirtualTimeActivityManager.h"
 
 namespace Shipping {
-
+    class VirtualTimeActivityManager;
+    class Location;
     class InjectActivityReactor : public Fwk::Activity::Notifiee {
     public:
         InjectActivityReactor(
             const string &_name,
-            Fwk::Activity::Manager::Ptr _virtualManager, 
+            Fwk::Ptr<VirtualTimeActivityManager> _virtualManager,
             Fwk::Activity::Ptr _activity,
             const string &_destination,
             Shipping::TransferRate _transferRate,
@@ -18,13 +19,13 @@ namespace Shipping {
 
         void onStatus();
 
-        Shipping::VirtualManager::Ptr virtualManager() { return virtualManager_; }
+        Fwk::Ptr<VirtualTimeActivityManager> virtualManager() const { return virtualManager_; }
         Fwk::Activity::Ptr activity() { return activity_; }
         string destination() { return destination_; }
         Shipping::TransferRate transferRate() { return transferRate_; }
         Shipping::PackageCount shipmentSize() { return shipmentSize_; }
 
-        void virtualManagerIs(Shipping::VirtualManager::Ptr _virtualManager);
+        void virtualManagerIs(Fwk::Ptr<VirtualTimeActivityManager> _virtualManager);
         void activityIs(Fwk::Activity::Ptr _activity);
         void destinationIs(const string &_destination);
         void transferRateIs(Shipping::TransferRate _transferRate);
@@ -32,10 +33,10 @@ namespace Shipping {
 
     protected:
         string destination_;
-        Shipping::TransferRate transferRate_;
-        Shipping::PackageCount shipmentSize_;
+        TransferRate transferRate_;
+        PackageCount shipmentSize_;
         Fwk::Activity::Ptr activity_;
-        Shipping::VirtualManager::Ptr virtualManager_;
+        Fwk::Ptr<VirtualTimeActivityManager> virtualManager_;
     };
 
 }

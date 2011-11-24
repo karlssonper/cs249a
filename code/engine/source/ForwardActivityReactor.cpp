@@ -13,12 +13,13 @@ using namespace Shipping;
 
 
 ForwardActivityReactor::ForwardActivityReactor(
+        const std::string &_name,
         Fwk::Ptr<Fwk::Activity::Manager> _manager,
         Fwk::Activity* _activity,
         Fleet::PtrConst _fleet,
         Segment::Ptr _segment,
         Shipment::Ptr _shipment) :
-        Notifiee(_activity),
+        Notifiee(_name,_activity),
         manager_(_manager),
         activity_(_activity),
         fleet_(_fleet),

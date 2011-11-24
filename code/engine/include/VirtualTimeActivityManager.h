@@ -6,7 +6,8 @@
 #include "Activity.h"
 
 namespace Shipping {
-
+    class EntityManager;
+    class EngineManager;
     class VirtualTimeActivityManager : public Fwk::Activity::Manager {
 
     public:
@@ -28,7 +29,7 @@ namespace Shipping {
                                    EntityManager *_entityManager,
                                    EngineManager *_engineManager);
 
-        priority_queue<Fwk::Activity::Ptr, vector<Fwk::Activity::Ptr>, Fwk::ActivityComp> scheduledActivities_;
+        priority_queue<Fwk::Activity::Ptr, vector<Fwk::Activity::Ptr>, Fwk::Activity::Comp> scheduledActivities_;
         std::map<std::string, Fwk::Activity::Ptr> activities_; 
         Fwk::Time now_;
         EngineManager *engineManager_;

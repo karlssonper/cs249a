@@ -11,7 +11,6 @@ SET(SOURCE source/Location
            source/Fleet 
            source/Stats 
            source/Conn
-           source/ActivityImpl
            source/Shipment
            source/SegmentReactor
            source/ForwardActivityReactor

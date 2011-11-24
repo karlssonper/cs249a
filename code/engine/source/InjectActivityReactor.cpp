@@ -1,4 +1,6 @@
 #include "InjectActivityReactor.h"
+#include "Location.h"
+
 
 Shipping::InjectActivityReactor::InjectActivityReactor(
     const string &_name,

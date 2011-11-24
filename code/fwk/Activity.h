@@ -18,20 +18,20 @@ public:
 
 class Activity : public NamedInterface {
 public:
-    typedef ::Ptr<Activity> Ptr;
+    typedef Fwk::Ptr<Activity> Ptr;
 
     /* Notifiee class for Activities */
-    class Notifiee : public ::BaseNotifiee<Activity> {
+    class Notifiee : public Fwk::BaseNotifiee<Activity> {
     public:
-        typedef ::Ptr<Notifiee> Ptr;
+        typedef Fwk::Ptr<Notifiee> Ptr;
         Notifiee(const string &_name, Activity* act)
-            : ::BaseNotifiee<Activity>(_name,act) {}
+            : BaseNotifiee<Activity>(_name,act) {}
         virtual void onNextTime() {}
         virtual void onStatus() {}
     };
 
     //Comparison class for activities
-    class Comp : public binary_function<Activity::Ptr, Activity::Ptr, bool> {
+    class Comp : public std::binary_function<Activity::Ptr, Activity::Ptr, bool> {
     public:
         Comp() {}
         bool operator()(Activity::Ptr a, Activity::Ptr b) const {
@@ -41,9 +41,9 @@ public:
 
     class Manager : public NamedInterface {
     public:
-        typedef ::Ptr<Activity::Manager> Ptr;
-        virtual ::Ptr<Activity> activityNew(const string &name) = 0;
-        virtual ::Ptr<Activity> activity(const string &name) const = 0;
+        typedef Fwk::Ptr<Activity::Manager> Ptr;
+        virtual Fwk::Ptr<Activity> activityNew(const string &name) = 0;
+        virtual Fwk::Ptr<Activity> activity(const string &name) const = 0;
         virtual void activityDel(const string &name) = 0;
         virtual void lastActivityIs(Activity::Ptr) = 0;
         virtual Time now() const = 0;
@@ -55,10 +55,10 @@ public:
     enum Status {
         free, waiting, ready, executing, nextTimeScheduled, deleted
     };
-    Activity(const string& name, ::Ptr<class Manager> manager)
+    Activity(const string& name, Fwk::Ptr<class Manager> manager)
         : NamedInterface(name), status_(free), nextTime_(0.0),
           notifiee_(NULL), manager_(manager) {}
-    ::Ptr<class Manager> manager() const { return manager_; }
+    Fwk::Ptr<class Manager> manager() const { return manager_; }
     virtual Status status() const { return status_; }
     virtual void statusIs(Status s) {
         status_ = s;
@@ -85,7 +85,7 @@ protected:
     Status status_;
     Time nextTime_;
     Notifiee* notifiee_;
-    ::Ptr<class Manager> manager_;
+    Fwk::Ptr<Manager> manager_;
 };
 
 } // fwk

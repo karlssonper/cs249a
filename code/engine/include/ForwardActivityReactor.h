@@ -17,7 +17,8 @@ namespace Shipping{
 class Shipment;
 class ForwardActivityReactor : public Fwk::Activity::Notifiee {
 public:
-    ForwardActivityReactor(Fwk::Ptr<Fwk::Activity::Manager>,
+    ForwardActivityReactor(const std::string &_name,
+                           Fwk::Ptr<Fwk::Activity::Manager>,
                            Fwk::Activity*,
                            Fwk::Ptr<Fleet const>,
                            Fwk::Ptr<Segment> ,

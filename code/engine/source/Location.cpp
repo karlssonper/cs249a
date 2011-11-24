@@ -112,7 +112,7 @@ void Customer::recievedShipmentsIs(ShipmentCount _recievedShipments) {
 }
 
 void Customer::recievedShipmentsInc() {
-    recievedShipments_++;
+    //recievedShipments_++;
 }
 
 void Customer::averageLatencyIs(Latency _averageLatency) {
