@@ -2,12 +2,13 @@
 #include "Location.h"
 #include "Activity.h"
 #include "InjectActivityReactor.h"
+#include "VirtualTimeActivityManager.h"
 
 using namespace Shipping;
 
-CustomerReactor::CustomerReactor(const string &_name, Customer* _notifier) 
+CustomerReactor::CustomerReactor(const string &_name, Customer* _notifier, Fwk::Ptr<VirtualTimeActivityManager> _virtualTimeActivityManager) 
     : Customer::Notifiee(_name, _notifier),
-    activityManager_(Fwk::activityManagerInstance().ptr()),
+    activityManager_(_virtualTimeActivityManager),
     status_(notActive()) {
         FWK_DEBUG("CustomerReactor constructor, name(): " << name() << " notifier: " << notifier()->name());  
 }

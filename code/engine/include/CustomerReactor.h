@@ -1,7 +1,7 @@
 #ifndef CUSTOMERREACTOR_H
 #define CUSTOMERREACTOR_H
 
-#include "Location.h"
+#include "Location.h";
 
 using namespace Shipping;
 class InjectActivityReactor;
@@ -20,7 +20,7 @@ public:
     static CustomerReactor::Status notActive() { return notActive_; }
     static CustomerReactor::Status active() { return active_; }
     
-    static CustomerReactor::Ptr CustomerReactorNew(const string& _name, Customer *_notifier);
+    static CustomerReactor::Ptr CustomerReactorNew(const string& _name, Customer *_notifier, Fwk::Ptr<VirtualTimeActivityManager> _virtualTimeActivityManager );
 
     ~CustomerReactor();
 
