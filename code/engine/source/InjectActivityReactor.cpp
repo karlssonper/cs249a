@@ -1,15 +1,13 @@
 #include "InjectActivityReactor.h"
-#include "Location.h"
 
-
-InjectActivityReactor::InjectActivityReactor(
+Shipping::InjectActivityReactor::InjectActivityReactor(
     const string &_name,
-    Fwk::Activity::Manager::Ptr _manager, 
+    Shipping::VirtualManager::Ptr _virtualManager, 
     Fwk::Activity::Ptr _activity,
     const string &_destination,
     Shipping::TransferRate _transferRate,
     Shipping::PackageCount _shipmentSize) :
-Notifiee(_name, _activity.ptr()),
+    Notifiee(_name, _activity.ptr()),
     destination_(_destination),
     transferRate_(_transferRate),
     shipmentSize_(_shipmentSize),
@@ -18,30 +16,30 @@ Notifiee(_name, _activity.ptr()),
         FWK_DEBUG("InjectActivityReactor " << name() << " constructor");
 }
 
-void InjectActivityReactor::managerIs(Fwk::Activity::Manager::Ptr _manager) {
-    manager_ = _manager;
+    void Shipping::InjectActivityReactor::managerIs(Shipping::VirtualManager::Ptr _virtualManager) {
+    virtualManager_ = _virtualManager;
 }
 
-void InjectActivityReactor::activityIs(Fwk::Activity::Ptr _activity) {
+void Shipping::InjectActivityReactor::activityIs(Fwk::Activity::Ptr _activity) {
     activity_ = _activity;
 }
 
-void InjectActivityReactor::destinationIs(const string &_destination) {
+void Shipping::InjectActivityReactor::destinationIs(const string &_destination) {
     if (destination_ == _destination) return;
     destination_ = _destination;
 }
 
-void InjectActivityReactor::transferRateIs(Shipping::TransferRate _transferRate) {
+void Shipping::InjectActivityReactor::transferRateIs(Shipping::TransferRate _transferRate) {
     if (transferRate_ == _transferRate) return;
     transferRate_ = _transferRate;
 }
 
-void InjectActivityReactor::shipmentSizeIs(Shipping::PackageCount _shipmentSize) {
+void Shipping::InjectActivityReactor::shipmentSizeIs(Shipping::PackageCount _shipmentSize) {
     if (shipmentSize_ == _shipmentSize) return;
     shipmentSize_ = _shipmentSize;
 }
 
-void InjectActivityReactor::onStatus() {
+void Shipping::InjectActivityReactor::onStatus() {
 
     switch(activity_->status()) {
 
@@ -56,7 +54,7 @@ void InjectActivityReactor::onStatus() {
         break;
     case Fwk::Activity::nextTimeScheduled:
         FWK_DEBUG(name() << " adding itself to be scheduled");
-        manager_->lastActivityIs(activity_);
+        virtualManager_->lastActivityIs(activity_);
         break;
     default:
         break;
