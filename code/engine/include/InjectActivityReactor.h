@@ -22,14 +22,14 @@ namespace Shipping {
         Fwk::Ptr<VirtualTimeActivityManager> virtualManager() const { return virtualManager_; }
         Fwk::Activity::Ptr activity() { return activity_; }
         string destination() { return destination_; }
-        Shipping::TransferRate transferRate() { return transferRate_; }
-        Shipping::PackageCount shipmentSize() { return shipmentSize_; }
+        TransferRate transferRate() { return transferRate_; }
+        PackageCount shipmentSize() { return shipmentSize_; }
 
         void virtualManagerIs(Fwk::Ptr<VirtualTimeActivityManager> _virtualManager);
         void activityIs(Fwk::Activity::Ptr _activity);
         void destinationIs(const string &_destination);
-        void transferRateIs(Shipping::TransferRate _transferRate);
-        void shipmentSizeIs(Shipping::PackageCount _shipmentSize);
+        void transferRateIs(TransferRate _transferRate);
+        void shipmentSizeIs(PackageCount _shipmentSize);
 
     protected:
         string destination_;

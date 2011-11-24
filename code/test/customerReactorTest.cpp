@@ -6,6 +6,7 @@
 #include "CustomerReactor.h"
 #include "Engine.h"
 #include "Activity.h"
+#include "VirtualTimeActivityManager.h"
 
 using namespace Shipping;
 
@@ -18,7 +19,7 @@ int main() {
     engineManager->entityManager()->customerDestinationIs("someCustomer","someDestination");
     engineManager->entityManager()->customerShipmentSizeIs("someCustomer", Shipping::PackageCount(100));
     engineManager->entityManager()->customerTransferRateIs("someCustomer", Shipping::TransferRate(24));
-    Fwk::Activity::Manager::Ptr mgr = Fwk::activityManagerInstance();
+    Shipping::VirtualTimeActivityManager::Ptr mgr = engineManager->virtualTimeActivityManager();
     mgr->nowIs(20.0);
     engineManager->entityManager()->customerTransferRateIs("someCustomer", Shipping::TransferRate(0));
     mgr->nowIs(40.0);

@@ -7,6 +7,8 @@
 
 #include "Engine.h"
 #include "Debug.h"
+#include "VirtualTimeActivityManager.h"
+
 using namespace Shipping;
 
 EngineManager::EngineManager(const std::string &_name) :
@@ -19,6 +21,9 @@ EngineManager::EngineManager(const std::string &_name) :
             EntityManager::EntityManagerNew(std::string("EntityManager"));
     stats_ = Stats::StatsNew(std::string("Stats"), this, entityManager_.ptr());
     conn_ = Conn::ConnNew(std::string("Conn"), this, entityManager_.ptr());
+    virtualTimeActivityManager_ = Shipping::VirtualTimeActivityManager::VirtualTimeActivityManagerNew(std::string("VirtualTimeActivityManager"),
+                                                                                                      this,
+                                                                                                      entityManager_.ptr());
 };
 
 void EngineManager::connIs(const std::string &_name) {
