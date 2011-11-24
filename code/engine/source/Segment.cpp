@@ -1,6 +1,7 @@
 #include "Segment.h"
 #include "Debug.h"
 #include "Shipment.h"
+#include "SegmentReactor.h"
 
 using namespace Shipping;
 
@@ -10,30 +11,70 @@ Fwk::NamedInterface(_name),
     returnSegment_(""),
     expediteSupport_(Segment::noExpediteSupport()),
     type_(_st) {
-        FWK_DEBUG("Segment constructor with name " << _name);
+    FWK_DEBUG("Segment constructor with name " << _name);
+    notifiee_ = SegmentReactor::SegmentReactorNew(_name +std::string("Reactor"),
+            this);
 }
 
 Segment::~Segment(){
-    FWK_DEBUG("Segment::~Segment() with name: " << name());
+
 };
+
+Segment::Notifiee::~Notifiee() {
+        FWK_DEBUG("Segment::Notifiee::~Notifiee() with name: " << name());
+};
+
+Segment::Notifiee::Notifiee(std::string _name, Segment * seg) :
+        Fwk::BaseNotifiee<Segment>(_name, seg) {
+    FWK_DEBUG("Segment::Notifiee::Notifiee() with name: " << name());
+};
+
+void Segment::notifieeIs(string _name, Notifiee* _p) {
+    FWK_DEBUG("Segment::notifieeIs, name " << _name );
+
+    if (!_p) {
+        //notifiee_.erase(notifiee_.find(_name));
+        return;
+    }
+
+    if (notifiee_) {
+        cerr << "Segment::notifieeIs: " << _name << " already exists" << endl;
+        return;
+    }
+
+    Notifiee::Ptr p = _p;
+    notifiee_ = _p;
+}
 
 void Segment::activePackageInc(PackageCount c) {
     FWK_DEBUG("Segment::activePackageInc with name: " << name());
     activePackages_ = activePackages_.value() + c.value();
+
+    FWK_DEBUG("Notifying -> " << notifiee_->name());
+    notifiee_->onActivePackageInc(c);
 }
 void Segment::activePackageDec(PackageCount c) {
     FWK_DEBUG("Segment::activePackageDec with name: " << name());
     activePackages_ = activePackages_.value() - c.value();
+
+    FWK_DEBUG("Notifying -> " << notifiee_->name());
+    notifiee_->onActivePackageDec(c);
 }
 
 void Segment::shipmentEnq(Fwk::Ptr<Shipment> _s) {
     FWK_DEBUG("Segment::shipmentEnq with name: " << name());
     shipment_.push(_s);
+
+    FWK_DEBUG("Notifying -> " << notifiee_->name());
+    notifiee_->onShipmentEnq(_s);
 }
 
 void Segment::shipmentDeq() {
     FWK_DEBUG("Segment::shipmentEnq with name: " << name());
     shipment_.pop();
+
+    FWK_DEBUG("Notifying -> " << notifiee_->name());
+    notifiee_->onShipmentDeq();
 }
 
 void Segment::sourceIs(const string &_source) {

@@ -8,6 +8,7 @@
 
 #include "Ptr.h"
 #include "Nominal.h"
+#include "BaseNotifiee.h"
 #include "NamedInterface.h"
 #include "Utils.h"
 #include <queue>
@@ -75,10 +76,26 @@ namespace Shipping {
         void shipmentEnq(Fwk::Ptr<Shipment>);
         void shipmentDeq();
 
+        class Notifiee : public Fwk::BaseNotifiee<Segment> {
+        public:
+            typedef Fwk::Ptr<Segment::Notifiee const> PtrConst;
+            typedef Fwk::Ptr<Segment::Notifiee> Ptr;
+
+            virtual void onShipmentEnq(Fwk::Ptr<Shipment>) {};
+            virtual void onShipmentDeq() {};
+            virtual void onActivePackageInc(PackageCount) {};
+            virtual void onActivePackageDec(PackageCount) {};
+
+            virtual ~Notifiee();
+            Notifiee(std::string _name, Segment * seg);
+        };
+        void notifieeIs(string name_, Notifiee*);
+
     protected:
         Segment(const string &_name, SegmentType _st);
         Segment();
         Segment(const Segment&);
+        Notifiee::Ptr notifiee_;
         std::queue<Fwk::Ptr<Shipment> > shipment_;
         string source_;
         Miles length_;

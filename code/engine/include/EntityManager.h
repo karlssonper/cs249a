@@ -7,7 +7,6 @@
 #include "Segment.h"
 #include "Location.h"
 #include "CustomerReactor.h"
-#include <string>
 #include <map>
 
 using std::map;
@@ -16,6 +15,7 @@ using std::list;
 
 namespace Shipping {
     class EngineManager;
+    class Shipment;
     class EntityManager : public Fwk::NamedInterface {
     public:
 
@@ -70,6 +70,10 @@ namespace Shipping {
         void segmentDifficultyIs(const string &_segmentName, SegmentDifficulty _sd);
         void segmentLengthIs(const string &_segmentName, Miles _length);
         void segmentExpediteSupportIs(const string &_segmentName,Segment::ExpediteSupport _exp);
+        void segmentShipmentEnq(const string & _segmentName, Fwk::Ptr<Shipment>);
+        void segmentShipmentDeq(const string & _segmentName);
+        void segmentPackageInc(const string & _segmentName, PackageCount pc);
+        void segmentPackageDec(const string & _segmentName, PackageCount pc);
         void customerTransferRateIs(const string &_customerName, TransferRate _transferRate);
         void customerShipmentSizeIs(const string &_customerName, PackageCount _shipmentSize);
         void customerDestinationIs(const string &_customerName, const string &_destination);

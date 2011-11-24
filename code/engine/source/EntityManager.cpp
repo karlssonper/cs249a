@@ -2,6 +2,7 @@
 // TODO: notifieeIs deletion case
 
 #include "EntityManager.h"
+#include "Shipment.h"
 #include "Debug.h"
 #include <iostream>
 
@@ -343,6 +344,47 @@ void EntityManager::segmentIs(string _name, Segment::Ptr _segment) {
         i->second->onSegmentNew(_segment.ptr());
     }
 }
+
+void EntityManager::segmentShipmentEnq(const string & _segName, Shipment::Ptr s) {
+    FWK_DEBUG("EntityManager::segmentShipmentEnq with name " << _segName);
+    map<string, Segment::Ptr>::iterator segIt = segment_.find(_segName);
+    if (segIt == segment_.end()) {
+        cerr << "EntityManager::segmentShipmentEnq: " << _segName << " not found." << endl;
+        return;
+    }
+    segIt->second->shipmentEnq(s);
+}
+
+void EntityManager::segmentShipmentDeq(const string & _segName) {
+    FWK_DEBUG("EntityManager::segmentShipmentDeq with name " << _segName);
+    map<string, Segment::Ptr>::iterator segIt = segment_.find(_segName);
+    if (segIt == segment_.end()) {
+        cerr << "EntityManager::segmentShipmentDeq: " << _segName << " not found." << endl;
+        return;
+    }
+    segIt->second->shipmentDeq();
+}
+
+void EntityManager::segmentPackageInc(const string &_segName, PackageCount pc) {
+    FWK_DEBUG("EntityManager::segmentPackageInc with name " << _segName);
+    map<string, Segment::Ptr>::iterator segIt = segment_.find(_segName);
+    if (segIt == segment_.end()) {
+        cerr << "EntityManager::segmentPackageInc: " << _segName << " not found." << endl;
+        return;
+    }
+    segIt->second->activePackageInc(pc);
+};
+
+void EntityManager::segmentPackageDec(const string &_segName, PackageCount pc) {
+    FWK_DEBUG("EntityManager::segmentPackageInc with name " << _segName);
+    map<string, Segment::Ptr>::iterator segIt = segment_.find(_segName);
+    if (segIt == segment_.end()) {
+        cerr << "EntityManager::segmentPackageInc: " << _segName << " not found." << endl;
+        return;
+    }
+    segIt->second->activePackageDec(pc);
+};
+
 
 void EntityManager::notifieeIs(string _name, Notifiee* _p) {
     FWK_DEBUG("EntityManager::notifieeIs, name " << _name );
