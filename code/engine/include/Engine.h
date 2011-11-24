@@ -8,11 +8,9 @@
 #include "Stats.h"
 #include "EntityManager.h"
 #include <string>
+#include "VirtualTimeActivityManager.h"
 
 namespace Shipping {
-
-    class VirtualTimeActivityManager;
-
     class EngineManager : public Fwk::NamedInterface {
     public:
         typedef Fwk::Ptr<EngineManager const> PtrConst;
@@ -25,7 +23,7 @@ namespace Shipping {
         Stats::Ptr stats() const { return stats_;};
         void statsIs(const std::string &name);
         EntityManager::Ptr entityManager() const {return entityManager_;};
-        Fwk::Ptr<VirtualTimeActivityManager> virtualTimeActivityManager() const { return virtualTimeActivityManager_; }
+        VirtualTimeActivityManager::Ptr virtualTimeActivityManager() const { return virtualTimeActivityManager_; }
         ~EngineManager();
         static EngineManager::Ptr EngineManagerNew(std::string name){
             Ptr p = new EngineManager(name);

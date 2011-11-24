@@ -1,6 +1,7 @@
 #include "Location.h"
 #include "Debug.h"
 #include "CustomerReactor.h"
+#include "VirtualTimeActivityManager.h"
 
 using namespace Shipping;
 
@@ -52,12 +53,12 @@ void Location::outSegmentDel(Segment::Ptr _p) {
     outSegment_.erase(it);
 }
 
-Customer::Customer(const string &_name) 
+Customer::Customer(const string &_name, VirtualTimeActivityManager::Ptr vtAm)
     : Location(_name,customer()) {
         FWK_DEBUG("Customer constructor with name " << _name);
         string reactorName = _name;
         reactorName.append("Reactor");
-    CustomerReactor::Ptr p = CustomerReactor::CustomerReactorNew(reactorName,this);
+    CustomerReactor::Ptr p = CustomerReactor::CustomerReactorNew(reactorName,this, vtAm);
     notifieeIs("unusedName",p);
 }
 
@@ -65,9 +66,9 @@ Customer::~Customer(){
     FWK_DEBUG("Customer::~Customer() with name: " << name());
 };
 
-Customer::Ptr Customer::CustomerNew(const string &_name) {
+Customer::Ptr Customer::CustomerNew(const string &_name, VirtualTimeActivityManager::Ptr vtAm) {
     FWK_DEBUG("Customer::CustomerNew with name " << _name);
-    Customer::Ptr p = new Customer(_name);
+    Customer::Ptr p = new Customer(_name, vtAm);
     return p;
 }
 

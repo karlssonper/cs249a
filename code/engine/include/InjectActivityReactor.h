@@ -2,10 +2,10 @@
 #define INJECTACTIVITYREACTOR_H
 
 #include "Activity.h"
+#include "Utils.h"
 #include "VirtualTimeActivityManager.h"
 
 namespace Shipping {
-    class VirtualTimeActivityManager;
     class Location;
     class InjectActivityReactor : public Fwk::Activity::Notifiee {
     public:

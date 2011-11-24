@@ -1,11 +1,12 @@
 #ifndef CUSTOMERREACTOR_H
 #define CUSTOMERREACTOR_H
 
-#include "Location.h";
+#include "Ptr.h"
+#include "Location.h"
 
-using namespace Shipping;
+namespace Fwk {class Activity; };
+namespace Shipping {
 class InjectActivityReactor;
-class Activity;
 class VirtualTimeActivityManager;
 class CustomerReactor : public Customer::Notifiee {
 public:
@@ -20,19 +21,22 @@ public:
     static CustomerReactor::Status notActive() { return notActive_; }
     static CustomerReactor::Status active() { return active_; }
     
-    static CustomerReactor::Ptr CustomerReactorNew(const string& _name, Customer *_notifier, Fwk::Ptr<VirtualTimeActivityManager> _virtualTimeActivityManager );
-
+    static CustomerReactor::Ptr CustomerReactorNew(const string& _name,
+            Customer *_notifier,
+            Fwk::Ptr<VirtualTimeActivityManager> _virtualTimeActivityManager );
     ~CustomerReactor();
 
     virtual void onAttributeUpdate();
 
 protected:
     Status status_;
-    CustomerReactor(const string &_name, Customer* _notifier);
+    CustomerReactor(const string &_name, Customer* _notifier,
+            Fwk::Ptr<VirtualTimeActivityManager> _virtualTimeActivityManager);
     CustomerReactor(const CustomerReactor&);
     Fwk::Ptr<VirtualTimeActivityManager> activityManager_;
-    Fwk::Ptr<Activity> activity_;
+    Fwk::Ptr<Fwk::Activity> activity_;
     InjectActivityReactor* injectReactor_;
 };
+};//end of namespace
 
 #endif

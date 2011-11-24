@@ -3,6 +3,7 @@
 
 #include "EntityManager.h"
 #include "Shipment.h"
+#include "CustomerReactor.h"
 #include "Debug.h"
 #include <iostream>
 

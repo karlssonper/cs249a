@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <queue>
 #include "Activity.h"
 
 namespace Shipping {
@@ -12,6 +13,7 @@ namespace Shipping {
 
     public:
         typedef Fwk::Ptr<VirtualTimeActivityManager> Ptr;
+        typedef Fwk::Ptr<VirtualTimeActivityManager const> PtrConst;
         virtual Fwk::Activity::Ptr activityNew(const string& name);
         virtual Fwk::Activity::Ptr activity(const string& name) const;
         virtual void activityDel(const string& name);
@@ -29,7 +31,7 @@ namespace Shipping {
                                    EntityManager *_entityManager,
                                    EngineManager *_engineManager);
 
-        priority_queue<Fwk::Activity::Ptr, vector<Fwk::Activity::Ptr>, Fwk::Activity::Comp> scheduledActivities_;
+        std::priority_queue<Fwk::Activity::Ptr, std::vector<Fwk::Activity::Ptr>, Fwk::Activity::Comp> scheduledActivities_;
         std::map<std::string, Fwk::Activity::Ptr> activities_; 
         Fwk::Time now_;
         EngineManager *engineManager_;

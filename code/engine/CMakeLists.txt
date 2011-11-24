@@ -14,7 +14,9 @@ SET(SOURCE source/Location
            source/Shipment
            source/SegmentReactor
            source/ForwardActivityReactor
-           source/CustomerReactor)
+           source/InjectActivityReactor
+           source/CustomerReactor
+           source/VirtualTimeActivityManager)
 
 ADD_LIBRARY(engine_shared SHARED ${SOURCE})
 ADD_LIBRARY(engine STATIC ${SOURCE})

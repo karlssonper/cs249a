@@ -1,47 +1,48 @@
 #include "InjectActivityReactor.h"
 #include "Location.h"
 
+using namespace Shipping;
 
-Shipping::InjectActivityReactor::InjectActivityReactor(
+InjectActivityReactor::InjectActivityReactor(
     const string &_name,
-    Shipping::VirtualManager::Ptr _virtualManager, 
+    VirtualTimeActivityManager::Ptr _virtualManager,
     Fwk::Activity::Ptr _activity,
     const string &_destination,
-    Shipping::TransferRate _transferRate,
-    Shipping::PackageCount _shipmentSize) :
+    TransferRate _transferRate,
+    PackageCount _shipmentSize) :
     Notifiee(_name, _activity.ptr()),
     destination_(_destination),
     transferRate_(_transferRate),
     shipmentSize_(_shipmentSize),
     activity_(_activity),
-    manager_(_manager) {
+    virtualManager_(_virtualManager) {
         FWK_DEBUG("InjectActivityReactor " << name() << " constructor");
 }
 
-    void Shipping::InjectActivityReactor::managerIs(Shipping::VirtualManager::Ptr _virtualManager) {
+    void InjectActivityReactor::virtualManagerIs(VirtualTimeActivityManager::Ptr _virtualManager) {
     virtualManager_ = _virtualManager;
 }
 
-void Shipping::InjectActivityReactor::activityIs(Fwk::Activity::Ptr _activity) {
+void InjectActivityReactor::activityIs(Fwk::Activity::Ptr _activity) {
     activity_ = _activity;
 }
 
-void Shipping::InjectActivityReactor::destinationIs(const string &_destination) {
+void InjectActivityReactor::destinationIs(const string &_destination) {
     if (destination_ == _destination) return;
     destination_ = _destination;
 }
 
-void Shipping::InjectActivityReactor::transferRateIs(Shipping::TransferRate _transferRate) {
+void InjectActivityReactor::transferRateIs(TransferRate _transferRate) {
     if (transferRate_ == _transferRate) return;
     transferRate_ = _transferRate;
 }
 
-void Shipping::InjectActivityReactor::shipmentSizeIs(Shipping::PackageCount _shipmentSize) {
+void InjectActivityReactor::shipmentSizeIs(PackageCount _shipmentSize) {
     if (shipmentSize_ == _shipmentSize) return;
     shipmentSize_ = _shipmentSize;
 }
 
-void Shipping::InjectActivityReactor::onStatus() {
+void InjectActivityReactor::onStatus() {
 
     switch(activity_->status()) {
 

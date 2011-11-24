@@ -11,6 +11,7 @@ using std::string;
 using std::list;
 
 namespace Shipping {
+    class VirtualTimeActivityManager;
     class Location : public Fwk::NamedInterface {
 
     public:
@@ -55,7 +56,6 @@ namespace Shipping {
         Location();
         list<Segment::Ptr> outSegment_;
         LocationType type_;
-        
     };   
 
     class Customer : public Location {
@@ -63,7 +63,7 @@ namespace Shipping {
         typedef Fwk::Ptr<Customer const> PtrConst;
         typedef Fwk::Ptr<Customer> Ptr;
         virtual ~Customer();
-        static Ptr CustomerNew(const string &_name);
+        static Ptr CustomerNew(const string &_name, Fwk::Ptr<VirtualTimeActivityManager>);
 
         class Notifiee : public Fwk::BaseNotifiee<Customer> {
         public:
@@ -96,7 +96,7 @@ namespace Shipping {
         void totalCostIs(Dollars _totalCost);
 
     protected:
-        Customer(const string &_name);
+        Customer(const string &_name, Fwk::Ptr<VirtualTimeActivityManager>);
         Customer();
         Customer(const Customer&);
 
