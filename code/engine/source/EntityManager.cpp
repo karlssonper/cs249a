@@ -2,10 +2,11 @@
 // TODO: notifieeIs deletion case
 
 #include "EntityManager.h"
-#include "Shipment.h"
 #include "CustomerReactor.h"
 #include "Debug.h"
 #include <iostream>
+
+#include "Shipment.h"
 
 using namespace std;
 
@@ -346,7 +347,7 @@ void EntityManager::segmentIs(string _name, Segment::Ptr _segment) {
     }
 }
 
-void EntityManager::segmentShipmentEnq(const string & _segName, Shipment::Ptr s) {
+void EntityManager::segmentShipmentEnq(const string & _segName, Shipping::Shipment::Ptr s) {
     FWK_DEBUG("EntityManager::segmentShipmentEnq with name " << _segName);
     map<string, Segment::Ptr>::iterator segIt = segment_.find(_segName);
     if (segIt == segment_.end()) {

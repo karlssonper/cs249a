@@ -6,6 +6,7 @@
 #include "Segment.h"
 #include <string>
 #include <list>
+#include "Shipment.h"
 
 using std::string;
 using std::list;
