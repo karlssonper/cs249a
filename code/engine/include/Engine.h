@@ -9,6 +9,7 @@
 #include "EntityManager.h"
 #include <string>
 #include "VirtualTimeActivityManager.h"
+#include "RealTimeActivityManager.h"
 
 namespace Shipping {
     class EngineManager : public Fwk::NamedInterface {
@@ -24,6 +25,7 @@ namespace Shipping {
         void statsIs(const std::string &name);
         EntityManager::Ptr entityManager() const {return entityManager_;};
         VirtualTimeActivityManager::Ptr virtualTimeActivityManager() const { return virtualTimeActivityManager_; }
+        RealTimeActivityManager::Ptr realTimeActivityManagaer() const { return realTimeActivityManager_; }
         ~EngineManager();
         static EngineManager::Ptr EngineManagerNew(std::string name){
             Ptr p = new EngineManager(name);
@@ -38,6 +40,7 @@ namespace Shipping {
         Stats::Ptr stats_;
         Fwk::Ptr<EntityManager> entityManager_;
         Fwk::Ptr<VirtualTimeActivityManager> virtualTimeActivityManager_;
+        Fwk::Ptr<RealTimeActivityManager> realTimeActivityManager_;
     };
 
 };//end namespace

@@ -1,8 +1,8 @@
-#include "VirtualTimeActivityManager.h"
 #include "RealTimeActivityManager.h"
+#include "VirtualTimeActivityManager.h"
 
 using namespace Shipping;
-Fwk::Activity::Ptr VirtualTimeActivityManager::activityNew(const string &_name) {
+Fwk::Activity::Ptr RealTimeActivityManager::activityNew(const string &_name) {
     Fwk::Activity::Ptr activity = activities_[_name];
     if (activity != NULL) {
         std::cerr << "Activity already exists!" << std::endl;
@@ -13,7 +13,7 @@ Fwk::Activity::Ptr VirtualTimeActivityManager::activityNew(const string &_name) 
     return activity;
 }
 
-Fwk::Activity::Ptr VirtualTimeActivityManager::activity(const string &_name) const {
+Fwk::Activity::Ptr RealTimeActivityManager::activity(const string &_name) const {
     std::map<std::string, Fwk::Activity::Ptr>::const_iterator it = activities_.find(_name);
     if(it != activities_.end() ) {
         return (*it).second;
@@ -21,15 +21,15 @@ Fwk::Activity::Ptr VirtualTimeActivityManager::activity(const string &_name) con
     return NULL; 
 }
 
-void VirtualTimeActivityManager::activityDel(const string &_name) {
+void RealTimeActivityManager::activityDel(const string &_name) {
     activities_.erase(_name);
 }
 
-void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
+void RealTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
     scheduledActivities_.push(_activity);
 }
 
-void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
+void RealTimeActivityManager::nowIs(Fwk::Time t) {
     while (!scheduledActivities_.empty()) {
         Fwk::Activity::Ptr nextToRun = scheduledActivities_.top();
         if (nextToRun->nextTime() > t) {
@@ -44,7 +44,7 @@ void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
     now_ = t;
 }
 
-VirtualTimeActivityManager::VirtualTimeActivityManager(
+RealTimeActivityManager::RealTimeActivityManager(
         const std::string &_name,
         EntityManager *_entityManager,
         EngineManager *_engineManager) :
@@ -52,21 +52,22 @@ VirtualTimeActivityManager::VirtualTimeActivityManager(
         entityManager_(_entityManager),
         engineManager_(_engineManager), now_(0.0) {}
 
-Shipping::VirtualTimeActivityManager::Ptr
-Shipping::VirtualTimeActivityManager::VirtualTimeActivityManagerNew(const std::string &_name,
+Shipping::RealTimeActivityManager::Ptr
+Shipping::RealTimeActivityManager::RealTimeActivityManagerNew(const std::string &_name,
         EntityManager *_entityManager,
         EngineManager *_engineManager) {
-    VirtualTimeActivityManager::Ptr p = new VirtualTimeActivityManager(
+    RealTimeActivityManager::Ptr p = new RealTimeActivityManager(
             _name, _entityManager, _engineManager);
     return p;
 }
 
-void Shipping::VirtualTimeActivityManager::realTimeActivityManagerIs(Fwk::Ptr<RealTimeActivityManager> _realTimeActMgr) {
-    realTimeActMgr_ = _realTimeActMgr;
+void Shipping::RealTimeActivityManager::virtualTimeActivityManagerIs(Fwk::Ptr<VirtualTimeActivityManager> _virtualTimeActMgr) {
+    virtualTimeActMgr_ = _virtualTimeActMgr;
 }
 
-Fwk::Ptr<RealTimeActivityManager> Shipping::VirtualTimeActivityManager::realTimeActivityManager() {
-    if (realTimeActMgr_) return realTimeActMgr_;
+Fwk::Ptr<VirtualTimeActivityManager> RealTimeActivityManager::virtualTimeActivityManager() 
+{
+    if (virtualTimeActMgr_) return virtualTimeActMgr_;
 }
 
 
