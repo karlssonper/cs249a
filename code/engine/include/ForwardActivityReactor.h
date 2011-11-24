@@ -12,10 +12,9 @@
 #include "Utils.h"
 #include "Fleet.h"
 #include "Segment.h"
-#include "Shipment.h"
 
 namespace Shipping{
-//class Shipment;
+class Shipment;
 class ForwardActivityReactor : public Fwk::Activity::Notifiee {
 public:
     ForwardActivityReactor(const std::string &_name,

@@ -18,7 +18,7 @@ ForwardActivityReactor::ForwardActivityReactor(
         Fwk::Activity* _activity,
         Fleet::PtrConst _fleet,
         Segment::Ptr _segment,
-        Shipping::Shipment::Ptr _shipment) :
+        Shipment::Ptr _shipment) :
         Notifiee(_name,_activity),
         manager_(_manager),
         activity_(_activity),

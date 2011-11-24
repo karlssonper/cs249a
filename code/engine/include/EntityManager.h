@@ -7,7 +7,6 @@
 #include "Segment.h"
 #include "Location.h"
 #include <map>
-#include "Shipment.h"
 
 using std::map;
 using std::string;
@@ -15,6 +14,7 @@ using std::list;
 
 namespace Shipping {
     class EngineManager;
+    class Shipment;
     class CustomerReactor;
     class EntityManager : public Fwk::NamedInterface {
     public:

@@ -4,7 +4,6 @@
 #include "Activity.h"
 #include "Utils.h"
 #include "VirtualTimeActivityManager.h"
-#include "Shipment.h"
 
 namespace Shipping {
     class Location;
