@@ -76,7 +76,6 @@ public:
     virtual Time now() const = 0;
     virtual void nowIs(Time) = 0;
 
-
 private:
     /* Up to you */
 

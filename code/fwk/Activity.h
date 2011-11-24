@@ -7,10 +7,8 @@
 #include "Nominal.h"
 #include "BaseNotifiee.h"
 
+using std::string;
 namespace Fwk {
-
-    using std::string;
-
     /* Define the type 'Time' */
     class Time : public Ordinal<Time,double> {
     public:
@@ -34,48 +32,77 @@ namespace Fwk {
             virtual void onStatus() {}
         };
 
-        class Manager;
+        //Comparison class for activities
+        class Comp : public binary_function<Activity::Ptr, Activity::Ptr, bool> {
+        public:
+            Comp() {}
+
+            bool operator()(Activity::Ptr a, Activity::Ptr b) const {
+                return (a->nextTime() > b->nextTime());
+            }
+        };
+
+        class Manager : public Fwk::PtrInterface<Activity::Manager> {
+        public:
+            typedef Fwk::Ptr<Activity::Manager> Ptr;
+
+            virtual Fwk::Ptr<Activity> activityNew(const string &name) = 0;
+
+            virtual Fwk::Ptr<Activity> activity(const string &name) const = 0;
+
+            virtual void activityDel(const string &name) = 0;
+
+            virtual void lastActivityIs(Activity::Ptr) = 0;
+
+            virtual Time now() const = 0;
+            virtual void nowIs(Time) = 0;
+
+
+        private:
+            /* Up to you */
+        };
 
         enum Status {
             free, waiting, ready, executing, nextTimeScheduled, deleted
         };
 
-        virtual Status status() const = 0;
-        virtual void statusIs(Status s)  = 0;
+        Activity(const string& name, Fwk::Ptr<class Manager> manager)
+            : NamedInterface(name), status_(free), nextTime_(0.0),
+              notifiee_(NULL), manager_(manager) {}
 
-        virtual Time nextTime() const = 0;
-        virtual void nextTimeIs(Time t) = 0;
+        Fwk::Ptr<class Manager> manager() const { return manager_; }
 
-        virtual Fwk::Ptr<Notifiee> notifiee() const = 0;
+        virtual Status status() const { return status_; }
+        virtual void statusIs(Status s) {
+            status_ = s;
+            if (notifiee_ != NULL) {
+                notifiee_->onStatus();
+            }
+        }
 
-        virtual void notifieeIs(const string &_name, Notifiee* n) = 0;
+        virtual Time nextTime() const { return nextTime_; }
+        virtual void nextTimeIs(Time t) {
+            nextTime_ = t;
+            if (notifiee_ != NULL) {
+                notifiee_->onNextTime();
+            }
+        }
+
+        virtual Notifiee::Ptr notifiee() const { return notifiee_; }
+
+        virtual void notifieeIs(const string &_name, Notifiee* n) {
+            Activity* me = const_cast<Activity*>(this);
+            me->notifiee_ = n;
+        }
 
     protected:
-        Activity(const string &name)
-            : NamedInterface(name) {}
-
-
-    };
-
-    class Activity::Manager : public Fwk::PtrInterface<Activity::Manager> {
-    public:
-        typedef Fwk::Ptr<Activity::Manager> Ptr;
-
-        virtual Fwk::Ptr<Activity> activityNew(const string &name) = 0;
-
-        virtual Fwk::Ptr<Activity> activity(const string &name) const = 0;
-
-        virtual void activityDel(const string &name) = 0;
-
-        virtual void lastActivityIs(Activity::Ptr) = 0;
-
-        virtual Time now() const = 0;
-        virtual void nowIs(Time) = 0;
-
-
-    private:
-        /* Up to you */
-
+        Activity();
+        Activity(const Activity &);
+        friend class Manager;
+        Status status_;
+        Time nextTime_;
+        Notifiee* notifiee_;
+        Fwk::Ptr<class Manager> manager_;
     };
 
     extern Fwk::Ptr<Activity::Manager> activityManagerInstance();
