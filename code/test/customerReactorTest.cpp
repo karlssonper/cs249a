@@ -5,6 +5,7 @@
 #include "Location.h"
 #include "CustomerReactor.h"
 #include "Engine.h"
+#include "Activity.h"
 
 using namespace Shipping;
 
@@ -15,6 +16,18 @@ int main() {
     engineManager->entityManager()->locationIs("someCustomer", someCustomer);
 
     engineManager->entityManager()->customerDestinationIs("someCustomer","someDestination");
+    engineManager->entityManager()->customerShipmentSizeIs("someCustomer", Shipping::PackageCount(100));
+    engineManager->entityManager()->customerTransferRateIs("someCustomer", Shipping::TransferRate(24));
+    Fwk::Activity::Manager::Ptr mgr = Fwk::activityManagerInstance();
+    mgr->nowIs(20.0);
+    engineManager->entityManager()->customerTransferRateIs("someCustomer", Shipping::TransferRate(0));
+    mgr->nowIs(40.0);
+    engineManager->entityManager()->customerTransferRateIs("someCustomer", Shipping::TransferRate(12));
+    mgr->nowIs(60.0);
+    engineManager->entityManager()->customerTransferRateIs("someCustomer", Shipping::TransferRate(2));
+    mgr->nowIs(80.0);
+
+
 
 
 

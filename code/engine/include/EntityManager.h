@@ -77,6 +77,10 @@ namespace Shipping {
         void customerTransferRateIs(const string &_customerName, TransferRate _transferRate);
         void customerShipmentSizeIs(const string &_customerName, PackageCount _shipmentSize);
         void customerDestinationIs(const string &_customerName, const string &_destination);
+        void customerRecievedShipmentsIs(const string &_customerName, ShipmentCount _recievedShipments);
+        void customerRecievedShipmentsInc(const string &_customerName);
+        void customerAverageLatencyIs(const string &_customerName, Latency _averageLatency);
+        void customerTotalCostIs(const string &_customerName, Dollars _totalCost);
 
         virtual ~EntityManager();
         static EntityManager::Ptr EntityManagerNew(std::string _name) {

@@ -27,7 +27,8 @@ namespace Fwk {
         public:
             typedef Fwk::Ptr<Notifiee> Ptr;
 
-            Notifiee(Activity* act) : Fwk::BaseNotifiee<Activity>(name(),act) {}
+            Notifiee(const string &_name, Activity* act) 
+                : Fwk::BaseNotifiee<Activity>(_name,act) {}
 
             virtual void onNextTime() {}
             virtual void onStatus() {}

@@ -80,6 +80,12 @@ namespace Shipping {
         PackageCount(unsigned int value) : Ordinal<PackageCount, unsigned int>(value) {}
     };
 
+    class ShipmentCount : public Ordinal<ShipmentCount, unsigned int> {
+    public:
+        ShipmentCount() : Ordinal<ShipmentCount, unsigned int>(0) {}
+        ShipmentCount(unsigned int value) : Ordinal<ShipmentCount, unsigned int>(value) {}
+    };
+
     class Latency : public Ordinal<Latency, double> {
     public:
         Latency() : Ordinal<Latency, double>(0) {}

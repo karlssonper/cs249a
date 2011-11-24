@@ -3,6 +3,7 @@
 #include "Debug.h"
 #include <stdlib.h>
 #include <ostream>
+#include <sstream>
 
 using namespace Shipping;
 using namespace std;
@@ -44,24 +45,71 @@ string LocationRep::attribute(const string& attributeName) {
         return "";
     }
 
+    if (attributeName.substr(0,7) == "segment" ) {
+        unsigned int segNr = LocationRep::segmentNumber(attributeName)-1;
+        if (segNr >= locPtr->outSegments() ) {
+            cerr << "Segment number " << segNr+1 << " does not exist. Returning empty string.\n";
+            return "";
+        }
+        Location::OutSegmentIteratorConst it = 
+            engineManager_->entityManager()->location(name())->outSegmenterIterConst(segNr);
+        string attr = locPtr->outSegment(it)->name();
+
+        return attr;
+    } else {
+        
+        // only valid for customers
+        if (locPtr->type() != Location::customer()) {
+            cerr << name() << " is not a customer, only segment attributes are valid" << endl;
+            return "";
+        }
+        Customer::PtrConst cusPtr = static_cast<const Customer*>(locPtr.ptr());
+        ostringstream s;
+        if (attributeName == "transfer rate" ) {
+            s << cusPtr->transferRate().value();
+            return s.str();
+        } else if (attributeName == "shipment size") {
+            s << cusPtr->shipmentSize().value();
+            return s.str();
+        } else if (attributeName == "destination" ) {
+            return cusPtr->destination();
+        } else if (attributeName == "shipments recieved") {
+            s << cusPtr->recievedShipments().value();
+            return s.str();
+        } else if (attributeName == "average latency") {
+            s << cusPtr->averageLatency().value();
+            return s.str();
+        } else if (attributeName == "total cost") {
+            s << cusPtr->totalCost().value();
+            return s.str();
+        } else {
+            cerr << attributeName << " is an invalid attrib name for customer" << endl;
+            return "";
+        }
+        
+    }
+
+
+    /*
     if (attributeName.substr(0,7) != "segment" ) {
-        cerr << "LocationRep::attribute: " << attributeName << " is not a valid attribute name" << endl;
-        return "";
+    cerr << "LocationRep::attribute: " << attributeName << " is not a valid attribute name" << endl;
+    return "";
     }
 
     unsigned int segNr = LocationRep::segmentNumber(attributeName)-1;
 
     FWK_DEBUG("segNr " << segNr << ", outSegments(): " << locPtr->outSegments() );
     if (segNr >= locPtr->outSegments() ) {
-        cerr << "Segment number " << segNr+1 << " does not exist. Returning empty string.\n";
-        return "";
+    cerr << "Segment number " << segNr+1 << " does not exist. Returning empty string.\n";
+    return "";
     }
 
     Location::OutSegmentIteratorConst it = 
-        engineManager_->entityManager()->location(name())->outSegmenterIterConst(segNr);
+    engineManager_->entityManager()->location(name())->outSegmenterIterConst(segNr);
     string attr = locPtr->outSegment(it)->name();
 
     return attr;
+    */
 };
 
 
