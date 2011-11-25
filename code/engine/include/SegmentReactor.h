@@ -12,7 +12,9 @@
 #include "Ptr.h"
 
 namespace Shipping {
+class VirtualTimeActivityManager;
 class Shipment;
+class Fleet;
 class SegmentReactor : public Segment::Notifiee {
 public:
     typedef Fwk::Ptr<SegmentReactor> Ptr;
@@ -22,15 +24,17 @@ public:
     virtual void onActivePackageInc(PackageCount);
     virtual void onActivePackageDec(PackageCount);
     virtual ~SegmentReactor();
-    static SegmentReactor::Ptr SegmentReactorNew(std::string _name, Segment * _owner) {
-        Ptr p = new SegmentReactor(_name, _owner);
-        return p;
-    };
+    static SegmentReactor::Ptr SegmentReactorNew(std::string _name,
+            Segment * _owner, Fwk::Ptr<VirtualTimeActivityManager>,
+            Fwk::Ptr<Fleet const>);
 protected:
-    SegmentReactor(std::string _name, Segment * seg);
+    SegmentReactor(std::string _name, Segment * seg,
+            Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<Fleet const>);
     SegmentReactor();
     SegmentReactor(const SegmentReactor&);
     Segment * owner_;
+    Fwk::Ptr<VirtualTimeActivityManager> activityManager_;
+    Fwk::Ptr<Fleet const> fleet_;
 };
 };
 #endif /* SEGMENTREACTOR_H_ */

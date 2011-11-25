@@ -17,6 +17,8 @@
 
 namespace Shipping {
     class Shipment;
+    class Fleet;
+    class VirtualTimeActivityManager;
     class SegmentDifficulty : public Ordinal<SegmentDifficulty, float> {
     public:
         SegmentDifficulty() : Ordinal<SegmentDifficulty, float>(1.f) {}
@@ -94,7 +96,8 @@ namespace Shipping {
         void notifieeIs(string name_, Notifiee*);
 
     protected:
-        Segment(const string &_name, SegmentType _st);
+        Segment(const string &_name, SegmentType _st,
+                Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<Fleet const>);
         Segment();
         Segment(const Segment&);
         Notifiee::Ptr notifiee_;
@@ -114,9 +117,11 @@ namespace Shipping {
         typedef Fwk::Ptr<TruckSegment const> PtrConst;
         typedef Fwk::Ptr<TruckSegment> Ptr;
         virtual ~TruckSegment();
-        static Ptr TruckSegmentNew(const string &_name);
+        static Ptr TruckSegmentNew(const string &_name,
+                Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<Fleet const>);
     protected:
-        TruckSegment(const string &_name);
+        TruckSegment(const string &_name, Fwk::Ptr<VirtualTimeActivityManager>,
+                Fwk::Ptr<Fleet const>);
         TruckSegment();
         TruckSegment(const TruckSegment&);
     };
@@ -126,9 +131,11 @@ namespace Shipping {
         typedef Fwk::Ptr<BoatSegment const> PtrConst;
         typedef Fwk::Ptr<BoatSegment> Ptr;
         virtual ~BoatSegment();
-        static Ptr BoatSegmentNew(const string &_name);
+        static Ptr BoatSegmentNew(const string &_name,
+                Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<Fleet const>);
     protected:
-        BoatSegment(const string &_name);
+        BoatSegment(const string &_name, Fwk::Ptr<VirtualTimeActivityManager>,
+                Fwk::Ptr<Fleet const>);
         BoatSegment();
         BoatSegment(const BoatSegment&);
 
@@ -139,9 +146,11 @@ namespace Shipping {
         typedef Fwk::Ptr<PlaneSegment const> PtrConst;
         typedef Fwk::Ptr<PlaneSegment> Ptr;
         virtual ~PlaneSegment();
-        static Ptr PlaneSegmentNew(const string &name);
+        static Ptr PlaneSegmentNew(const string &name,
+                Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<Fleet const>);
     protected:
-        PlaneSegment(const string &_name);
+        PlaneSegment(const string &_name, Fwk::Ptr<VirtualTimeActivityManager>,
+                Fwk::Ptr<Fleet const>);
         PlaneSegment();
         PlaneSegment(const PlaneSegment&);
     };

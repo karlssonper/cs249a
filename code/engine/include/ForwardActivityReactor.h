@@ -34,6 +34,8 @@ protected:
        void removeActivePackagesFromSegment();
        void addActivePackagesToSegment();
        void forwardActivity();
+       ForwardActivityReactor();
+       ForwardActivityReactor(const ForwardActivityReactor &);
        Fleet::Vehicle segTypeToFleetVehicle(Segment::SegmentType);
 
 };
