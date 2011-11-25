@@ -13,6 +13,8 @@
 #include "Utils.h"
 #include <queue>
 
+//#include "Shipment.h"
+
 namespace Shipping {
     class Shipment;
     class Fleet;
@@ -83,10 +85,10 @@ namespace Shipping {
             typedef Fwk::Ptr<Segment::Notifiee const> PtrConst;
             typedef Fwk::Ptr<Segment::Notifiee> Ptr;
 
-            virtual void onShipmentEnq(Fwk::Ptr<Shipment>) {};
-            virtual void onShipmentDeq() {};
-            virtual void onActivePackageInc(PackageCount) {};
-            virtual void onActivePackageDec(PackageCount) {};
+            virtual void onShipmentEnq(Fwk::Ptr<Shipment>);
+            virtual void onShipmentDeq();
+            virtual void onActivePackageInc(PackageCount);
+            virtual void onActivePackageDec(PackageCount);
 
             virtual ~Notifiee();
             Notifiee(std::string _name, Segment * seg);

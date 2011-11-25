@@ -46,6 +46,7 @@ void CustomerReactor::onAttributeUpdate() {
                     notifier()->destination(),
                     notifier()->transferRate(),
                     notifier()->shipmentSize());
+                activity_->nextTimeIs(activityManager_->now());
                 activity_->notifieeIs(injectorName, injectReactor_);
                 activity_->statusIs(Fwk::Activity::nextTimeScheduled);
         } else {

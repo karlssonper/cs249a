@@ -1,4 +1,6 @@
 #include "VirtualTimeActivityManager.h"
+#include "RealTimeActivityManager.h"
+
 using namespace Shipping;
 Fwk::Activity::Ptr VirtualTimeActivityManager::activityNew(const string &_name) {
     Fwk::Activity::Ptr activity = activities_[_name];
@@ -33,7 +35,6 @@ void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
         if (nextToRun->nextTime() > t) {
             break;
         }
-        Fwk::Time diff = Fwk::Time(nextToRun->nextTime().value() - now_.value());
         now_ = nextToRun->nextTime();
         scheduledActivities_.pop();
         nextToRun->statusIs(Fwk::Activity::executing);
@@ -58,6 +59,17 @@ Shipping::VirtualTimeActivityManager::VirtualTimeActivityManagerNew(const std::s
             _name, _entityManager, _engineManager);
     return p;
 }
+
+void Shipping::VirtualTimeActivityManager::realTimeActivityManagerIs(Fwk::Ptr<RealTimeActivityManager> _realTimeActMgr) {
+    realTimeActMgr_ = _realTimeActMgr;
+}
+
+Fwk::Ptr<RealTimeActivityManager> Shipping::VirtualTimeActivityManager::realTimeActivityManager() {
+    if (realTimeActMgr_) return realTimeActMgr_;
+}
+
+
+
 
 
 

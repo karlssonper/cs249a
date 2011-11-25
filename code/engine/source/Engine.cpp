@@ -25,6 +25,12 @@ EngineManager::EngineManager(const std::string &_name) :
                     entityManager_.ptr(),
                     this
                     );
+    realTimeActivityManager_ =
+        RealTimeActivityManager::RealTimeActivityManagerNew(
+        std::string("RealTimeActivityManager"),
+        entityManager_.ptr(),
+        this
+        );
 };
 
 void EngineManager::connIs(const std::string &_name) {

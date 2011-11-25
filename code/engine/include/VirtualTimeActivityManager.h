@@ -9,6 +9,7 @@
 namespace Shipping {
     class EntityManager;
     class EngineManager;
+    class RealTimeActivityManager;
     class VirtualTimeActivityManager : public Fwk::Activity::Manager {
 
     public:
@@ -26,6 +27,11 @@ namespace Shipping {
 
         virtual void lastActivityIs(Fwk::Activity::Ptr activity);
 
+        void realTimeActivityManagerIs(Fwk::Ptr<RealTimeActivityManager>);
+        Fwk::Ptr<RealTimeActivityManager> realTimeActivityManager();
+
+        Fwk::Activity::Ptr nextInLine() { return scheduledActivities_.top(); }
+
     protected:
         VirtualTimeActivityManager(const std::string &_name,
                                    EntityManager *_entityManager,
@@ -36,6 +42,7 @@ namespace Shipping {
         Fwk::Time now_;
         EngineManager *engineManager_;
         EntityManager *entityManager_;
+        Fwk::Ptr<RealTimeActivityManager> realTimeActMgr_;
     };
 }
 #endif

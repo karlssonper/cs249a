@@ -62,7 +62,6 @@ namespace Shipping {
         // mutators
         void segmentIs(string _name, Segment::Ptr _segment);
         void locationIs(string _name, Location::Ptr _location);
-        void customerReactorIs(const string &_name, Fwk::Ptr<CustomerReactor> _customerReactor);
         void locationDel(const string &_name);
         void segmentDel(const string &_name);
         void segmentSourceIs(const string &_segmentName, const string &_sourceName);
@@ -94,7 +93,6 @@ namespace Shipping {
         EntityManager(std::string &);
         map<string, Segment::Ptr> segment_;
         map<string, Location::Ptr> location_;
-        map<string, Fwk::Ptr<CustomerReactor> > customerReactor_;
         map<string, EntityManager::Notifiee::Ptr> notifiee_;
     };
 }

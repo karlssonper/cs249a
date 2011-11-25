@@ -47,21 +47,6 @@ void EntityManager::locationIs(string _name, Location::Ptr _location) {
     }
 }
 
-void EntityManager::customerReactorIs(const string &_name, CustomerReactor::Ptr _customerReactor) {
-    FWK_DEBUG("EntityManager::customerReactorIs with name " << _name);
-
-    if (customerReactor_.find(_name) != customerReactor_.end()) {
-        cerr << "EntityManager::customerReactorIs: " << _name << " is already a location." << endl;
-        return;
-    }
-
-    FWK_DEBUG("EntityManager::customerReactorIs inserting " << _name);
-    customerReactor_.insert(make_pair(_name, _customerReactor));
-
-}
-
-
-
 void EntityManager::segmentSourceIs(const string &_segmentName, 
     const string &_sourceName) {
 
