@@ -30,8 +30,6 @@ namespace Shipping {
         void realTimeActivityManagerIs(Fwk::Ptr<RealTimeActivityManager>);
         Fwk::Ptr<RealTimeActivityManager> realTimeActivityManager();
 
-        Fwk::Activity::Ptr nextInLine() { return scheduledActivities_.top(); }
-
     protected:
         VirtualTimeActivityManager(const std::string &_name,
                                    EntityManager *_entityManager,

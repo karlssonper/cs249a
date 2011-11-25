@@ -2,15 +2,36 @@
 #include "VirtualTimeActivityManager.h"
 
 using namespace Shipping;
-
-
-void RealTimeActivityManager::activityIs(Fwk::Activity::Ptr _activity) {
-    activity_ = _activity;
+Fwk::Activity::Ptr RealTimeActivityManager::activityNew(const string &_name) {
+    Fwk::Activity::Ptr activity = activities_[_name];
+    if (activity != NULL) {
+        std::cerr << "Activity already exists!" << std::endl;
+        return NULL;
+    }
+    activity = new Fwk::Activity(_name, this);
+    activities_[_name] = activity;
+    return activity;
 }
 
-void RealTimeActivityManager::endTimeIs(Fwk::Time t) {
-    while (activity_) {
-        Fwk::Activity::Ptr nextInLine
+Fwk::Activity::Ptr RealTimeActivityManager::activity(const string &_name) const {
+    std::map<std::string, Fwk::Activity::Ptr>::const_iterator it = activities_.find(_name);
+    if(it != activities_.end() ) {
+        return (*it).second;
+    }
+    return NULL; 
+}
+
+void RealTimeActivityManager::activityDel(const string &_name) {
+    activities_.erase(_name);
+}
+
+void RealTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
+    scheduledActivities_.push(_activity);
+}
+
+void RealTimeActivityManager::nowIs(Fwk::Time t) {
+    while (!scheduledActivities_.empty()) {
+        Fwk::Activity::Ptr nextToRun = scheduledActivities_.top();
         if (nextToRun->nextTime() > t) {
             break;
         }
