@@ -19,19 +19,10 @@ int main() {
     engineManager->entityManager()->customerDestinationIs("someCustomer","someDestination");
     engineManager->entityManager()->customerShipmentSizeIs("someCustomer", Shipping::PackageCount(100));
     engineManager->entityManager()->customerTransferRateIs("someCustomer", Shipping::TransferRate(24));
-    Shipping::VirtualTimeActivityManager::Ptr mgr = engineManager->virtualTimeActivityManager();
-    mgr->nowIs(20.0);
-    engineManager->entityManager()->customerTransferRateIs("someCustomer", Shipping::TransferRate(0));
-    mgr->nowIs(40.0);
-    engineManager->entityManager()->customerTransferRateIs("someCustomer", Shipping::TransferRate(12));
-    mgr->nowIs(60.0);
-    engineManager->entityManager()->customerTransferRateIs("someCustomer", Shipping::TransferRate(2));
-    mgr->nowIs(80.0);
-
-
-
-
-
+    Shipping::RealTimeActivityManager::Ptr mgr = engineManager->realTimeActivityManager();
+    cout << "test RTAM is " << mgr->name() <<endl;
+    cout << "NOWIS" << endl;
+    mgr->nowIs(100.0);
 
     return 0;
 }
