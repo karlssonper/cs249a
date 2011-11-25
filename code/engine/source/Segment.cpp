@@ -2,10 +2,13 @@
 #include "Debug.h"
 #include "Shipment.h"
 #include "SegmentReactor.h"
+#include "VirtualTimeActivityManager.h"
+#include "Fleet.h"
 
 using namespace Shipping;
 
-Segment::Segment(const string &_name, SegmentType _st) : 
+Segment::Segment(const string &_name, SegmentType _st,
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) :
 Fwk::NamedInterface(_name),
     source_(""),
     returnSegment_(""),
@@ -13,7 +16,7 @@ Fwk::NamedInterface(_name),
     type_(_st) {
     FWK_DEBUG("Segment constructor with name " << _name);
     notifiee_ = SegmentReactor::SegmentReactorNew(_name +std::string("Reactor"),
-            this);
+            this, vtam, _fleet);
 }
 
 Segment::~Segment(){
@@ -107,7 +110,9 @@ void Segment::expediteSupportIs(ExpediteSupport _expediteSupport) {
     expediteSupport_ = _expediteSupport;
 }
 
-TruckSegment::TruckSegment(const string &_name) : Segment(_name, truckSegment()) {
+TruckSegment::TruckSegment(const string &_name,
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) :
+        Segment(_name, truckSegment(), vtam, _fleet) {
     FWK_DEBUG("TruckSegment constructor with name " << _name);
 }
 
@@ -115,13 +120,16 @@ TruckSegment::~TruckSegment(){
     FWK_DEBUG("TruckSegment::~TruckSegment() with name: " << name());
 };
 
-TruckSegment::Ptr TruckSegment::TruckSegmentNew(const string &_name) {
+TruckSegment::Ptr TruckSegment::TruckSegmentNew(const string &_name,
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) {
     FWK_DEBUG("TruckSegmet::TruckSegmentNew with name " << _name);
-    TruckSegment::Ptr p = new TruckSegment(_name);
+    TruckSegment::Ptr p = new TruckSegment(_name, vtam, _fleet);
     return p;
 }
 
-BoatSegment::BoatSegment(const string &_name) : Segment(_name, boatSegment()) {
+BoatSegment::BoatSegment(const string &_name,
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) :
+        Segment(_name, boatSegment(), vtam, _fleet) {
     FWK_DEBUG("BoatSegment constructor with name " << _name);
 }
 
@@ -129,13 +137,16 @@ BoatSegment::~BoatSegment(){
     FWK_DEBUG("BoatSegment::~BoatSegment() with name: " << name());
 };
 
-BoatSegment::Ptr BoatSegment::BoatSegmentNew(const string &_name) {
+BoatSegment::Ptr BoatSegment::BoatSegmentNew(const string &_name,
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) {
     FWK_DEBUG("BoatSegment::BoatSegmentNew with name " << _name);
-    BoatSegment::Ptr p = new BoatSegment(_name);
+    BoatSegment::Ptr p = new BoatSegment(_name, vtam, _fleet);
     return p;
 }
 
-PlaneSegment::PlaneSegment(const string &_name) : Segment(_name, planeSegment()) {
+PlaneSegment::PlaneSegment(const string &_name,
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) :
+        Segment(_name, planeSegment(), vtam, _fleet) {
     FWK_DEBUG("PlaneSegment constructor with name " << _name);
 }
 
@@ -144,9 +155,10 @@ PlaneSegment::~PlaneSegment(){
 };
 
 
-PlaneSegment::Ptr PlaneSegment::PlaneSegmentNew(const string &_name) {
+PlaneSegment::Ptr PlaneSegment::PlaneSegmentNew(const string &_name,
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) {
     FWK_DEBUG("PlaneSegment::PlaneSegmentNew with name " << _name);
-    PlaneSegment::Ptr p = new PlaneSegment(_name);
+    PlaneSegment::Ptr p = new PlaneSegment(_name, vtam, _fleet);
     return p;
 }
 

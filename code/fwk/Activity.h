@@ -78,6 +78,12 @@ public:
         Activity* me = const_cast<Activity*>(this);
         me->notifiee_ = n;
     }
+
+    virtual void lastNotifieeIs(Notifiee* n) {
+        Activity* me = const_cast<Activity*>(this);
+        me->notifiee_ = n;
+    };
+
 protected:
     Activity();
     Activity(const Activity &);

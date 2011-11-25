@@ -7,12 +7,24 @@
 
 #include "SegmentReactor.h"
 #include "Shipment.h"
+#include "Fleet.h"
+#include "VirtualTimeActivityManager.h"
+#include "ForwardActivityReactor.h"
 
 using namespace Shipping;
 
-SegmentReactor::SegmentReactor(std::string _name, Segment * seg) :
-        Segment::Notifiee(_name, seg), owner_(seg) {
+SegmentReactor::SegmentReactor(std::string _name, Segment * seg,
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) :
+        Segment::Notifiee(_name, seg), owner_(seg), activityManager_(vtam),
+        fleet_(_fleet) {
 
+};
+
+SegmentReactor::Ptr SegmentReactor::SegmentReactorNew(std::string _name,
+        Segment * _owner, VirtualTimeActivityManager::Ptr vtam,
+        Fleet::PtrConst _fleet) {
+    Ptr p = new SegmentReactor(_name, _owner, vtam, _fleet);
+    return p;
 };
 
 SegmentReactor::~SegmentReactor() {
@@ -24,7 +36,18 @@ void SegmentReactor::onShipmentEnq(Shipment::Ptr _shipment) {
     FWK_DEBUG("SegmentReactor::onShipmentEnq() for name " << name());
 
     if (owner_->activePackages().value() < owner_->capacity().value()){
-        //Create activity
+        Fwk::Activity::Ptr activity = activityManager_->activityNew("lol");
+        string s;
+        activity->lastNotifieeIs(
+                new ForwardActivityReactor(
+                    s,
+                    activityManager_.ptr(),
+                    activity.ptr(),
+                    fleet_,
+                    owner_,
+                    _shipment
+                )
+        );
     }
 };
 

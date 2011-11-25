@@ -24,10 +24,12 @@ void SegmentRep::del() {
 }
 
 
-TruckSegmentRep::TruckSegmentRep(const string &_name, Ptr<EngineManager> _engineManager)
+TruckSegmentRep::TruckSegmentRep(const string &_name, EngineManager::Ptr _engineManager)
     : SegmentRep(_name, _engineManager) {
     FWK_DEBUG("TruckSegmentRep::TruckSegmentRep with _name: " << _name);
-        TruckSegment::Ptr p = TruckSegment::TruckSegmentNew(_name);
+        TruckSegment::Ptr p = TruckSegment::TruckSegmentNew(_name,
+                _engineManager->virtualTimeActivityManager(),
+                _engineManager->fleet());
         engineManager_->entityManager()->segmentIs(_name, p);
 }
 
@@ -38,7 +40,9 @@ TruckSegmentRep::~TruckSegmentRep(){
 BoatSegmentRep::BoatSegmentRep(const string &_name, Ptr<EngineManager> _engineManager)
     : SegmentRep(_name, _engineManager) {
     FWK_DEBUG("BoatSegmentRep::BoatSegmentRep with _name: " << _name);
-        BoatSegment::Ptr p = BoatSegment::BoatSegmentNew(_name);
+        BoatSegment::Ptr p = BoatSegment::BoatSegmentNew(_name,
+                _engineManager->virtualTimeActivityManager(),
+                _engineManager->fleet());
         engineManager_->entityManager()->segmentIs(_name, p);
 }
 
@@ -49,7 +53,9 @@ BoatSegmentRep::~BoatSegmentRep(){
 PlaneSegmentRep::PlaneSegmentRep(const string &_name, Ptr<EngineManager> _engineManager)
     : SegmentRep(_name, _engineManager) {
     FWK_DEBUG("PlaneSegmentRep::PlaneSegmentRep with _name: " << _name);
-        PlaneSegment::Ptr p = PlaneSegment::PlaneSegmentNew(_name);
+        PlaneSegment::Ptr p = PlaneSegment::PlaneSegmentNew(_name,
+                _engineManager->virtualTimeActivityManager(),
+                _engineManager->fleet());
         engineManager_->entityManager()->segmentIs(_name, p);
 }
 
