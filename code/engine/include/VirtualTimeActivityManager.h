@@ -20,6 +20,8 @@ namespace Shipping {
         virtual void activityDel(const string& name);
         virtual Fwk::Time now() const { return now_; }
         virtual void nowIs(Fwk::Time time);
+        Fwk::Time simluationEnd() const { return simulationEnd_; };
+        virtual void simluationEndIs(Fwk::Time _time);
 
         static Ptr VirtualTimeActivityManagerNew(const string &_name,
                                                  EntityManager *_entityManager,
@@ -30,8 +32,6 @@ namespace Shipping {
         void realTimeActivityManagerIs(Fwk::Ptr<RealTimeActivityManager>);
         Fwk::Ptr<RealTimeActivityManager> realTimeActivityManager();
 
-        Fwk::Activity::Ptr nextInLine() { return scheduledActivities_.top(); }
-
     protected:
         VirtualTimeActivityManager(const std::string &_name,
                                    EntityManager *_entityManager,
@@ -40,6 +40,7 @@ namespace Shipping {
         std::priority_queue<Fwk::Activity::Ptr, std::vector<Fwk::Activity::Ptr>, Fwk::Activity::Comp> scheduledActivities_;
         std::map<std::string, Fwk::Activity::Ptr> activities_; 
         Fwk::Time now_;
+        Fwk::Time simulationEnd_;
         EngineManager *engineManager_;
         EntityManager *entityManager_;
         Fwk::Ptr<RealTimeActivityManager> realTimeActMgr_;

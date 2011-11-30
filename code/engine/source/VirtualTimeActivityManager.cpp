@@ -27,6 +27,9 @@ void VirtualTimeActivityManager::activityDel(const string &_name) {
 
 void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
     scheduledActivities_.push(_activity);
+
+    //CREATE ACTIVITY AND REAL TIME ACTIVITY REACTOR
+    //QUEUE
 }
 
 void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
@@ -43,13 +46,20 @@ void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
     now_ = t;
 }
 
+void VirtualTimeActivityManager::simluationEndIs(Fwk::Time _time) {
+    if (_time.value() < now_.value()){
+        //error bla bla. Time can't be less than the current value
+    }
+    simulationEnd_ = _time;
+};
+
 VirtualTimeActivityManager::VirtualTimeActivityManager(
         const std::string &_name,
         EntityManager *_entityManager,
         EngineManager *_engineManager) :
         Fwk::Activity::Manager(_name),
         entityManager_(_entityManager),
-        engineManager_(_engineManager), now_(0.0) {}
+        engineManager_(_engineManager), now_(0.0), simulationEnd_(0.0) {}
 
 Shipping::VirtualTimeActivityManager::Ptr
 Shipping::VirtualTimeActivityManager::VirtualTimeActivityManagerNew(const std::string &_name,
