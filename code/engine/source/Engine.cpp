@@ -31,9 +31,6 @@ EngineManager::EngineManager(const std::string &_name) :
         entityManager_.ptr(),
         this
         );
-
-    realTimeActivityManager_->virtualTimeActivityManagerIs(virtualTimeActivityManager_);
-    virtualTimeActivityManager_->realTimeActivityManagerIs(realTimeActivityManager_);
 };
 
 void EngineManager::connIs(const std::string &_name) {

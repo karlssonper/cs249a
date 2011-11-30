@@ -7,27 +7,11 @@
 #include <string>
 #include <queue>
 #include "Activity.h"
-#include "Nominal.h"
 
 namespace Shipping {
     class EntityManager;
     class EngineManager;
     class VirtualTimeActivityManager;
-
-    class TimeScale : public Ordinal<TimeScale, double> {
-    public:
-        TimeScale() : Ordinal<TimeScale, double>(0.f) {}
-        TimeScale(double value) : Ordinal<TimeScale, double>(value) {
-            if (value < 0.0)
-            {
-                std::cerr << "TimeScale out of range, using default value (0.0)" << std::endl;
-                value = 0.0;
-            }
-        }
-        static TimeScale max() { return std::numeric_limits<double>::max(); }
-    };
-
-
     class RealTimeActivityManager : public Fwk::Activity::Manager {
 
     public:
@@ -47,10 +31,7 @@ namespace Shipping {
         virtual void lastActivityIs(Fwk::Activity::Ptr activity);
 
         void virtualTimeActivityManagerIs(Fwk::Ptr<VirtualTimeActivityManager>);
-
         Fwk::Ptr<VirtualTimeActivityManager> virtualTimeActivityManager();
-
-        TimeScale timeScale() { return timeScale_; }
 
     protected:
         RealTimeActivityManager(const std::string &_name,
@@ -63,7 +44,6 @@ namespace Shipping {
         EngineManager *engineManager_;
         EntityManager *entityManager_;
         Fwk::Ptr<VirtualTimeActivityManager> virtualTimeActMgr_;
-        TimeScale timeScale_;
     };
 }
 #endif

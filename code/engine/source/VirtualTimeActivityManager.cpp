@@ -1,8 +1,5 @@
 #include "VirtualTimeActivityManager.h"
 #include "RealTimeActivityManager.h"
-#include "RealTimeActivityReactor.h"
-#include <ostream>
-#include <sstream>
 
 using namespace Shipping;
 Fwk::Activity::Ptr VirtualTimeActivityManager::activityNew(const string &_name) {
@@ -30,48 +27,9 @@ void VirtualTimeActivityManager::activityDel(const string &_name) {
 
 void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
     scheduledActivities_.push(_activity);
-
-    std::ostringstream s;
-    s << runningIndex_;
- 
-
-    FWK_DEBUG("VTAM making a clone in " << realTimeActMgr_->name());
-
-    string activityName = "realTimeAct";
-    string reactorName = "realTimeReactor";
-
-    activityName.append(s.str());
-    reactorName.append(s.str());
-
-    runningIndex_++;
-
-    // create a 'clone' activity with the same time in real time mgr
-    Fwk::Activity::Ptr realTimeAct = realTimeActMgr_->activityNew(activityName);
-
-    FWK_DEBUG("VTAM setting nextTimeIs for the cloned activity");
-    realTimeAct->nextTimeIs(_activity->nextTime());
-
-    FWK_DEBUG("VTAM creating a reactor");
-
-    // create a reactor (unique to this cloned activity)
-    RealTimeActivityReactor::Ptr realTimeReact = RealTimeActivityReactor::RealTimeActivityReactorNew(reactorName,
-                                                                                                     realTimeActMgr_,
-                                                                                                     this,
-                                                                                                     realTimeAct,
-                                                                                                     realTimeActMgr_->timeScale());
-    realTimeActReactors_[reactorName] = realTimeReact;
-    
-
-    FWK_DEBUG("VTAM scheduling the real time activity");
-
-    // schedule the real time activity
-    realTimeAct->statusIs(Fwk::Activity::nextTimeScheduled);
 }
 
 void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
-
-    FWK_DEBUG("VTAM nowIs " << t.value());
-
     while (!scheduledActivities_.empty()) {
         Fwk::Activity::Ptr nextToRun = scheduledActivities_.top();
         if (nextToRun->nextTime() > t) {
@@ -92,9 +50,7 @@ VirtualTimeActivityManager::VirtualTimeActivityManager(
         EngineManager *_engineManager) :
         Fwk::Activity::Manager(_name),
         entityManager_(_entityManager),
-        engineManager_(_engineManager), 
-        now_(0.0),
-        runningIndex_(0) {}
+        engineManager_(_engineManager), now_(0.0) {}
 
 Shipping::VirtualTimeActivityManager::Ptr
 Shipping::VirtualTimeActivityManager::VirtualTimeActivityManagerNew(const std::string &_name,

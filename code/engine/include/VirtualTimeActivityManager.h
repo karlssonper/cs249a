@@ -5,13 +5,11 @@
 #include <string>
 #include <queue>
 #include "Activity.h"
-#include <list>
 
 namespace Shipping {
     class EntityManager;
     class EngineManager;
     class RealTimeActivityManager;
-    class RealTimeActivityReactor;
     class VirtualTimeActivityManager : public Fwk::Activity::Manager {
 
     public:
@@ -43,11 +41,6 @@ namespace Shipping {
         EngineManager *engineManager_;
         EntityManager *entityManager_;
         Fwk::Ptr<RealTimeActivityManager> realTimeActMgr_;
-
-        unsigned int runningIndex_; // for real time activities/reactors
-
-        std::map<std::string, Fwk::Ptr<RealTimeActivityReactor> > realTimeActReactors_;
-        
     };
 }
 #endif
