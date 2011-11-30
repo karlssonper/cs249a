@@ -2,6 +2,16 @@
 #include "VirtualTimeActivityManager.h"
 
 using namespace Shipping;
+Fwk::Activity::Ptr RealTimeActivityManager::activityNew(const string &_name) {
+    Fwk::Activity::Ptr activity = activities_[_name];
+    if (activity != NULL) {
+        std::cerr << "Activity already exists!" << std::endl;
+        return NULL;
+    }
+    activity = new Fwk::Activity(_name, this);
+    activities_[_name] = activity;
+    return activity;
+}
 
 RealTimeActivityManager::Ptr
 RealTimeActivityManager::RealTimeActivityManagerNew(const string &_name) {
@@ -15,18 +25,6 @@ RealTimeActivityManager::RealTimeActivityManager(const std::string &_name) :
 
 };
 
-
-Fwk::Activity::Ptr RealTimeActivityManager::activityNew(const string &_name) {
-    Fwk::Activity::Ptr activity = activities_[_name];
-    if (activity != NULL) {
-        std::cerr << "Activity already exists!" << std::endl;
-        return NULL;
-    }
-    activity = new Fwk::Activity(_name, this);
-    activities_[_name] = activity;
-    return activity;
-}
-
 Fwk::Activity::Ptr RealTimeActivityManager::activity(const string &_name) const {
     std::map<std::string, Fwk::Activity::Ptr>::const_iterator it = activities_.find(_name);
     if(it != activities_.end() ) {
@@ -35,15 +33,15 @@ Fwk::Activity::Ptr RealTimeActivityManager::activity(const string &_name) const 
     return NULL;
 }
 
-void RealTimeActivityManager::activityDel(const string &_name) {
-    activities_.erase(_name);
-}
-
 void RealTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
     //scheduledActivities_.push(_activity);
 
     //CREATE ACTIVITY AND REAL TIME ACTIVITY REACTOR
     //QUEUE
+}
+
+void RealTimeActivityManager::activityDel(const string &_name) {
+    activities_.erase(_name);
 }
 
 void RealTimeActivityManager::nowIs(Fwk::Time t) {

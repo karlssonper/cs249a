@@ -1,9 +1,9 @@
 #ifndef REALTIMEACTIVITYMANAGER_H
 #define REALTIMEACTIVITYMANAGER_H
 
+#include <map>
 #include <string>
 #include <queue>
-#include <map>
 #include "Activity.h"
 
 namespace Shipping {
@@ -16,7 +16,6 @@ namespace Shipping {
         typedef Fwk::Ptr<RealTimeActivityManager> Ptr;
         typedef Fwk::Ptr<RealTimeActivityManager const> PtrConst;
         
-
         static Ptr RealTimeActivityManagerNew(const string &_name);
 
         virtual Fwk::Activity::Ptr activityNew(const string& name);

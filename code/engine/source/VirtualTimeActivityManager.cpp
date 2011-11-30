@@ -38,6 +38,7 @@ void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
         if (nextToRun->nextTime() > t) {
             break;
         }
+        Fwk::Time diff = Fwk::Time(nextToRun->nextTime().value() - now_.value());
         now_ = nextToRun->nextTime();
         scheduledActivities_.pop();
         nextToRun->statusIs(Fwk::Activity::executing);
