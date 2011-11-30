@@ -21,10 +21,8 @@ EngineManager::EngineManager(const std::string &_name) :
     conn_ = Conn::ConnNew(std::string("Conn"), this, entityManager_.ptr());
     virtualTimeActivityManager_ =
             VirtualTimeActivityManager::VirtualTimeActivityManagerNew(
-                    std::string("VirtualTimeActivityManager"),
-                    entityManager_.ptr(),
-                    this
-                    );
+                    std::string("VirtualTimeActivityManager")
+            );
     realTimeActivityManager_ =
             RealTimeActivityManager::RealTimeActivityManagerNew(
                     std::string("RealTimeActivityManager")

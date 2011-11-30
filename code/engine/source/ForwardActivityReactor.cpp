@@ -24,7 +24,8 @@ ForwardActivityReactor::ForwardActivityReactor(
         activity_(_activity),
         fleet_(_fleet),
         segment_(_segment),
-        shipment_(_shipment)
+        shipment_(_shipment),
+        activePackages_(0)
 {
 
 }
@@ -62,7 +63,6 @@ void ForwardActivityReactor::removeActivePackagesFromSegment() {
 void ForwardActivityReactor::addActivePackagesToSegment() {
     PackageCount availableSegmentCapacity = segment_->capacity().value() -
                                             segment_->activePackages().value();
-
     PackageCount availableVehicleCapacity = fleet_->capacity(
             segTypeToFleetVehicle(segment_->type())
          );

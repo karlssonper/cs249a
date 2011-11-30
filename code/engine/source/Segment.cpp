@@ -79,7 +79,7 @@ void Segment::activePackageDec(PackageCount c) {
 
 void Segment::shipmentEnq(Fwk::Ptr<Shipment> _s) {
     FWK_DEBUG("Segment::shipmentEnq with name: " << name());
-    shipment_.push(_s);
+    shipment_.push_back(_s);
 
     FWK_DEBUG("Notifying -> " << notifiee_->name());
     notifiee_->onShipmentEnq(_s);
@@ -87,7 +87,7 @@ void Segment::shipmentEnq(Fwk::Ptr<Shipment> _s) {
 
 void Segment::shipmentDeq() {
     FWK_DEBUG("Segment::shipmentEnq with name: " << name());
-    shipment_.pop();
+    shipment_.pop_front();
 
     FWK_DEBUG("Notifying -> " << notifiee_->name());
     notifiee_->onShipmentDeq();

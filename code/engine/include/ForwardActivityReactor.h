@@ -37,7 +37,6 @@ protected:
        ForwardActivityReactor();
        ForwardActivityReactor(const ForwardActivityReactor &);
        Fleet::Vehicle segTypeToFleetVehicle(Segment::SegmentType);
-
 };
 }//end namespace Shipping
 

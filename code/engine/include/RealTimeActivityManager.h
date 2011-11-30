@@ -13,6 +13,18 @@ namespace Shipping {
     class RealTimeActivityManager : public Fwk::Activity::Manager {
 
     public:
+        class TimeScale : public Ordinal<TimeScale, double> {
+        public:
+            TimeScale() : Ordinal<TimeScale, double>(1.f) {}
+            TimeScale(double value) : Ordinal<TimeScale, double>(value) {
+                if (value <= 0.0)
+                {
+                    std::cerr << "TimeScale out of range, using default value (1.0) " << std::endl;
+                    value = 1.0;
+                }
+            }
+        };
+
         typedef Fwk::Ptr<RealTimeActivityManager> Ptr;
         typedef Fwk::Ptr<RealTimeActivityManager const> PtrConst;
         
@@ -22,6 +34,8 @@ namespace Shipping {
         virtual Fwk::Activity::Ptr activity(const string& name) const;
         virtual void activityDel(const string& name);
         virtual Fwk::Time now() const { return now_; }
+        TimeScale scale() const { return scale_ ;};
+        void scaleIs();
         virtual void nowIs(Fwk::Time time);
         virtual void lastActivityIs(Fwk::Activity::Ptr activity);
         void virtualTimeActivityManagerIs(Fwk::Ptr<VirtualTimeActivityManager>);
@@ -37,6 +51,7 @@ namespace Shipping {
                             Fwk::Activity::Comp> scheduledActivities_;
         std::map<std::string, Fwk::Activity::Ptr> activities_;
         Fwk::Time now_;
+        TimeScale scale_;
         Fwk::Ptr<VirtualTimeActivityManager> virtualTimeActMgr_;
     };
 }

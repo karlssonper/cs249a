@@ -37,6 +37,7 @@ void SegmentReactor::onShipmentEnq(Shipment::Ptr _shipment) {
 
     if (owner_->activePackages().value() < owner_->capacity().value()){
         Fwk::Activity::Ptr activity = activityManager_->activityNew("lol");
+        activity->nextTimeIs(activityManager_->now());
         string s;
         activity->lastNotifieeIs(
                 new ForwardActivityReactor(
@@ -53,6 +54,14 @@ void SegmentReactor::onShipmentEnq(Shipment::Ptr _shipment) {
 
 void SegmentReactor::onShipmentDeq() {
     FWK_DEBUG("SegmentReactor::onShipmentDeq() for name " << name());
+
+    PackageCount packages = owner_->activePackages();
+    Segment::ShipmentIteratorConst it = owner_->shipmentIterConst();
+    unsigned int i = 0;
+    while (packages < owner_->capacity() && i < owner_->shipments()) {
+        ++i;
+        //owner_->sh
+    }
 
 };
 

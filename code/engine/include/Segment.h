@@ -11,12 +11,11 @@
 #include "BaseNotifiee.h"
 #include "NamedInterface.h"
 #include "Utils.h"
-#include <queue>
+#include <deque>
 
-//#include "Shipment.h"
+#include "Shipment.h"
 
 namespace Shipping {
-    class Shipment;
     class Fleet;
     class VirtualTimeActivityManager;
     class SegmentDifficulty : public Ordinal<SegmentDifficulty, float> {
@@ -77,8 +76,14 @@ namespace Shipping {
         void capacityIs(PackageCount c);
         void activePackageInc(PackageCount c);
         void activePackageDec(PackageCount c);
-        void shipmentEnq(Fwk::Ptr<Shipment>);
+
+        void shipmentEnq(Shipment::Ptr);
         void shipmentDeq();
+        typedef std::deque<Shipment::Ptr>::const_iterator ShipmentIteratorConst;
+        ShipmentIteratorConst shipmentIterConst() const {
+            return shipment_.begin();
+        };
+        unsigned int shipments() const { return shipment_.size();};
 
         class Notifiee : public Fwk::BaseNotifiee<Segment> {
         public:
@@ -101,7 +106,7 @@ namespace Shipping {
         Segment();
         Segment(const Segment&);
         Notifiee::Ptr notifiee_;
-        std::queue<Fwk::Ptr<Shipment> > shipment_;
+        std::deque<Shipment::Ptr> shipment_;
         string source_;
         Miles length_;
         string returnSegment_;
