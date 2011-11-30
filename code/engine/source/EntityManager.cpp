@@ -5,6 +5,7 @@
 #include "Shipment.h"
 #include "CustomerReactor.h"
 #include "Debug.h"
+#include "Exception.h"
 #include <iostream>
 
 using namespace std;
@@ -34,7 +35,7 @@ void EntityManager::locationIs(string _name, Location::Ptr _location) {
 
     if (location_.find(_name) != location_.end()) {
         cerr << "EntityManager::locationIs: " << _name << " is already a location." << endl;
-        return;
+        throw(Fwk::NameInUseException("EntityManager::locationIs"));
     }
 
     FWK_DEBUG("EntityManager::locationIs inserting " << _name);
@@ -56,7 +57,7 @@ void EntityManager::segmentSourceIs(const string &_segmentName,
         map<string, Segment::Ptr>::iterator segIt = segment_.find(_segmentName);
         if (segIt == segment_.end()) {
             cerr << "EntityManager::segmentSourceIs: " <<  _segmentName << " was not found. " << endl;
-            return;
+            throw(Fwk::EntityNotFoundException("EntityManager::segmentSourceIs"));
         }
 
         sp = segIt->second;
@@ -82,7 +83,7 @@ void EntityManager::segmentSourceIs(const string &_segmentName,
             if (locIt == location_.end()) {
                 FWK_DEBUG("EntityManager::segmentSourceIs, " << _sourceName << " not found in location_");
                 cerr << _sourceName << " was not found. " << endl;
-                return;
+                throw(Fwk::EntityNotFoundException("EntityManager::segmentSourceIs"));
             } 
 
             lp = locIt->second;
@@ -137,7 +138,7 @@ void EntityManager::segmentReturnSegmentIs(const string &_segmentName,
         map<string, Segment::Ptr>::iterator segIt = segment_.find(_segmentName);
         if (segIt == segment_.end()) {
             cerr << "EntityManager::segmentReturnSegmentIs: " << _segmentName << " invalid." << endl;
-            return;
+            throw(Fwk::EntityNotFoundException("EntityManager::segmentReturnSegmentIs"));
         }
 
         Segment::Ptr sp, rsp;
@@ -191,8 +192,8 @@ void EntityManager::segmentReturnSegmentIs(const string &_segmentName,
             map<string, Segment::Ptr>::iterator returnIt = segment_.find(_returnSegmentName);
             FWK_DEBUG("Looking up _returnSegmentName");
             if (returnIt == segment_.end()) {
-                cerr << "EntityManager::segmentReturnSegmentIs: " << _returnSegmentName << " invalid." << endl;
-                return;
+                cerr << "EntityManager::segmentReturnSegmentIs: " << _returnSegmentName << " does not exist." << endl;
+                throw(Fwk::EntityNotFoundException("EntityManager::segmentReturnSegmentIs"));
             }
 
             sp = segIt->second;
@@ -240,7 +241,7 @@ void EntityManager::segmentDifficultyIs(const string &_segmentName,
         map<string, Segment::Ptr>::iterator segIt = segment_.find(_segmentName);
         if (segIt == segment_.end()) {
             cerr << "EntityManager::segmentDifficultyIs: " << _segmentName << " not found." << endl;
-            return;
+            throw(Fwk::EntityNotFoundException("EntityManager::segmentReturnSegmentIs"));
         }
 
         Segment::Ptr s = segIt->second;
@@ -266,7 +267,7 @@ void EntityManager::segmentLengthIs(const string &_segmentName,
         map<string, Segment::Ptr>::iterator segIt = segment_.find(_segmentName);
         if (segIt == segment_.end()) {
             cerr << "EntityManager::segmentLengthIs: " << _segmentName << " not found." << endl;
-            return;
+            throw(Fwk::EntityNotFoundException("EntityManager::segmentLengthIs"));
         }
 
         Segment::Ptr s = segIt->second;
@@ -292,7 +293,7 @@ void EntityManager::segmentExpediteSupportIs(const string &_segmentName,
         map<string, Segment::Ptr>::iterator segIt = segment_.find(_segmentName);
         if (segIt == segment_.end()) {
             cerr << "EntityManager::segmentExpediteSupportIs: " << _segmentName << " not found." << endl;
-            return;
+            throw(Fwk::EntityNotFoundException("EntityManager::segmentExpediteSupportIs"));
         }
 
         Segment::Ptr s = segIt->second;
@@ -318,7 +319,7 @@ void EntityManager::segmentIs(string _name, Segment::Ptr _segment) {
 
     if (segment_.find(_name) != segment_.end()) {
         cerr << "EntityManager::segmentIs: " << _name << " already exists.";
-        return;
+        throw(Fwk::NameInUseException("EntityManager::segmentIs"));
     }
 
     FWK_DEBUG("EntityManager::segmentIs inserting " << _name);
@@ -336,7 +337,7 @@ void EntityManager::segmentShipmentEnq(const string & _segName, Shipment::Ptr s)
     map<string, Segment::Ptr>::iterator segIt = segment_.find(_segName);
     if (segIt == segment_.end()) {
         cerr << "EntityManager::segmentShipmentEnq: " << _segName << " not found." << endl;
-        return;
+        throw(Fwk::EntityNotFoundException("EntityManager::segmentShipmentEnq"));
     }
     segIt->second->shipmentEnq(s);
 }
@@ -346,7 +347,7 @@ void EntityManager::segmentShipmentDeq(const string & _segName) {
     map<string, Segment::Ptr>::iterator segIt = segment_.find(_segName);
     if (segIt == segment_.end()) {
         cerr << "EntityManager::segmentShipmentDeq: " << _segName << " not found." << endl;
-        return;
+        throw(Fwk::EntityNotFoundException("EntityManager::segmentShipmentDeq"));
     }
     segIt->second->shipmentDeq();
 }
@@ -356,7 +357,7 @@ void EntityManager::segmentPackageInc(const string &_segName, PackageCount pc) {
     map<string, Segment::Ptr>::iterator segIt = segment_.find(_segName);
     if (segIt == segment_.end()) {
         cerr << "EntityManager::segmentPackageInc: " << _segName << " not found." << endl;
-        return;
+        throw(Fwk::EntityNotFoundException("EntityManager::segmentPackageInc"));
     }
     segIt->second->activePackageInc(pc);
 };
@@ -366,7 +367,7 @@ void EntityManager::segmentPackageDec(const string &_segName, PackageCount pc) {
     map<string, Segment::Ptr>::iterator segIt = segment_.find(_segName);
     if (segIt == segment_.end()) {
         cerr << "EntityManager::segmentPackageInc: " << _segName << " not found." << endl;
-        return;
+        throw(Fwk::EntityNotFoundException("EntityManager::segmentPackageDec"));
     }
     segIt->second->activePackageDec(pc);
 };
@@ -473,8 +474,8 @@ void EntityManager::customerShipmentSizeIs(const string &_customerName, PackageC
     map<string, Location::Ptr>::iterator it;
     it = location_.find(_customerName);
     if (it == location_.end()) {
-        FWK_DEBUG("EntityManager::customerShipmentSizeIs: " << _customerName << " not found, nothing to do.");
-        return;
+        cerr << "EntityManager::customerShipmentSizeIs: " << _customerName << " not found, nothing to do." << endl;
+        throw(Fwk::EntityNotFoundException("EntityManager::customerShipmentSizeIs"));
     }
 
     if (it->second->type() != Location::customer()) {
@@ -493,8 +494,8 @@ void EntityManager::customerDestinationIs(const string &_customerName, const str
     map<string, Location::Ptr>::iterator it;
     it = location_.find(_customerName);
     if (it == location_.end()) {
-        FWK_DEBUG("EntityManager::customerDestinationIs: " << _customerName << " not found, nothing to do.");
-        return;
+        cerr << "EntityManager::customerDestinationIs: " << _customerName << " not found, nothing to do." << endl;
+        throw(Fwk::EntityNotFoundException("EntityManager::customerDestinationIs"));
     }
 
     if (it->second->type() != Location::customer()) {
@@ -513,8 +514,8 @@ void EntityManager::customerRecievedShipmentsIs(const string &_customerName, Shi
     map<string, Location::Ptr>::iterator it;
     it = location_.find(_customerName);
     if (it == location_.end()) {
-        FWK_DEBUG("EntityManager::customerRecievedShipmentsIs: " << _customerName << " not found, nothing to do.");
-        return;
+        cerr << "EntityManager::customerRecievedShipmentsIs: " << _customerName << " not found, nothing to do." << endl;
+        throw(Fwk::EntityNotFoundException("EntityManager::customerRecievedShipmentsIs"));
     }
 
     if (it->second->type() != Location::customer()) {
@@ -551,8 +552,8 @@ FWK_DEBUG("EntityManager::customerAverageLatencyIs on " << _customerName);
     map<string, Location::Ptr>::iterator it;
     it = location_.find(_customerName);
     if (it == location_.end()) {
-        FWK_DEBUG("EntityManager::customerAverageLatencyIs: " << _customerName << " not found, nothing to do.");
-        return;
+        cerr << "EntityManager::customerAverageLatencyIs: " << _customerName << " not found, nothing to do." << endl;
+        throw(Fwk::EntityNotFoundException("EntityManager::customerAverageLatencyIs"));
     }
 
     if (it->second->type() != Location::customer()) {
@@ -570,8 +571,8 @@ FWK_DEBUG("EntityManager::customerTotalCostIs on " << _customerName);
     map<string, Location::Ptr>::iterator it;
     it = location_.find(_customerName);
     if (it == location_.end()) {
-        FWK_DEBUG("EntityManager::customerTotalCostIs: " << _customerName << " not found, nothing to do.");
-        return;
+        cerr << "EntityManager::customerTotalCostIs: " << _customerName << " not found, nothing to do." << endl;
+        throw(Fwk::EntityNotFoundException("EntityManager::customerTotalCostIs"));
     }
 
     if (it->second->type() != Location::customer()) {

@@ -13,6 +13,17 @@ using namespace Shipping;
 int main() {
 
     EngineManager::Ptr engineManager = EngineManager::EngineManagerNew("engineManager");
+    TruckSegment::Ptr seg = TruckSegment::TruckSegmentNew("dude", engineManager->virtualTimeActivityManager(), engineManager->fleet());
+    try {
+        seg->lengthIs(-10);
+    } catch (Fwk::Exception e) {
+        std::cerr << e.what() << std::endl;
+    } 
+
+
+
+    /*
+    EngineManager::Ptr engineManager = EngineManager::EngineManagerNew("engineManager");
     Customer::Ptr someCustomer = Customer::CustomerNew("someCustomer", engineManager->virtualTimeActivityManager());
     engineManager->entityManager()->locationIs("someCustomer", someCustomer);
 
@@ -27,7 +38,7 @@ int main() {
     mgr->nowIs(60.0);
     engineManager->entityManager()->customerTransferRateIs("someCustomer", Shipping::TransferRate(2));
     mgr->nowIs(80.0);
-
+    */
 
 
 

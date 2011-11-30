@@ -2,6 +2,7 @@
 #define UTILS_H_
 
 #include "Nominal.h"
+#include "Exception.h"
 #include <limits>
 #include <iostream>
 
@@ -11,46 +12,50 @@ namespace Shipping {
 
     class Miles : public Ordinal<Miles, double> {
     public:
-        Miles() : Ordinal<Miles, double>(1) {}
-        Miles(double value) : Ordinal<Miles, double>(value) {}
-
+        Miles() : Ordinal<Miles, double>(1.0) {}
+        Miles(double value) : Ordinal<Miles, double>(value) {
+            if (value < 0.0 || value > max().value()) {
+                std::cerr << "Miles out of range" << std::endl;
+                throw(Fwk::RangeException("Miles"));
+            }
+        }
         static Miles max() { return std::numeric_limits<double>::max(); }
     };
 
     class MilesPerHour : public Ordinal<MilesPerHour, double> {
     public:
-        MilesPerHour() : Ordinal<MilesPerHour, double>(1.f) {}
+        MilesPerHour() : Ordinal<MilesPerHour, double>(1.0) {}
         MilesPerHour(double value) : Ordinal<MilesPerHour, double>(value) {
-            if (value <= 0.0)
+            if (value < 0.0 || value > max().value())
             {
-                cerr << "MilesPerHour out of range, using default value (1.0) " << endl;
-                value = 1.0;
+                cerr << "MilesPerHour out of range" << endl;
+                throw(Fwk::RangeException("MilesPerHour"));
             }
         }
+        static MilesPerHour max() { return std::numeric_limits<double>::max(); }
     };
 
     class Dollars : public Ordinal<Dollars, double> {
     public:
-        Dollars() : Ordinal<Dollars, double>(1.f) {}
+        Dollars() : Ordinal<Dollars, double>(1.0) {}
         Dollars(double value) : Ordinal<Dollars, double>(value) {
-            if (value < 0.0)
+            if (value < 0.0 || value > max().value())
             {
-                cerr << "Dollars out of range, using default value (1.0)" << std::endl;
-                value = 1.0;
+                cerr << "Dollars out of range" << std::endl;
+                throw(Fwk::RangeException("Dollars"));
             }
         }
-
         static Dollars max() { return std::numeric_limits<double>::max(); }
     };
 
     class Hours : public Ordinal<Hours, double> {
     public:
-        Hours() : Ordinal<Hours, double>(1.f) {}
+        Hours() : Ordinal<Hours, double>(1.0) {}
         Hours(double value) : Ordinal<Hours, double>(value) {
-            if (value < 0.0)
+            if (value < 0.0 || value > max().value())
             {
                 cerr << "Hours out of range, using default value (1.0)" << std::endl;
-                value = 1.0;
+                throw(Fwk::RangeException("Hours"));
             }
         }
         static Hours max() { return std::numeric_limits<double>::max(); }
@@ -60,12 +65,13 @@ namespace Shipping {
     public:
         DollarsPerMile() : Ordinal<DollarsPerMile, double>(1.f) {}
         DollarsPerMile(double value) : Ordinal<DollarsPerMile, double>(value) {
-            if (value < 0.0)
+            if (value < 0.0 || value > max().value())
             {
-                cerr << "DollarsPerMile out of range, using default value (1.0)" << std::endl;
-                value = 1.0;
+                cerr << "DollarsPerMile out of range" << std::endl;
+                throw(Fwk::RangeException("DollarsPerMile"));
             }
         }
+        static DollarsPerMile max() { return std::numeric_limits<double>::max(); }
     };
 
     class TransferRate : public Ordinal<TransferRate, unsigned int> {
@@ -88,8 +94,15 @@ namespace Shipping {
 
     class Latency : public Ordinal<Latency, double> {
     public:
-        Latency() : Ordinal<Latency, double>(0) {}
-        Latency(unsigned int value) : Ordinal<Latency, double>(value) {}
+        Latency() : Ordinal<Latency, double>(0.0) {}
+        Latency(unsigned int value) : Ordinal<Latency, double>(value) {
+            if (value < 0.0 || value > max().value())
+            {
+                cerr << "Latency out of range" << std::endl;
+                throw(Fwk::RangeException("Latency"));
+            }
+        }
+        static Latency max() { return std::numeric_limits<double>::max(); }
     };
 
 
