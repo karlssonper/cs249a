@@ -19,7 +19,7 @@ namespace Fwk {
         };
         std::string what() const { return what_; }
         virtual ~Exception() {}
-        virtual Id id();
+        virtual Id id() { return Exception::unknownException_; }
     protected:
         Exception(const std::string &_str) : what_(_str) {}
         std::string what_;
