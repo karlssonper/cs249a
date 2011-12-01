@@ -1,4 +1,5 @@
 #include "Location.h"
+#include "Exception.h"
 #include "Debug.h"
 #include "CustomerReactor.h"
 #include "VirtualTimeActivityManager.h"
@@ -24,7 +25,10 @@ Location::OutSegmentIteratorConst Location::outSegmenterIterConst(const unsigned
 
 Location::OutSegmentIterator Location::outSegmenterIter(unsigned int n) {
     n;
-    if (n >= outSegment_.size()) FWK_DEBUG("ERROR outSegmenterIter(int n) where n > size");
+    if (n >= outSegment_.size()) {
+        cerr << "Location::outSegmenterIter(int n) where n > size" << endl;
+        throw(Fwk::RangeException("Location::OutSegmentIterator"));
+    }
     OutSegmentIterator it = outSegment_.begin();
     for (int i=0; i < n; ++i) it++;
     return it;
@@ -69,6 +73,10 @@ Customer::~Customer(){
 Customer::Ptr Customer::CustomerNew(const string &_name, VirtualTimeActivityManager::Ptr vtAm) {
     FWK_DEBUG("Customer::CustomerNew with name " << _name);
     Customer::Ptr p = new Customer(_name, vtAm);
+    if (!p) {
+        cerr << "Customer::CustomeNew new() failed" << endl;
+        throw(Fwk::MemoryException("Customer::CustomerNew"));
+    }
     return p;
 }
 
@@ -140,6 +148,10 @@ Port::~Port(){
 Port::Ptr Port::PortNew(const string &_name) {
     FWK_DEBUG("Port::PortNew with name " << _name);
     Port::Ptr p = new Port(_name);
+    if (!p) {
+        cerr << "Port::PortNew new() failed" << endl;
+        throw(Fwk::MemoryException("Port::PortNew"));
+    }
     return p;
 }
 
@@ -156,6 +168,10 @@ TruckTerminal::~TruckTerminal(){
 TruckTerminal::Ptr TruckTerminal::TruckTerminalNew(const string &_name) {
     FWK_DEBUG("TruckTerminal::TruckTerminalNew with name " << _name);
     TruckTerminal::Ptr p = new TruckTerminal(_name);
+    if (!p) {
+        cerr << "TruckTerminal::TruckTerminalNew new() failed" << endl;
+        throw(Fwk::MemoryException("TruckTerminal::TruckTerminalNew"));
+    }
     return p;
 }
 
@@ -171,6 +187,10 @@ BoatTerminal::~BoatTerminal(){
 BoatTerminal::Ptr BoatTerminal::BoatTerminalNew(const string &_name) {
     FWK_DEBUG("BoatTerminal::BoatTerminalNew with name " << _name);
     BoatTerminal::Ptr p = new BoatTerminal(_name);
+    if (!p) {
+        cerr << "BoatTerminal::BoatTerminalNew new() failed" << endl;
+        throw(Fwk::MemoryException("BoatTerminal::BoatTerminalNew"));
+    }
     return p;
 }
 
@@ -187,6 +207,10 @@ PlaneTerminal::~PlaneTerminal() {
 PlaneTerminal::Ptr PlaneTerminal::PlaneTerminalNew(const string &_name) {
     FWK_DEBUG("PlaneTerminal::PlaneTerminalNew with name " << _name);
     PlaneTerminal::Ptr p = new PlaneTerminal(_name);
+    if (!p) {
+        cerr << "PlaneTerminal::PlaneTerminalNew new() failed" << endl;
+        throw(Fwk::MemoryException("PlaneTerminal::PlaneTerminalNew"));
+    }
     return p;
 }
 

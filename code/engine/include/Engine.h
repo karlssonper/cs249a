@@ -25,12 +25,11 @@ namespace Shipping {
         void statsIs(const std::string &name);
         EntityManager::Ptr entityManager() const {return entityManager_;};
         VirtualTimeActivityManager::Ptr virtualTimeActivityManager() const { return virtualTimeActivityManager_; }
-        RealTimeActivityManager::Ptr realTimeActivityManagaer() const { return realTimeActivityManager_; }
+        RealTimeActivityManager::Ptr realTimeActivityManager() const { return realTimeActivityManager_; }
         ~EngineManager();
-        static EngineManager::Ptr EngineManagerNew(std::string name){
-            Ptr p = new EngineManager(name);
-            return p;
-        }
+
+        static EngineManager::Ptr EngineManagerNew(std::string name);
+
     private:
         EngineManager();
         EngineManager(const std::string &name);
