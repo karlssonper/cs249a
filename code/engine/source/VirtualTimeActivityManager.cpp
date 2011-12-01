@@ -5,7 +5,7 @@
 
 using namespace Shipping;
 long unsigned int VirtualTimeActivityManager::idx = 0;
-Fwk::Activity::Ptr VirtualTimeActivityManager::activityNew(const string &_name) {
+Fwk::Activity::Ptr VirtualTimeActivityManager::activityNew(const string &_name){
     Fwk::Activity::Ptr activity = activities_[_name];
     if (activity != NULL) {
         std::cerr << "Activity already exists!" << std::endl;
@@ -16,8 +16,10 @@ Fwk::Activity::Ptr VirtualTimeActivityManager::activityNew(const string &_name) 
     return activity;
 }
 
-Fwk::Activity::Ptr VirtualTimeActivityManager::activity(const string &_name) const {
-    std::map<std::string, Fwk::Activity::Ptr>::const_iterator it = activities_.find(_name);
+Fwk::Activity::Ptr
+VirtualTimeActivityManager::activity(const string &_name) const {
+    std::map<std::string, Fwk::Activity::Ptr>::const_iterator it =
+            activities_.find(_name);
     if(it != activities_.end() ) {
         return (*it).second;
     }
@@ -34,7 +36,7 @@ void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
 
     std::stringstream ss;
     ss << "RealTimeActivity" << VirtualTimeActivityManager::activityIndex();
-    Fwk::Activity::Ptr realTimeActivity = realTimeActMgr_->activityNew(ss.str());
+    Fwk::Activity::Ptr realTimeActivity =realTimeActMgr_->activityNew(ss.str());
     Fwk::Time nextTime =
             _activity->nextTime().value() * realTimeActMgr_->scale().value();
     realTimeActivity->nextTimeIs(nextTime);
@@ -54,7 +56,7 @@ void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
         if (nextToRun->nextTime() > t) {
             break;
         }
-        Fwk::Time diff = Fwk::Time(nextToRun->nextTime().value() - now_.value());
+        Fwk::Time diff = Fwk::Time(nextToRun->nextTime().value() -now_.value());
         now_ = nextToRun->nextTime();
         scheduledActivities_.pop();
         nextToRun->statusIs(Fwk::Activity::executing);

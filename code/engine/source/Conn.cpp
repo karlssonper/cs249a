@@ -82,6 +82,10 @@ void Conn::onLocationDel(Location::PtrConst loc) {
     };
 };
 
+void Conn::onLocationShipmentNew(Location::PtrConst, Shipment::Ptr) {
+
+};
+
 void Conn::onSegmentUpdate(Segment::PtrConst seg0) {
     FWK_DEBUG("Conn::onSegmentUpdate() with name: " << seg0->name());
     if (graphSegment_.find(seg0->name()) == graphSegment_.end()){

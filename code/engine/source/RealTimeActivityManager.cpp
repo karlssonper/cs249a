@@ -26,8 +26,9 @@ RealTimeActivityManager::RealTimeActivityManager(const std::string &_name) :
 
 };
 
-Fwk::Activity::Ptr RealTimeActivityManager::activity(const string &_name) const {
-    std::map<std::string, Fwk::Activity::Ptr>::const_iterator it = activities_.find(_name);
+Fwk::Activity::Ptr RealTimeActivityManager::activity(const string &_name)const {
+    std::map<std::string, Fwk::Activity::Ptr>::const_iterator it =
+            activities_.find(_name);
     if(it != activities_.end() ) {
         return (*it).second;
     }
@@ -61,7 +62,8 @@ void RealTimeActivityManager::virtualTimeActivityManagerIs(
     virtualTimeActMgr_ = _virtualTimeActMgr;
 }
 
-VirtualTimeActivityManager::Ptr RealTimeActivityManager::virtualTimeActivityManager() {
+VirtualTimeActivityManager::Ptr
+RealTimeActivityManager::virtualTimeActivityManager() {
     if (virtualTimeActMgr_) return virtualTimeActMgr_;
 }
 

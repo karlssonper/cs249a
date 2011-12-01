@@ -7,6 +7,7 @@
 #include "Segment.h"
 #include "Location.h"
 #include <map>
+#include "Shipment.h"
 
 using std::map;
 using std::string;
@@ -31,6 +32,7 @@ namespace Shipping {
             virtual void onSegmentDel(Segment::PtrConst) {};
             virtual void onLocationNew(Location::PtrConst) {};
             virtual void onLocationDel(Location::PtrConst) {};
+            virtual void onLocationShipmentNew(Location::PtrConst, Shipment::Ptr) {};
             virtual void onSegmentUpdate(Segment::PtrConst) {};
             virtual void onLocationUpdate(Location::PtrConst) {};
             virtual void onSegmentExpUpdate(Segment::PtrConst) {};
@@ -63,6 +65,7 @@ namespace Shipping {
         void segmentIs(string _name, Segment::Ptr _segment);
         void locationIs(string _name, Location::Ptr _location);
         void locationDel(const string &_name);
+        void locationShipmentNew();
         void segmentDel(const string &_name);
         void segmentSourceIs(const string &_segmentName, const string &_sourceName);
         void segmentReturnSegmentIs(const string &_segmentName, const string &_returnSegmentName);

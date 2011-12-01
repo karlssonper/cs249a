@@ -5,7 +5,7 @@
 #include "Fleet.h"
 using namespace Shipping;
 
-Path::Ptr Path::cloneIs( {
+Path::Ptr Path::cloneIs() {
     FWK_DEBUG("Conn::Path::cloneIs()");
     Path::Ptr clonedPath = new Path();
     clonedPath->traversedItems_ = traversedItems_;
@@ -14,7 +14,7 @@ Path::Ptr Path::cloneIs( {
     return clonedPath;
 };
 
-void Path::nextPathItemIs(PathItem pI {
+void Path::nextPathItemIs(PathItem pI) {
     if (pI.seg && pI.loc) {
         FWK_DEBUG("Conn::Path::nextPathItemIs() with : " << pI.seg->source() << "->" <<
             pI.seg->name() << "->" << pI.loc->name());
@@ -261,7 +261,7 @@ float PathTree::segmentTime(Segment::PtrConst s,Segment::ExpediteSupport expedit
 };
 
 Segment::PtrConst PathTree::seg(const string & _name) {
-    if (!segExists) {
+    if (!segExists(_name)) {
         cerr << "PathTree::seg segment does not exist" << endl;
         throw(Fwk::EntityNotFoundException("PathTree::seg"));
     }
@@ -274,7 +274,7 @@ bool PathTree::segExists(const string & _name) {
 };
 Location::PtrConst PathTree::loc(const string & _name)
 {
-    if (!locExists) {
+    if (!locExists(_name)) {
         cerr << " PathTree::loc location does not exist" << endl;
         throw(Fwk::EntityNotFoundException("PathTree::loc"));
     }
