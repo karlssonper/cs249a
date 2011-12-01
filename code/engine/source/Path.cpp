@@ -5,7 +5,7 @@
 #include "Fleet.h"
 using namespace Shipping;
 
-Path::Ptr Path::cloneIs(){
+Path::Ptr Path::cloneIs( {
     FWK_DEBUG("Conn::Path::cloneIs()");
     Path::Ptr clonedPath = new Path();
     clonedPath->traversedItems_ = traversedItems_;
@@ -14,8 +14,8 @@ Path::Ptr Path::cloneIs(){
     return clonedPath;
 };
 
-void Path::nextPathItemIs(PathItem pI){
-    if (pI.seg && pI.loc){
+void Path::nextPathItemIs(PathItem pI {
+    if (pI.seg && pI.loc) {
         FWK_DEBUG("Conn::Path::nextPathItemIs() with : " << pI.seg->source() << "->" <<
             pI.seg->name() << "->" << pI.loc->name());
     } else {
@@ -216,13 +216,16 @@ PathTree::Addable ConnectPathTree::isAddable(Path::Ptr p, PathItem pI) {
 };
 
 MilesPerHour PathTree::speed(Segment::SegmentType st) const{
-    switch(st){
+    switch(st) {
     case Segment::truckSegment_:
         return owner_->owner_->fleet()->speed(Shipping::Fleet::truck());                
     case Segment::boatSegment_:
         return owner_->owner_->fleet()->speed(Shipping::Fleet::boat());
     case Segment::planeSegment_:
         return owner_->owner_->fleet()->speed(Shipping::Fleet::plane());
+    default:
+        cerr << "PathTree:: speed out of range" << endl;
+        throw(Fwk::RangeException("PathTree::speed"));
     }
 };
 
@@ -234,6 +237,9 @@ DollarsPerMile PathTree::cost(Segment::SegmentType st) const{
         return owner_->owner_->fleet()->cost(Shipping::Fleet::boat());
     case Segment::planeSegment_:
         return owner_->owner_->fleet()->cost(Shipping::Fleet::plane());
+    default:
+        cerr << "PathTree::cost out of range" << endl;
+        throw(Fwk::RangeException("PathTree::cost"));
     }
 };
 
@@ -255,16 +261,26 @@ float PathTree::segmentTime(Segment::PtrConst s,Segment::ExpediteSupport expedit
 };
 
 Segment::PtrConst PathTree::seg(const string & _name) {
+    if (!segExists) {
+        cerr << "PathTree::seg segment does not exist" << endl;
+        throw(Fwk::EntityNotFoundException("PathTree::seg"));
+    }
     return owner_->graphSegment_[_name];
 };
+
 bool PathTree::segExists(const string & _name) {
     return owner_->graphSegment_.find(_name) != 
         owner_->graphSegment_.end();
 };
 Location::PtrConst PathTree::loc(const string & _name)
 {
+    if (!locExists) {
+        cerr << " PathTree::loc location does not exist" << endl;
+        throw(Fwk::EntityNotFoundException("PathTree::loc"));
+    }
     return owner_->graphLocation_[_name];
 };
+
 bool PathTree::locExists(const string & _name) {
     return owner_->graphLocation_.find(_name) != 
         owner_->graphLocation_.end();
