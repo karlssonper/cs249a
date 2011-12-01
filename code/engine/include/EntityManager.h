@@ -82,10 +82,7 @@ namespace Shipping {
         void customerTotalCostIs(const string &_customerName, Dollars _totalCost);
 
         virtual ~EntityManager();
-        static EntityManager::Ptr EntityManagerNew(std::string _name) {
-            Ptr p = new EntityManager(_name);
-            return p;
-        };
+        static EntityManager::Ptr EntityManagerNew(std::string _name) {}
 
     protected:
         EntityManager();

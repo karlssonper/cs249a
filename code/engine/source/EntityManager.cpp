@@ -9,8 +9,13 @@
 #include <iostream>
 
 using namespace std;
-
 using namespace Shipping;
+
+EntityManager::Ptr EntityManager::EntityManagerNew(std::string _name) {
+    Ptr p = new EntityManager(_name);
+    if (!p) throw(Fwk::MemoryException("EntityManager::EntityManagerNew"));
+    return p;
+}
 
 EntityManager::Notifiee::~Notifiee(){
     FWK_DEBUG("Notifiee::~Notifiee() with name: " << name());
@@ -99,17 +104,17 @@ void EntityManager::segmentSourceIs(const string &_segmentName,
             if (locType == Location::truckTerminal()) {
                 if (segType != Segment::truckSegment()) {
                     cerr << "EntityManager::segmentSourceIs: " << "segment/location types do not match" << endl;
-                    return;
+                    throw(Fwk::TypeMismatchException("EntityManager::segmentSourceIs"));
                 } 
             } else if (locType == Location::boatTerminal()) {
                 if (segType != Segment::boatSegment()) {
                     cerr << "EntityManager::segmentSourceIs: " << "segment/location types do not match" << endl;
-                    return;
+                    throw(Fwk::TypeMismatchException("EntityManager::segmentSourceIs"));
                 }
             } else if (locType == Location::planeTerminal()) {
                 if (segType != Segment::planeSegment()) {
                     cerr << "EntityManager::segmentSourceIs: " << "segment/location types do not match" << endl;
-                    return;
+                    throw(Fwk::TypeMismatchException("EntityManager::segmentSourceIs"));
                 }
             }
 
@@ -207,7 +212,7 @@ void EntityManager::segmentReturnSegmentIs(const string &_segmentName,
 
             if (sp->type() != rsp->type()) {
                 cerr << "EntityManager::segmentReturnSegmentIs: " << "Segment types do not match." << endl;
-                return;
+                throw(Fwk::TypeMismatchException("EntityManager::segmentReturnSegmentIs"));
             }
 
             // if _returnSegmentName has another return segment, this needs to be removed
@@ -458,8 +463,8 @@ void EntityManager::customerTransferRateIs(const string &_customerName, Transfer
     }
 
     if (it->second->type() != Location::customer()) {
-        FWK_DEBUG("EntityManager::customerTransferRateIs: " << _customerName << " is not a customer.");
-        return;
+        cerr << "EntityManager::customerTransferRateIs: " << _customerName << " is not a customer." << endl;
+        throw(Fwk::TypeMismatchException("EntityManager::customerTransferRateIs"));
     }
 
     Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
@@ -479,8 +484,8 @@ void EntityManager::customerShipmentSizeIs(const string &_customerName, PackageC
     }
 
     if (it->second->type() != Location::customer()) {
-        FWK_DEBUG("EntityManager::customerShipmentSizeIs: " << _customerName << " is not a customer.");
-        return;
+        cerr << "EntityManager::customerShipmentSizeIs: " << _customerName << " is not a customer." << endl;
+        throw(Fwk::TypeMismatchException("EntityManager::customerShipmentSizeIs"));
     }
 
    Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
@@ -499,8 +504,8 @@ void EntityManager::customerDestinationIs(const string &_customerName, const str
     }
 
     if (it->second->type() != Location::customer()) {
-        FWK_DEBUG("EntityManager::customerDestinationIs: " << _customerName << " is not a customer.");
-        return;
+        cerr << "EntityManager::customerDestinationIs: " << _customerName << " is not a customer." << endl;
+        throw(Fwk::TypeMismatchException("EntityManager::customerDestinationIs"));
     }
 
     Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
@@ -519,8 +524,8 @@ void EntityManager::customerRecievedShipmentsIs(const string &_customerName, Shi
     }
 
     if (it->second->type() != Location::customer()) {
-        FWK_DEBUG("EntityManager::customerRecievedShipmentsIs: " << _customerName << " is not a customer.");
-        return;
+        cerr << "EntityManager::customerRecievedShipmentsIs: " << _customerName << " is not a customer." << endl;
+        throw(Fwk::TypeMismatchException("EntityManager::customerRecievedShipmentsIs"));
     }
 
     Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
@@ -538,8 +543,8 @@ void EntityManager::customerRecievedShipmentsInc(const string &_customerName) {
     }
 
     if (it->second->type() != Location::customer()) {
-        FWK_DEBUG("EntityManager::customerRecievedShipmentsInc: " << _customerName << " is not a customer.");
-        return;
+        cerr << "EntityManager::customerRecievedShipmentsInc: " << _customerName << " is not a customer." << endl;
+        throw(Fwk::TypeMismatchException("EntityManager::customerRecievedShipmentsInc"));
     }
 
     Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
@@ -557,8 +562,8 @@ FWK_DEBUG("EntityManager::customerAverageLatencyIs on " << _customerName);
     }
 
     if (it->second->type() != Location::customer()) {
-        FWK_DEBUG("EntityManager::customerAverageLatencyIs: " << _customerName << " is not a customer.");
-        return;
+        cerr << "EntityManager::customerAverageLatencyIs: " << _customerName << " is not a customer." << endl;
+        throw(Fwk::TypeMismatchException("EntityManager::customerAverageLatencyIs"));
     }
 
     Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
@@ -576,8 +581,8 @@ FWK_DEBUG("EntityManager::customerTotalCostIs on " << _customerName);
     }
 
     if (it->second->type() != Location::customer()) {
-        FWK_DEBUG("EntityManager::customerTotalCostIs: " << _customerName << " is not a customer.");
-        return;
+        cerr << "EntityManager::customerTotalCostIs: " << _customerName << " is not a customer." << endl;
+        throw(Fwk::TypeMismatchException("EntityManager::customerTotalCostIs"));
     }
 
     Customer::Ptr p = static_cast<Customer*>(it->second.ptr());

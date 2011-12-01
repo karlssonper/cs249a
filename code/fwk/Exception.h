@@ -15,9 +15,10 @@ namespace Fwk {
             nameInUseException_,
             memoryException_,
             entityNotFoundException_,
+            typeMismatchException_,
         };
         std::string what() const { return what_; }
-        virtual ~Exception();
+        virtual ~Exception() {}
         virtual Id id();
     protected:
         Exception(const std::string &_str) : what_(_str) {}
@@ -29,25 +30,31 @@ namespace Fwk {
     class RangeException : public Exception {
     public:
         RangeException(const std::string &_what) : Exception(_what) {}
-        virtual Id id();
+        virtual Id id() { return Exception::rangeException_; }
     };
 
     class NameInUseException : public Exception {
     public:
         NameInUseException(const std::string &_what) : Exception(_what) {}
-        virtual Id id();
+        virtual Id id() { return Exception::nameInUseException_; }
     };
 
     class MemoryException : public Exception {
     public:
         MemoryException(const std::string &_what) : Exception(_what) {}
-        virtual Id id();
+        virtual Id id() { return Exception::memoryException_; }
     };
 
     class EntityNotFoundException : public Exception {
     public:
         EntityNotFoundException(const std::string &_what) : Exception(_what) {}
-        virtual Id id();
+        virtual Id id() { return Exception::entityNotFoundException_; }
+    };
+
+    class TypeMismatchException : public Exception {
+    public:
+        TypeMismatchException(const std::string &_what) : Exception(_what) {}
+        virtual Id id() { return Exception::typeMismatchException_; }
     };
 
 }
