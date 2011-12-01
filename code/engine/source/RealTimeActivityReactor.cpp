@@ -7,6 +7,7 @@
 
 #include "RealTimeActivityReactor.h"
 #include "VirtualTimeActivityManager.h"
+#include "Exception.h"
 
 using namespace Shipping;
 
@@ -28,6 +29,9 @@ void RealTimeActivityReactor::onStatus() {
         case Fwk::Activity::nextTimeScheduled:
             manager_->lastActivityIs(activity_);
             break;
+        default:
+            std::cerr << "RealTimeActivityReactor::onStatus out of range" << std::endl;
+            throw(Fwk::RangeException("RealTimeActivityReactor::onStatus"));
     }
 };
 

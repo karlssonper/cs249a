@@ -2,6 +2,7 @@
 #include "Location.h"
 #include "InjectActivityReactor.h"
 #include "VirtualTimeActivityManager.h"
+#include "Exception.h"
 
 using namespace Shipping;
 
@@ -19,6 +20,10 @@ CustomerReactor::Ptr CustomerReactor::CustomerReactorNew(const string &_name,
     FWK_DEBUG("CustomerReactorNew " << _name);
     CustomerReactor::Ptr p = new CustomerReactor(_name, _notifier,
             _virtualTimeActivityManager);
+    if (!p) {
+        std::cerr << "CustomerReactorNew new() failed" << std::endl;
+        throw(Fwk::MemoryException("CustomerReactor::CustomerReactorNew"));
+    }
     return p;
 }
 

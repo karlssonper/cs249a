@@ -9,6 +9,7 @@
 #include "Shipment.h"
 #include "VirtualTimeActivityManager.h"
 #include "ForwardActivityReactor.h"
+#include "Exception.h"
 #include <sstream>
 
 using namespace Shipping;
@@ -24,6 +25,10 @@ SegmentReactor::Ptr SegmentReactor::SegmentReactorNew(std::string _name,
         Segment * _owner, VirtualTimeActivityManager::Ptr vtam,
         Fleet::PtrConst _fleet) {
     Ptr p = new SegmentReactor(_name, _owner, vtam, _fleet);
+    if (!p) {
+        std::cerr << "SegmentReactorNew new() failed" << std::endl;
+        throw(Fwk::MemoryException("SegmentReactorNew"));
+    }
     return p;
 };
 
@@ -34,11 +39,10 @@ SegmentReactor::~SegmentReactor() {
 
 void SegmentReactor::onShipmentEnq(Shipment::Ptr _shipment) {
     FWK_DEBUG("SegmentReactor::onShipmentEnq() for name " << name());
-
     if (owner_->activePackages().value() < owner_->capacity().value()){
         createActivity(_shipment);
-    }
-};
+    } 
+}
 
 void SegmentReactor::onShipmentDeq() {
     FWK_DEBUG("SegmentReactor::onShipmentDeq() for name " << name());

@@ -4,6 +4,7 @@
 #include "SegmentReactor.h"
 #include "VirtualTimeActivityManager.h"
 #include "Fleet.h"
+#include "Exception.h"
 
 using namespace Shipping;
 
@@ -55,7 +56,7 @@ void Segment::notifieeIs(string _name, Notifiee* _p) {
 
     if (notifiee_) {
         cerr << "Segment::notifieeIs: " << _name << " already exists" << endl;
-        return;
+        throw(Fwk::NameInUseException("Segment::notifieeIs"));
     }
 
     Notifiee::Ptr p = _p;
@@ -137,6 +138,10 @@ TruckSegment::Ptr TruckSegment::TruckSegmentNew(const string &_name,
         VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) {
     FWK_DEBUG("TruckSegmet::TruckSegmentNew with name " << _name);
     TruckSegment::Ptr p = new TruckSegment(_name, vtam, _fleet);
+    if (!p) {
+        std::cerr << "TruckSegmentNew new() failed" << std::endl;
+        throw(Fwk::MemoryException("TruckSegmentNew"));
+    }
     return p;
 }
 
@@ -154,6 +159,10 @@ BoatSegment::Ptr BoatSegment::BoatSegmentNew(const string &_name,
         VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) {
     FWK_DEBUG("BoatSegment::BoatSegmentNew with name " << _name);
     BoatSegment::Ptr p = new BoatSegment(_name, vtam, _fleet);
+     if (!p) {
+        std::cerr << "BoatSegmentNew new() failed" << std::endl;
+        throw(Fwk::MemoryException("BoatSegmentNew"));
+    }
     return p;
 }
 
@@ -172,6 +181,10 @@ PlaneSegment::Ptr PlaneSegment::PlaneSegmentNew(const string &_name,
         VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) {
     FWK_DEBUG("PlaneSegment::PlaneSegmentNew with name " << _name);
     PlaneSegment::Ptr p = new PlaneSegment(_name, vtam, _fleet);
+      if (!p) {
+        std::cerr << "PlaneSegmentNew new() failed" << std::endl;
+        throw(Fwk::MemoryException("PlaneSegmentNew"));
+    }
     return p;
 }
 

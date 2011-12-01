@@ -54,6 +54,9 @@ void ForwardActivityReactor::onStatus() {
         case Fwk::Activity::nextTimeScheduled:
             manager_->lastActivityIs(activity_);
             break;
+        default: 
+            std::cerr << "ForwardActivityReactor::onStatus() out of range" << std::endl;
+            throw(Fwk::RangeException("ForwardActivityReactor::onStatus()"));
     }
 }
 

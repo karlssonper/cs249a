@@ -1,5 +1,6 @@
 #include "InjectActivityReactor.h"
 #include "Location.h"
+#include "Exception.h"
 
 using namespace Shipping;
 
@@ -60,7 +61,8 @@ void InjectActivityReactor::onStatus() {
         virtualManager_->lastActivityIs(activity_);
         break;
     default:
-        break;
+        std::cerr << "InjectActivityReactor::onStatus out of range" << std::endl;
+        throw(Fwk::RangeException("InjectActivityReactor"));
     }
 
 }
