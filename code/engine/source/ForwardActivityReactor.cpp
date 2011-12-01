@@ -1,9 +1,9 @@
 /*
- * ForwardActivityReactor.cpp
- *
- *  Created on: Nov 22, 2011
- *      Author: per
- */
+* ForwardActivityReactor.cpp
+*
+*  Created on: Nov 22, 2011
+*      Author: per
+*/
 
 #include "ForwardActivityReactor.h"
 #include "Shipment.h"
@@ -13,27 +13,28 @@ using namespace Shipping;
 
 
 ForwardActivityReactor::ForwardActivityReactor(
-        const std::string &_name,
-        Fwk::Ptr<Fwk::Activity::Manager> _manager,
-        Fwk::Activity* _activity,
-        Fleet::PtrConst _fleet,
-        Segment::Ptr _segment,
-        Shipment::Ptr _shipment,
-        PackageCount _quededPackages) :
-        Notifiee(_name,_activity),
-        manager_(_manager),
-        activity_(_activity),
-        fleet_(_fleet),
-        segment_(_segment),
-        shipment_(_shipment),
-        activePackages_(0),
-        queuedPackages_(_quededPackages)
+    const std::string &_name,
+    Fwk::Ptr<Fwk::Activity::Manager> _manager,
+    Fwk::Activity* _activity,
+    Fleet::PtrConst _fleet,
+    Segment::Ptr _segment,
+    Shipment::Ptr _shipment,
+    PackageCount _quededPackages) :
+Notifiee(_name,_activity),
+    manager_(_manager),
+    activity_(_activity),
+    fleet_(_fleet),
+    segment_(_segment),
+    shipment_(_shipment),
+    activePackages_(0),
+    queuedPackages_(_quededPackages)
 {
 
 }
 
 void ForwardActivityReactor::onStatus() {
-    switch (activity_->status()) {
+    try {
+        switch (activity_->status()) {
         case Fwk::Activity::executing: {
             removeActivePackagesFromSegment();
             if (queuedPackages_ > 0 ){
@@ -50,13 +51,18 @@ void ForwardActivityReactor::onStatus() {
             addActivePackagesToSegment();
             forwardActivity();
             break;
-        }
+                                       }
         case Fwk::Activity::nextTimeScheduled:
             manager_->lastActivityIs(activity_);
             break;
         default: 
             std::cerr << "ForwardActivityReactor::onStatus() out of range" << std::endl;
             throw(Fwk::RangeException("ForwardActivityReactor::onStatus()"));
+        }
+    } // try
+    catch (Fwk::Exception e) {
+        std::cerr << "Exception in ForwardActivityReactor::onStatus(): " << e.what() << std::endl;
+        BaseNotifiee::onNotificationException();
     }
 }
 
@@ -71,14 +77,14 @@ void ForwardActivityReactor::removeActivePackagesFromSegment() {
 
 void ForwardActivityReactor::addActivePackagesToSegment() {
     PackageCount availableSegmentCapacity = segment_->capacity().value() -
-                                            segment_->activePackages().value();
+        segment_->activePackages().value();
     PackageCount availableVehicleCapacity = fleet_->capacity(
-            segTypeToFleetVehicle(segment_->type())
-         );
+        segTypeToFleetVehicle(segment_->type())
+        );
 
     PackageCount availableCapacity =
-            availableVehicleCapacity <  availableSegmentCapacity ?
-                    availableVehicleCapacity : availableSegmentCapacity;
+        availableVehicleCapacity <  availableSegmentCapacity ?
+availableVehicleCapacity : availableSegmentCapacity;
 
     if (shipment_->waitingPackages() > availableCapacity) {
         segment_->activePackageInc(availableCapacity);
@@ -102,8 +108,8 @@ void ForwardActivityReactor::forwardActivity() {
 };
 
 Fleet::Vehicle ForwardActivityReactor::segTypeToFleetVehicle(
-        Segment::SegmentType st) {
-    switch(st){
+    Segment::SegmentType st) {
+        switch(st){
         case Segment::boatSegment_:
             return Fleet::boat();
         case Segment::planeSegment_:
@@ -112,5 +118,5 @@ Fleet::Vehicle ForwardActivityReactor::segTypeToFleetVehicle(
             return Fleet::truck();
         default:
             return Fleet::undefined();
-    }
+        }
 };
