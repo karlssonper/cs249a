@@ -8,25 +8,26 @@
 #include "Stats.h"
 #include "Debug.h"
 #include "Engine.h"
+#include "Exception.h"
 
 using namespace Shipping;
 
 Stats::Stats(std::string & _name, 
-             const EngineManager * _owner,
-             EntityManager  * _notifier) :
-             EntityManager::Notifiee(_name, _notifier), 
-             owner_(_owner),
-             customerCount_(0),
-             portCount_(0),
-             boatTerminalCount_(0),
-             planeTerminalCount_(0),
-             truckTerminalCount_(0),
-             truckSegmentCount_(0),
-             boatSegmentCount_(0),
-             planeSegmentCount_(0),
-             totalSegmentCount_(0),
-             expeditedSupportCount_(0),
-             expeditedPercentage_(0.0) {
+    const EngineManager * _owner,
+    EntityManager  * _notifier) :
+EntityManager::Notifiee(_name, _notifier), 
+    owner_(_owner),
+    customerCount_(0),
+    portCount_(0),
+    boatTerminalCount_(0),
+    planeTerminalCount_(0),
+    truckTerminalCount_(0),
+    truckSegmentCount_(0),
+    boatSegmentCount_(0),
+    planeSegmentCount_(0),
+    totalSegmentCount_(0),
+    expeditedSupportCount_(0),
+    expeditedPercentage_(0.0) {
         FWK_DEBUG("Stats constructor with name " << _name);
 
 }
@@ -36,6 +37,10 @@ Stats::Ptr Stats::StatsNew(std::string _name,
     EntityManager * _entityManager) {
         FWK_DEBUG("Stats::StatsNew with name " << _name);
         Ptr p = new Stats(_name, _owner, _entityManager);
+        if (!p) {
+            cerr << "StatsNew new() failed" << endl;
+            throw(Fwk::MemoryException("Stats::StatsNew"));
+        }
         return p;
 };
 
@@ -45,6 +50,7 @@ Stats::~Stats() {
 
 void Stats::onSegmentNew(Segment::PtrConst _p) {
     FWK_DEBUG("Stats::onSegmentNew(" << _p->name() << ")");
+
     if (_p->type() == Segment::boatSegment()) {
         boatSegmentCount_++;
     } else if (_p->type() == Segment::truckSegment()) {
@@ -56,6 +62,7 @@ void Stats::onSegmentNew(Segment::PtrConst _p) {
     if (_p->expediteSupport() == Segment::fullExpediteSupport()) {
         expeditedSupportCount_++;
     }
+
     totalSegmentCount_++;
     updateExpPercentage();
 }
@@ -75,6 +82,7 @@ void Stats::onSegmentDel(Segment::PtrConst _p) {
     if (_p->expediteSupport() == Segment::fullExpediteSupport()) {
         expeditedSupportCount_--;
     };
+
     totalSegmentCount_--;
     updateExpPercentage();
 }
