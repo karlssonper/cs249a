@@ -28,9 +28,9 @@ namespace Shipping {
         virtual void lastActivityIs(Fwk::Activity::Ptr activity);
 
         void realTimeActivityManagerIs(Fwk::Ptr<RealTimeActivityManager>);
+        static long unsigned int activityIndex() { return idx; };
     protected:
         VirtualTimeActivityManager(const std::string &_name);
-
         std::priority_queue<Fwk::Activity::Ptr,
                             std::vector<Fwk::Activity::Ptr>,
                             Fwk::Activity::Comp> scheduledActivities_;
@@ -38,6 +38,9 @@ namespace Shipping {
         Fwk::Time now_;
         Fwk::Time simulationEnd_;
         Fwk::Ptr<RealTimeActivityManager> realTimeActMgr_;
+        static long unsigned int idx;
     };
 }
+
+
 #endif

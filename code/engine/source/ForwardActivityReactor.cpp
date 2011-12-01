@@ -18,14 +18,16 @@ ForwardActivityReactor::ForwardActivityReactor(
         Fwk::Activity* _activity,
         Fleet::PtrConst _fleet,
         Segment::Ptr _segment,
-        Shipment::Ptr _shipment) :
+        Shipment::Ptr _shipment,
+        PackageCount _quededPackages) :
         Notifiee(_name,_activity),
         manager_(_manager),
         activity_(_activity),
         fleet_(_fleet),
         segment_(_segment),
         shipment_(_shipment),
-        activePackages_(0)
+        activePackages_(0),
+        queuedPackages_(_quededPackages)
 {
 
 }
@@ -34,6 +36,10 @@ void ForwardActivityReactor::onStatus() {
     switch (activity_->status()) {
         case Fwk::Activity::executing: {
             removeActivePackagesFromSegment();
+            if (queuedPackages_ > 0 ){
+                shipment_->queuedPackagesDec(queuedPackages_);
+                queuedPackages_ = 0;
+            }
             if (shipment_->waitingPackages().value() == 0){
                 segment_->shipmentDeq();
 

@@ -23,3 +23,19 @@ void Shipment::transferedPackagesInc(PackageCount p)
         transfered_ = 0;
     }
 }
+
+void Shipment::queuedPackagesInc(PackageCount p)
+{
+    queued_ = queued_.value() + p.value();
+    if (queued_ > waitingPackages()){
+        //error
+    }
+}
+
+void Shipment::queuedPackagesDec(PackageCount p)
+{
+    queued_ = queued_.value() - p.value();
+    if (queued_ < 0){
+        //error
+    }
+}

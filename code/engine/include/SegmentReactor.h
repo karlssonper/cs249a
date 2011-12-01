@@ -10,6 +10,7 @@
 
 #include "Segment.h"
 #include "Ptr.h"
+#include "Fleet.h"
 
 namespace Shipping {
 class VirtualTimeActivityManager;
@@ -35,6 +36,9 @@ protected:
     Segment * owner_;
     Fwk::Ptr<VirtualTimeActivityManager> activityManager_;
     Fwk::Ptr<Fleet const> fleet_;
+    void createActivity(Fwk::Ptr<Shipment>);
+    void addShipmentFromQueue();
+    Fleet::Vehicle segTypeToFleetVehicle(Segment::SegmentType);
 };
 };
 #endif /* SEGMENTREACTOR_H_ */

@@ -40,7 +40,7 @@ namespace Shipping {
         virtual void lastActivityIs(Fwk::Activity::Ptr activity);
         void virtualTimeActivityManagerIs(Fwk::Ptr<VirtualTimeActivityManager>);
         Fwk::Ptr<VirtualTimeActivityManager> virtualTimeActivityManager();
-
+        static long unsigned int activityIndex() { return idx; };
     protected:
         RealTimeActivityManager(const std::string &_name);
         RealTimeActivityManager();
@@ -53,6 +53,7 @@ namespace Shipping {
         Fwk::Time now_;
         TimeScale scale_;
         Fwk::Ptr<VirtualTimeActivityManager> virtualTimeActMgr_;
+        static long unsigned int idx;
     };
 }
 #endif

@@ -22,7 +22,8 @@ public:
                            Fwk::Activity*,
                            Fwk::Ptr<Fleet const>,
                            Fwk::Ptr<Segment> ,
-                           Fwk::Ptr<Shipment>);
+                           Fwk::Ptr<Shipment>,
+                           PackageCount);
     virtual void onStatus();
 protected:
        Fwk::Activity::Ptr activity_;
@@ -31,6 +32,7 @@ protected:
        Fwk::Ptr<Shipment> shipment_;
        Fwk::Ptr<Segment> segment_;
        PackageCount activePackages_;
+       PackageCount queuedPackages_;
        void removeActivePackagesFromSegment();
        void addActivePackagesToSegment();
        void forwardActivity();

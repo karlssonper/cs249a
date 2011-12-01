@@ -2,6 +2,7 @@
 #include "VirtualTimeActivityManager.h"
 
 using namespace Shipping;
+long unsigned int RealTimeActivityManager::idx = 0;
 Fwk::Activity::Ptr RealTimeActivityManager::activityNew(const string &_name) {
     Fwk::Activity::Ptr activity = activities_[_name];
     if (activity != NULL) {
@@ -34,10 +35,7 @@ Fwk::Activity::Ptr RealTimeActivityManager::activity(const string &_name) const 
 }
 
 void RealTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
-    //scheduledActivities_.push(_activity);
-
-    //CREATE ACTIVITY AND REAL TIME ACTIVITY REACTOR
-    //QUEUE
+    scheduledActivities_.push(_activity);
 }
 
 void RealTimeActivityManager::activityDel(const string &_name) {

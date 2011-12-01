@@ -1,8 +1,10 @@
 #include "VirtualTimeActivityManager.h"
 #include "RealTimeActivityManager.h"
 #include "RealTimeActivityReactor.h"
+#include <sstream>
 
 using namespace Shipping;
+long unsigned int VirtualTimeActivityManager::idx = 0;
 Fwk::Activity::Ptr VirtualTimeActivityManager::activityNew(const string &_name) {
     Fwk::Activity::Ptr activity = activities_[_name];
     if (activity != NULL) {
@@ -28,15 +30,17 @@ void VirtualTimeActivityManager::activityDel(const string &_name) {
 
 void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
     scheduledActivities_.push(_activity);
+    ++idx;
 
-    Fwk::Activity::Ptr realTimeActivity = realTimeActMgr_->activityNew("lol");
+    std::stringstream ss;
+    ss << "RealTimeActivity" << VirtualTimeActivityManager::activityIndex();
+    Fwk::Activity::Ptr realTimeActivity = realTimeActMgr_->activityNew(ss.str());
     Fwk::Time nextTime =
             _activity->nextTime().value() * realTimeActMgr_->scale().value();
     realTimeActivity->nextTimeIs(nextTime);
-    string s;
     realTimeActivity->lastNotifieeIs(
             new RealTimeActivityReactor(
-                s,
+                ss.str() + std::string("Reactor"),
                 realTimeActivity.ptr(),
                 this,
                 _activity->nextTime()
