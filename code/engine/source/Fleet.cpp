@@ -1,15 +1,8 @@
-/*
- * Fleet.cpp
- *
- *  Created on: Nov 4, 2011
- *      Author: per
- */
-
 #include "Fleet.h"
 #include "Debug.h"
+#include "Exception.h"
 
 using std::string;
-
 using namespace Shipping;
 
 Fleet::Fleet(const string &_name) : Fwk::NamedInterface(_name) {
@@ -23,20 +16,27 @@ Fleet::~Fleet(){
 Fleet::Ptr Fleet::FleetNew(const string &_name) {
     FWK_DEBUG("Fleet::FleetNew with name " << _name);
     Fleet::Ptr p = new Fleet(_name);
+    if (!p) {
+        std::cerr << "Fleet::FleetNew new() failed" << std::endl;
+        throw(Fwk::MemoryException("Fleet::FleetNew"));
+    }
     return p;
 }
 
 void Fleet::speedIs(Vehicle _vehicle, MilesPerHour _speed) {
     FWK_DEBUG("Fleet::speedIs on" << name());
+    if (vehicleData_[_vehicle].speed_ == _speed) return;
     vehicleData_[_vehicle].speed_ = _speed;
 }
 
 void Fleet::costIs(Vehicle _vehicle, DollarsPerMile _cost) {
     FWK_DEBUG("Fleet::costIs on" << name());
+    if (vehicleData_[_vehicle].cost_ == _cost) return;
     vehicleData_[_vehicle].cost_ = _cost;
 }
 
 void Fleet::capacityIs(Vehicle _vehicle, PackageCount _capacity) {
     FWK_DEBUG("Fleet::capacityIs on" << name());
+    if (vehicleData_[_vehicle].capacity_ == _capacity) return;
     vehicleData_[_vehicle].capacity_ = _capacity;
 }
