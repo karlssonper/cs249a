@@ -26,7 +26,7 @@ private:
     ConnRep(const ConnRep&);
     Ptr<EngineManager> engineManager_;
     string pathStr(Ptr<const Path>);
-    static inline string notFound() { return string("\n");};
+    //static inline string notFound() { return string("\n");};
 };
 
 };//end namespace

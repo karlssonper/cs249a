@@ -11,6 +11,7 @@
 #include "Debug.h"
 #include <sstream>
 #include "OutputFloatingPoint.h"
+#include "Exception.h"
 
 using namespace Shipping;
 using namespace std;
@@ -48,7 +49,7 @@ void FleetRep::attributeIs(const string& name, const string& _v) {
     FleetRep::FleetAttribute fleetAttribute = parseFleetAttribute(name);
     if (fleetAttribute.vehicle == Fleet::undefined()) {
         cerr << "FleetRep::attributeIs: Undefined Fleet type." << endl;
-        return;
+        throw(Fwk::UnknownArgException("FleetRep::attributeIs"));
     } else if (fleetAttribute.prop == "speed" ) {
         float speed = atof(_v.c_str());
         MilesPerHour mph(speed);
@@ -63,6 +64,8 @@ void FleetRep::attributeIs(const string& name, const string& _v) {
         engineManager_->fleet()->capacityIs(fleetAttribute.vehicle, pc);
     } else {
         cerr << "FleetRep error: Invalid property." << endl;
+        throw(Fwk::UnknownArgException("FleetRep::attributeIs"));
+
     }
 }
 
@@ -80,8 +83,8 @@ FleetRep::FleetAttribute FleetRep::parseFleetAttribute(const string & attributeN
     } else if (mode == "Plane") {
         fleetAttribute.vehicle = Fleet::plane();
     } else {
-        cerr << "FleetRep error: Invalid vehicle. Returning Truck to prevent crashing." << endl;
-        fleetAttribute.vehicle = Fleet::undefined();
+        cerr << "FleetRep error: " << attributeName << " is an invalid vehicle" << endl;
+        throw(Fwk::RangeException("FleetRep::parseFleetAttribute"));
     }
     return fleetAttribute;
 };

@@ -1,5 +1,7 @@
 #include "Instance.h"
 #include "ManagerImpl.h"
+#include "Exception.h"
+#include <iostream>
 /*
 * This is the entry point for your library.
 * The client program will call this function to get a handle
@@ -9,6 +11,11 @@
 */
 Ptr<Instance::Manager> shippingInstanceManager() {
     // hardwired name since Instance.h cannot be changed
-    return new Shipping::ManagerImpl("engMgr");
+    Ptr<Instance::Manager> p = new Shipping::ManagerImpl("engMgr");
+    if (!p) {
+        std::cerr << "shippingInstanceManager new() failed" << std::endl;
+        throw(Fwk::MemoryException("shippingInstanceManager"));
+    }
+    return p;
 };
 

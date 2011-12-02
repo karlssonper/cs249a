@@ -1,10 +1,3 @@
-/*
-* ConnRep.cpp
-*
-*  Created on: Nov 4, 2011
-*      Author: per
-*/
-
 #include "ConnRep.h"
 #include "Engine.h"
 #include "Debug.h"
@@ -12,6 +5,8 @@
 #include <algorithm>
 #include <iterator>
 #include "OutputFloatingPoint.h"
+
+#include "Exception.h"
 
 using namespace std;
 using namespace Shipping;
@@ -32,6 +27,7 @@ string ConnRep::attribute(const string& attributeName) {
     istringstream iss(attributeName);
     copy(std::istream_iterator<string>(iss), istream_iterator<string>(),
         back_inserter<deque<string> >(parseWords) );
+
     if (parseWords.front() == "explore"){
         parseWords.pop_front();
         string locStr = parseWords.front();
@@ -55,6 +51,9 @@ string ConnRep::attribute(const string& attributeName) {
                 exploreData.timeIs(Hours(atof(v.c_str())));
             } else if (att == "expedited") {
                 exploreData.expeditedIs(Segment::fullExpediteSupport());
+            } else {
+                std::cerr << "ConnRep::attribute; \'" << att << "\n is an unknown attribute" << std::endl;
+                throw(Fwk::UnknownArgException("ConnRep::attribute"));
             }
         }
         if (PathTree::PtrConst pathTree =  engineManager_->conn()->explore(locStr,exploreData)){
@@ -63,8 +62,9 @@ string ConnRep::attribute(const string& attributeName) {
                 output += pathStr((*it).ptr());
             }
         } else {
-            FWK_DEBUG("ConnRep::attribute: " << locStr << " is not a valid Connectivity item.");
-            return notFound();
+            cerr << "ConnRep::attribute: " << locStr << " is not a valid Connectivity item." << endl;
+            throw(Fwk::TypeMismatchException("ConnRep::attribute"));
+            //return notFound();
         }
     } else if (parseWords.front() == "connect") {
 
@@ -72,42 +72,50 @@ string ConnRep::attribute(const string& attributeName) {
         string loc0Str = parseWords.front();
         if (engineManager_->entityManager()->location(loc0Str) == NULL) {
             cerr << "ConnRep::attribute: " << loc0Str << " not found." << endl;
-            return notFound();
+            throw(Fwk::EntityNotFoundException("ConnRep::attribute"));
+            //return notFound();
         }
         if (parseWords.empty()) {
             cerr <<"ConnRep::attribute: connect: unexpected end of attribute string." << endl;
-            return notFound();
+            throw(Fwk::UnknownArgException("ConnRep::attribute"));
+            //return notFound();
         }
         parseWords.pop_front();
         if (parseWords.empty() || parseWords.front() != ":") {
             cerr << "ConnRep::attribute: connect: " << "expected \":\"" << endl;
-            return notFound();
+            throw(Fwk::UnknownArgException("ConnRep::attribute"));
+            //return notFound();
         }
         parseWords.pop_front(); // ':'
         if (parseWords.empty()) {
             cerr <<"ConnRep::attribute: connect: unexpected end of attribute string." << endl;
-            return notFound();
+            throw(Fwk::UnknownArgException("ConnRep::attribute"));
+            //return notFound();
         }
         string loc1Str = parseWords.front();
         if (engineManager_->entityManager()->location(loc1Str) == NULL) {
             cerr << "ConnRep::attribute: connect: " << loc1Str << " not found." << endl;
-            return notFound();
+            throw(Fwk::EntityNotFoundException("ConnRep::attribute"));
+           // return notFound();
         }
         parseWords.pop_front(); // to check that the string isn't TOO LONG
         if (!parseWords.empty()) {
             cerr <<"ConnRep::attribute: connect: attribute string too long." << endl;
-            return notFound();
+            throw(Fwk::UnknownArgException("Connrep::attribute"));
+            //return notFound();
         }
 
         FWK_DEBUG("ConnRep::attribute: connect: Checking " << loc0Str);
         if (engineManager_->entityManager()->location(loc0Str) == NULL) {
             FWK_DEBUG("ConnRep::attribute: connect: " << loc0Str << " not found");
-            return notFound();
+            throw(Fwk::EntityNotFoundException("ConnRep::attribute"));
+            //return notFound();
         }
         FWK_DEBUG("ConnRep::attribute: connect: Checking " << loc1Str);
         if (engineManager_->entityManager()->location(loc1Str) == NULL) {
             FWK_DEBUG("ConnRep::attribute: connect: " << loc1Str << " not found");
-            return notFound();
+            throw(Fwk::EntityNotFoundException("ConnRep::attribute"));
+            //return notFound();
         }
 
         if (PathTree::PtrConst pathTree = engineManager_->conn()->connect(loc0Str, loc1Str)){
@@ -120,11 +128,11 @@ string ConnRep::attribute(const string& attributeName) {
                 output += ss.str() + pathStr((*it).ptr());
             }
         } else { // no connection found
-            return notFound();
+            return "";
         }
     } else {
         cerr << "ConnRep::attribute: " << parseWords.front() << " invalid attribute." << endl;
-        return notFound();
+        throw(Fwk::UnknownArgException("ConnRep::attribute"));
     }
     return output;
 };

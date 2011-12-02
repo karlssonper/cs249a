@@ -16,6 +16,7 @@ namespace Fwk {
             memoryException_,
             entityNotFoundException_,
             typeMismatchException_,
+            unknownArgException_,
         };
         std::string what() const { return what_; }
         virtual ~Exception() {}
@@ -55,6 +56,12 @@ namespace Fwk {
     public:
         TypeMismatchException(const std::string &_what) : Exception(_what) {}
         virtual Id id() { return Exception::typeMismatchException_; }
+    };
+
+    class UnknownArgException : public Exception {
+    public:
+        UnknownArgException(const std::string &_what) : Exception(_what) {}
+        virtual Id Id() { return Exception::unknownArgException_; }
     };
 
 }
