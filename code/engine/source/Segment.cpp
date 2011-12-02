@@ -126,12 +126,12 @@ void Segment::expediteSupportIs(ExpediteSupport _expediteSupport) {
 
 void Segment::recievedShipmentsInc() {
     FWK_DEBUG("Segment::recievdShipmentsInc");
-    recievedShipments_++;
+    ++recievedShipments_;
 }
 
 void Segment::refusedShipmentsInc() {
     FWK_DEBUG("Segment::refusedShipmentsInc");
-    refusedShipments_++;
+    ++refusedShipments_;
 }
 
 TruckSegment::TruckSegment(const string &_name,
