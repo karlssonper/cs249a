@@ -41,7 +41,7 @@ string LocationRep::attribute(const string& attributeName) {
     Location::PtrConst locPtr = engineManager_->entityManager()->location(name());
 
     if (locPtr == NULL) {
-        cerr << name() << " not a valid location (maybe deleted), returning empty string for " << attributeName << endl;
+        cerr << name() << " not found in LocationRep::attribute" << endl;
         return "";
     }
 

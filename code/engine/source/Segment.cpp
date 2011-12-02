@@ -124,6 +124,16 @@ void Segment::expediteSupportIs(ExpediteSupport _expediteSupport) {
     expediteSupport_ = _expediteSupport;
 }
 
+void Segment::recievedShipmentsInc() {
+    FWK_DEBUG("Segment::recievdShipmentsInc");
+    recievedShipments_++;
+}
+
+void Segment::refusedShipmentsInc() {
+    FWK_DEBUG("Segment::refusedShipmentsInc");
+    refusedShipments_++;
+}
+
 TruckSegment::TruckSegment(const string &_name,
         VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) :
         Segment(_name, truckSegment(), vtam, _fleet) {

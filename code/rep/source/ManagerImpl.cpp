@@ -6,6 +6,7 @@
 #include "FleetRep.h"
 #include "SegmentRep.h"
 #include "Debug.h"
+#include "Exception.h"
 
 using namespace Shipping;
 
@@ -24,40 +25,72 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
     FWK_DEBUG("ManagerImpl::instanceNew(" << _name << ", " << _type << ")");
 
     if (instance_.find(_name) != instance_.end()) {
-        cerr << "ManagerImpl::instanceNew: " << _name << " already exists, returning NULL" << endl;
-        return NULL;
+        cerr << "ManagerImpl::instanceNew: " << _name << " already exists" << endl;
+        throw(Fwk::NameInUseException("ManagerImpl::instanceNew"));
     }
 
     if (_type == "Customer") {
         Ptr<CustomerRep> p = new CustomerRep(_name, engineManager_);
+         if (!p) {
+            cerr << "ManagerImpl::instanceNew new() failed" << endl;
+            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+        }
         instance_[_name] = p;
         return p;
     } else if (_type == "Port") {
         Ptr<PortRep> p = new PortRep(_name, engineManager_);
+         if (!p) {
+            cerr << "ManagerImpl::instanceNew new() failed" << endl;
+            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+        }
         instance_[_name] = p;
         return p;
     } else if (_type == "Truck terminal") {
         Ptr<TruckTerminalRep> p = new TruckTerminalRep(_name, engineManager_);
+         if (!p) {
+            cerr << "ManagerImpl::instanceNew new() failed" << endl;
+            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+        }
         instance_[_name] = p;
         return p;       
     } else if (_type == "Boat terminal") {
         Ptr<BoatTerminalRep> p = new BoatTerminalRep(_name, engineManager_);
+         if (!p) {
+            cerr << "ManagerImpl::instanceNew new() failed" << endl;
+            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+        }
         instance_[_name] = p;
         return p;
     } else if (_type == "Plane terminal") {
         Ptr<PlaneTerminalRep> p = new PlaneTerminalRep(_name, engineManager_);
+         if (!p) {
+            cerr << "ManagerImpl::instanceNew new() failed" << endl;
+            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+        }
         instance_[_name] = p;
         return p;
     } else if (_type == "Truck segment" ){
         Ptr<TruckSegmentRep> p = new TruckSegmentRep(_name, engineManager_);
+         if (!p) {
+            cerr << "ManagerImpl::instanceNew new() failed" << endl;
+            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+        }
         instance_[_name] = p;
         return p;
     } else if (_type == "Boat segment") {
         Ptr<BoatSegmentRep> p = new BoatSegmentRep(_name, engineManager_);
+         if (!p) {
+            cerr << "ManagerImpl::instanceNew new() failed" << endl;
+            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+        }
         instance_[_name] = p;
         return p;
     } else if (_type == "Plane segment" ){
         Ptr<PlaneSegmentRep> p = new PlaneSegmentRep(_name, engineManager_);
+         if (!p) {
+            cerr << "ManagerImpl::instanceNew new() failed" << endl;
+            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+        }
         instance_[_name] = p;
         return p;
     } else if (_type == "Stats") {
@@ -65,6 +98,10 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
             return Ptr<StatsRep>(stats_);
         } else {
             Ptr<StatsRep> p = new StatsRep(_name, engineManager_);
+             if (!p) {
+            cerr << "ManagerImpl::instanceNew new() failed" << endl;
+            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+        }
             instance_[_name] = p;
             return p;
         }
@@ -73,6 +110,10 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
             return Ptr<ConnRep>(conn_);
         } else {
             Ptr<ConnRep> p = new ConnRep(_name, engineManager_);
+             if (!p) {
+            cerr << "ManagerImpl::instanceNew new() failed" << endl;
+            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+        }
             instance_[_name] = p;
             return p;
         }
@@ -81,13 +122,17 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
             return Ptr<FleetRep>(fleet_);
         } else {
             Ptr<FleetRep> p = new FleetRep(_name, engineManager_);
+             if (!p) {
+            cerr << "ManagerImpl::instanceNew new() failed" << endl;
+            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+        }
             instance_[_name] = p;
             return p;
         }
     }
 
     cerr << "ManagerImpl::instanceNew: " << _type << " is an invalid type, returning NULL." << endl;
-    return NULL;
+    throw(Fwk::UnknownArgException("ManagerImpl::instanceNew"));
 }
 
 void ManagerImpl::instanceDel(const string &_name) {

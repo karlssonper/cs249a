@@ -12,6 +12,7 @@
 #include "NamedInterface.h"
 #include "Utils.h"
 #include <deque>
+#include "Exception.h"
 
 #include "Shipment.h"
 
@@ -24,8 +25,8 @@ namespace Shipping {
         SegmentDifficulty(float value) : Ordinal<SegmentDifficulty, float>(value) {
             if (value < 1.0 || value > 5.0 )
             {
-                std:cerr << "SegmentDifficulty out of range, using default value (1.0) " << std::endl;
-                value = 1.0;
+                std:cerr << "SegmentDifficulty out of range" << std::endl;
+                throw(Fwk::RangeException("SegmentDifficulty"));
             }
         };
     };
@@ -66,6 +67,8 @@ namespace Shipping {
         SegmentType type() const { return type_; }
         PackageCount activePackages() const { return activePackages_;};
         PackageCount capacity() const { return capacity_;};
+        ShipmentCount recievedShipments() const { return recievedShipments_; }
+        ShipmentCount refusedShipments() const { return refusedShipments_; }
 
         // mutators
         void sourceIs(const string &_source);
@@ -76,6 +79,8 @@ namespace Shipping {
         void capacityIs(PackageCount c);
         void activePackageInc(PackageCount c);
         void activePackageDec(PackageCount c);
+        void recievedShipmentsInc();
+        void refusedShipmentsInc();
 
         void shipmentEnq(Shipment::Ptr);
         void shipmentDeq();
@@ -115,6 +120,8 @@ namespace Shipping {
         PackageCount activePackages_;
         ExpediteSupport expediteSupport_;
         SegmentType type_;
+        ShipmentCount recievedShipments_;
+        ShipmentCount refusedShipments_;
     };
 
     class TruckSegment : public Segment {

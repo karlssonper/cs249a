@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <sstream>
 #include "Debug.h"
+#include "Exception.h"
 #include "OutputFloatingPoint.h"
 
 using namespace std;
@@ -30,6 +31,10 @@ TruckSegmentRep::TruckSegmentRep(const string &_name, EngineManager::Ptr _engine
         TruckSegment::Ptr p = TruckSegment::TruckSegmentNew(_name,
                 _engineManager->virtualTimeActivityManager(),
                 _engineManager->fleet());
+        if (!p) {
+            std::cerr << "TruckSegmentRep new() failed" << std::endl;
+            throw(Fwk::MemoryException("TruckSegmentRep"));
+        }
         engineManager_->entityManager()->segmentIs(_name, p);
 }
 
@@ -43,6 +48,10 @@ BoatSegmentRep::BoatSegmentRep(const string &_name, Ptr<EngineManager> _engineMa
         BoatSegment::Ptr p = BoatSegment::BoatSegmentNew(_name,
                 _engineManager->virtualTimeActivityManager(),
                 _engineManager->fleet());
+        if (!p) {
+            std::cerr << "BoatSegmentRep new() failed" << std::endl;
+            throw(Fwk::MemoryException("BoatSegmentRep"));
+        }
         engineManager_->entityManager()->segmentIs(_name, p);
 }
 
@@ -56,6 +65,10 @@ PlaneSegmentRep::PlaneSegmentRep(const string &_name, Ptr<EngineManager> _engine
         PlaneSegment::Ptr p = PlaneSegment::PlaneSegmentNew(_name,
                 _engineManager->virtualTimeActivityManager(),
                 _engineManager->fleet());
+        if (!p) {
+            std::cerr << "PlaneSegmentRep new() failed" << std::endl;
+            throw(Fwk::MemoryException("PlaneSegmentRep"));
+        }
         engineManager_->entityManager()->segmentIs(_name, p);
 }
 
@@ -90,6 +103,15 @@ string SegmentRep::attribute(const string &_attributeName) {
         } else {
             return "no";
         }
+    } else if (_attributeName == "shipments recieved") {
+        s << fltPnt2str(engineManager_->entityManager()->segment(name())->recievedShipments().value());
+        return s.str();
+    } else if (_attributeName == "shipments refused") {
+        s << fltPnt2str(engineManager_->entityManager()->segment(name())->refusedShipments().value());
+        return s.str();
+    } else if (_attributeName == "capacity" ) {
+        s << fltPnt2str(engineManager_->entityManager()->segment(name())->capacity().value());
+        return s.str();
     } else {  
         cerr << "SegmentRep::attribute: SegmentRep error: " << _attributeName << " is an invalid attribute." << endl;
         return "";
@@ -101,8 +123,8 @@ void SegmentRep::attributeIs(const string &_name, const string &_v) {
     FWK_DEBUG("SegmentRep::attributeIs with name: " << _name << " and v: " << _v);
 
     if (engineManager_->entityManager()->segment(name()) == NULL) {
-        cerr << name() << " not a valid segment (maybe deleted), doing nothing";
-            return;
+        cerr << "SegmentRep::attributeIs: " << name() << " not found";
+        throw(Fwk::EntityNotFoundException("SegmentRep::attributeIs"));
     }
 
     if (_name == "source") {
@@ -127,6 +149,6 @@ void SegmentRep::attributeIs(const string &_name, const string &_v) {
         engineManager_->entityManager()->segmentExpediteSupportIs(name(),exp);
     } else {
         cerr << "SegmentRep error: " << _name << " is an invalid attribute name";
-        return;
+        throw(Fwk::UnknownArgException("SegmentRep::attributeIs"));
     }
 }
