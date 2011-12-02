@@ -62,7 +62,7 @@ void ForwardActivityReactor::onStatus() {
     } // try
     catch (Fwk::Exception e) {
         std::cerr << "Exception in ForwardActivityReactor::onStatus(): " << e.what() << std::endl;
-        BaseNotifiee::onNotificationException();
+        onNotificationException();
     }
 }
 

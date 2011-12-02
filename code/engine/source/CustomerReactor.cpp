@@ -79,7 +79,7 @@ void CustomerReactor::onAttributeUpdate() {
     } // try 
     catch(Fwk::Exception e) {
         std::cerr << "Exception in CustomerReactor::onAttributeUpdate(): " << e.what() << std::endl;
-        BaseNotifiee::onNotificationException();
+        onNotificationException();
     }
 }
 

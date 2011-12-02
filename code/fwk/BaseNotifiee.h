@@ -3,7 +3,7 @@
 
 #include "NamedInterface.h"
 #include "Debug.h"
-
+#include <stdlib.h>
 namespace Fwk {
 
     template<typename Notifier>
