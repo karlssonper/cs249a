@@ -20,8 +20,10 @@ SET(SOURCE source/Location
            source/RealTimeActivityManager
            source/RealTimeActivityReactor
            source/RouteTable
+           source/ShortestDistance
+           source/DjikstrasAlgorithm
            source/BreadthFirstSearch
-           source/DjikstrasAlgorithm)
+           )
 
 ADD_LIBRARY(engine_shared SHARED ${SOURCE})
 ADD_LIBRARY(engine STATIC ${SOURCE})

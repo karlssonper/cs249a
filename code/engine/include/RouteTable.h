@@ -18,14 +18,18 @@ using std::string;
 
 namespace Shipping {
 class Location;
+class Segment;
+class ShortestDistance;
+
 class RouteTable : public Fwk::PtrInterface<RouteTable>{
 public:
     enum Routing {
         breadthFirstSearch, djikstras
     };
-    RouteTable(Routing, map<string, Fwk::Ptr<Location const> > *);
+    RouteTable(Routing, map<string, Fwk::Ptr<Location const> > *
+            , map<string, Fwk::Ptr<Segment const> > *);
 private:
-    map<string, map<string, Fwk::Ptr<Location const> > > table_;
+    map<string,  Fwk::Ptr<ShortestDistance> > table_;
     RouteTable();
     RouteTable(const RouteTable & );
 };
