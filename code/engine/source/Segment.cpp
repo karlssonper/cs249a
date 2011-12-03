@@ -107,6 +107,12 @@ void Segment::lengthIs(Miles _length) {
     length_ = _length;
 }
 
+void Segment::capacityIs(ShipmentCount _capacity) {
+    FWK_DEBUG("Segment::capacityIs");
+    if (capacity_ == _capacity) return;
+    capacity_ = _capacity;
+}
+
 void Segment::returnSegmentIs(const string &_returnSegment) {
     FWK_DEBUG("Segment::returnSegmentIs " << _returnSegment);
     if (returnSegment_ == _returnSegment) return;

@@ -19,7 +19,7 @@ Location::~Location(){
 Location::OutSegmentIteratorConst Location::outSegmenterIterConst(const unsigned int n) const {
     if (n >= outSegment_.size()) FWK_DEBUG("ERROR outSegmenterIterConst(int n) where n > size");
     OutSegmentIteratorConst it = outSegment_.begin();
-    for (int i=0; i < n; ++i) it++;
+    for (unsigned int i=0; i < n; ++i) it++;
     return it;
 };
 

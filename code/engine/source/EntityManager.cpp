@@ -292,6 +292,32 @@ void EntityManager::segmentLengthIs(const string &_segmentName,
         }
 }
 
+void EntityManager::segmentCapacityIs(const string &_segmentName, ShipmentCount _capacity) {
+
+    map<string, Segment::Ptr>::iterator segIt = segment_.find(_segmentName);
+    if (segIt == segment_.end()) {
+        cerr << "EntityManager::segmentCapacityIs: " << _segmentName << " not found." << endl;
+        throw(Fwk::EntityNotFoundException("EntityManager::segmentCapacityIs"));
+    }
+
+    Segment::Ptr s = segIt->second;
+
+    if (s->capacity() == _capacity) {
+        FWK_DEBUG("EntityManager::segmentCapacityIs, " << _segmentName <<
+            " already has capacity " << _capacity.value());
+        return;
+    }
+
+    s->capacityIs(_capacity);
+
+    map<string, EntityManager::Notifiee::Ptr>::iterator i;
+    for (i=notifiee_.begin(); i!=notifiee_.end(); i++) {
+        FWK_DEBUG("EntityManager::segmentCapacityIs notifying " << i->second->name());
+        i->second->onSegmentUpdate(s.ptr());
+    }
+
+}
+
 void EntityManager::segmentExpediteSupportIs(const string &_segmentName,
     Segment::ExpediteSupport _exp) {
 
@@ -474,7 +500,7 @@ void EntityManager::customerTransferRateIs(const string &_customerName, Transfer
 }
 
 void EntityManager::customerShipmentSizeIs(const string &_customerName, PackageCount _shipmentSize) {
-     FWK_DEBUG("EntityManager::customerShipmentSizeIs on " << _customerName);
+    FWK_DEBUG("EntityManager::customerShipmentSizeIs on " << _customerName);
 
     map<string, Location::Ptr>::iterator it;
     it = location_.find(_customerName);
@@ -488,7 +514,7 @@ void EntityManager::customerShipmentSizeIs(const string &_customerName, PackageC
         throw(Fwk::TypeMismatchException("EntityManager::customerShipmentSizeIs"));
     }
 
-   Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
+    Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
     p->shipmentSizeIs(_shipmentSize);
     // note: notifiee is notified by the customer object itself
 }
@@ -552,7 +578,7 @@ void EntityManager::customerRecievedShipmentsInc(const string &_customerName) {
 }
 
 void EntityManager::customerAverageLatencyIs(const string &_customerName, Latency _averageLatency) {
-FWK_DEBUG("EntityManager::customerAverageLatencyIs on " << _customerName);
+    FWK_DEBUG("EntityManager::customerAverageLatencyIs on " << _customerName);
 
     map<string, Location::Ptr>::iterator it;
     it = location_.find(_customerName);
@@ -571,7 +597,7 @@ FWK_DEBUG("EntityManager::customerAverageLatencyIs on " << _customerName);
 }
 
 void EntityManager::customerTotalCostIs(const string &_customerName, Dollars _totalCost) {
-FWK_DEBUG("EntityManager::customerTotalCostIs on " << _customerName);
+    FWK_DEBUG("EntityManager::customerTotalCostIs on " << _customerName);
 
     map<string, Location::Ptr>::iterator it;
     it = location_.find(_customerName);

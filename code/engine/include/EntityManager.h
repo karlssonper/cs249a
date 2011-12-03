@@ -72,6 +72,7 @@ namespace Shipping {
         void segmentDifficultyIs(const string &_segmentName, SegmentDifficulty _sd);
         void segmentLengthIs(const string &_segmentName, Miles _length);
         void segmentExpediteSupportIs(const string &_segmentName,Segment::ExpediteSupport _exp);
+        void segmentCapacityIs(const string &_segmentName, ShipmentCount _capacity);
         void segmentShipmentEnq(const string & _segmentName, Fwk::Ptr<Shipment>);
         void segmentShipmentDeq(const string & _segmentName);
         void segmentPackageInc(const string & _segmentName, PackageCount pc);

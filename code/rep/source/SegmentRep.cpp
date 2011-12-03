@@ -139,6 +139,11 @@ void SegmentRep::attributeIs(const string &_name, const string &_v) {
         float diff = atof(_v.c_str());
         SegmentDifficulty d(diff);
         engineManager_->entityManager()->segmentDifficultyIs(name(),d);
+    } else if (_name == "capacity") {
+        float cap = atof(_v.c_str());
+        ShipmentCount c((int)cap);
+        engineManager_->entityManager()->segmentCapacityIs(name(), c);
+    
     } else if (_name == "expedite support") {
         Segment::ExpediteSupport exp;
         if (_v == "yes") {
@@ -148,7 +153,7 @@ void SegmentRep::attributeIs(const string &_name, const string &_v) {
         }
         engineManager_->entityManager()->segmentExpediteSupportIs(name(),exp);
     } else {
-        cerr << "SegmentRep error: " << _name << " is an invalid attribute name";
+        cerr << "SegmentRep::attributeIs error: " << _name << " is an invalid attribute name" << endl;
         throw(Fwk::UnknownArgException("SegmentRep::attributeIs"));
     }
 }

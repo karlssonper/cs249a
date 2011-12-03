@@ -66,7 +66,7 @@ namespace Shipping {
         ExpediteSupport expediteSupport() const { return expediteSupport_; }
         SegmentType type() const { return type_; }
         PackageCount activePackages() const { return activePackages_;};
-        PackageCount capacity() const { return capacity_;};
+        ShipmentCount capacity() const { return capacity_;};
         ShipmentCount recievedShipments() const { return recievedShipments_; }
         ShipmentCount refusedShipments() const { return refusedShipments_; }
 
@@ -76,7 +76,7 @@ namespace Shipping {
         void returnSegmentIs(const string &_returnSegment);
         void difficultyIs(SegmentDifficulty _difficulty) ;
         void expediteSupportIs(ExpediteSupport _expediteSupport);
-        void capacityIs(PackageCount c);
+        void capacityIs(ShipmentCount c);
         void activePackageInc(PackageCount c);
         void activePackageDec(PackageCount c);
         void recievedShipmentsInc();
@@ -116,7 +116,7 @@ namespace Shipping {
         Miles length_;
         string returnSegment_;
         SegmentDifficulty difficulty_;
-        PackageCount capacity_;
+        ShipmentCount capacity_;
         PackageCount activePackages_;
         ExpediteSupport expediteSupport_;
         SegmentType type_;
