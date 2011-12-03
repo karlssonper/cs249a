@@ -96,7 +96,12 @@ void SegmentReactor::addShipmentFromQueue() {
     PackageCount packages = owner_->activePackages();
     Segment::ShipmentIteratorConst it = owner_->shipmentIterConst();
     unsigned int i = 0;
-    while (packages < owner_->capacity() && i < owner_->shipments()) {
+    // owner (segment's) total package capacity is
+    // the segment's shipment capacity (nr of shipments)
+    // times the vehicles' capacity (nr of packages)
+    PackageCount vehicleCapacity = fleet_->capacity(segTypeToFleetVehicle(owner_->type()));
+    PackageCount totalCapacity = owner_->capacity().value() * vehicleCapacity.value();
+    while (packages < totalCapacity && i < owner_->shipments()) {
         if ((*it)->waitingPackages() != 0) {
             createActivity(*it);
             break;
