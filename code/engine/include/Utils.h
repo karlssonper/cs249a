@@ -14,7 +14,7 @@ namespace Shipping {
     public:
         Miles() : Ordinal<Miles, double>(1.0) {}
         Miles(double value) : Ordinal<Miles, double>(value) {
-            if (value < 0.0 || value > max().value()) {
+            if (value < 0.0) {
                 std::cerr << "Miles out of range" << std::endl;
                 throw(Fwk::RangeException("Miles"));
             }
@@ -26,7 +26,7 @@ namespace Shipping {
     public:
         MilesPerHour() : Ordinal<MilesPerHour, double>(1.0) {}
         MilesPerHour(double value) : Ordinal<MilesPerHour, double>(value) {
-            if (value < 0.0 || value > max().value())
+            if (value < 0.0)
             {
                 cerr << "MilesPerHour out of range" << endl;
                 throw(Fwk::RangeException("MilesPerHour"));
@@ -39,7 +39,7 @@ namespace Shipping {
     public:
         Dollars() : Ordinal<Dollars, double>(1.0) {}
         Dollars(double value) : Ordinal<Dollars, double>(value) {
-            if (value < 0.0 || value > max().value())
+            if (value < 0.0)
             {
                 cerr << "Dollars out of range" << std::endl;
                 throw(Fwk::RangeException("Dollars"));
@@ -52,7 +52,7 @@ namespace Shipping {
     public:
         Hours() : Ordinal<Hours, double>(1.0) {}
         Hours(double value) : Ordinal<Hours, double>(value) {
-            if (value < 0.0 || value > max().value())
+            if (value < 0.0)
             {
                 cerr << "Hours out of range, using default value (1.0)" << std::endl;
                 throw(Fwk::RangeException("Hours"));
@@ -65,7 +65,7 @@ namespace Shipping {
     public:
         DollarsPerMile() : Ordinal<DollarsPerMile, double>(1.f) {}
         DollarsPerMile(double value) : Ordinal<DollarsPerMile, double>(value) {
-            if (value < 0.0 || value > max().value())
+            if (value < 0.0)
             {
                 cerr << "DollarsPerMile out of range" << std::endl;
                 throw(Fwk::RangeException("DollarsPerMile"));
@@ -96,7 +96,7 @@ namespace Shipping {
     public:
         Latency() : Ordinal<Latency, double>(0.0) {}
         Latency(unsigned int value) : Ordinal<Latency, double>(value) {
-            if (value < 0.0 || value > max().value())
+            if (value < 0.0)
             {
                 cerr << "Latency out of range" << std::endl;
                 throw(Fwk::RangeException("Latency"));

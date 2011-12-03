@@ -65,11 +65,12 @@ void FleetRep::attributeIs(const string& name, const string& _v) {
     } else {
         cerr << "FleetRep error: Invalid property." << endl;
         throw(Fwk::UnknownArgException("FleetRep::attributeIs"));
-
     }
+    FWK_DEBUG("attributeIs done");
 }
 
 FleetRep::FleetAttribute FleetRep::parseFleetAttribute(const string & attributeName) {
+    FWK_DEBUG("parseFleetAttribute on " << attributeName);
     FleetRep::FleetAttribute fleetAttribute;
     string mode;
     size_t modeLength;

@@ -10,10 +10,11 @@ using namespace Shipping;
 
 Segment::Segment(const string &_name, SegmentType _st,
         VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) :
-Fwk::NamedInterface(_name),
+    Fwk::NamedInterface(_name),
     source_(""),
     returnSegment_(""),
     expediteSupport_(Segment::noExpediteSupport()),
+    capacity_(10),
     type_(_st) {
     FWK_DEBUG("Segment constructor with name " << _name);
     notifiee_ = SegmentReactor::SegmentReactorNew(_name +std::string("Reactor"),
