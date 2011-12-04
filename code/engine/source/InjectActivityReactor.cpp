@@ -48,6 +48,9 @@ void InjectActivityReactor::onStatus() {
     switch(activity_->status()) {
 
     case Fwk::Activity::executing:
+
+
+
         FWK_DEBUG(name() << " executing");
         FWK_DEBUG(name() << " d: " << destination_ << " sz: " << shipmentSize_.value() << " tr: " << transferRate_.value());
         break;
