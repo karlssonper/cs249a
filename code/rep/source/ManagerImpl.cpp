@@ -7,6 +7,7 @@
 #include "SegmentRep.h"
 #include "Debug.h"
 #include "Exception.h"
+#include "TimeManagerRep.h"
 
 using namespace Shipping;
 
@@ -31,7 +32,7 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
 
     if (_type == "Customer") {
         Ptr<CustomerRep> p = new CustomerRep(_name, engineManager_);
-         if (!p) {
+        if (!p) {
             cerr << "ManagerImpl::instanceNew new() failed" << endl;
             throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
         }
@@ -39,7 +40,7 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
         return p;
     } else if (_type == "Port") {
         Ptr<PortRep> p = new PortRep(_name, engineManager_);
-         if (!p) {
+        if (!p) {
             cerr << "ManagerImpl::instanceNew new() failed" << endl;
             throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
         }
@@ -47,7 +48,7 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
         return p;
     } else if (_type == "Truck terminal") {
         Ptr<TruckTerminalRep> p = new TruckTerminalRep(_name, engineManager_);
-         if (!p) {
+        if (!p) {
             cerr << "ManagerImpl::instanceNew new() failed" << endl;
             throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
         }
@@ -55,7 +56,7 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
         return p;       
     } else if (_type == "Boat terminal") {
         Ptr<BoatTerminalRep> p = new BoatTerminalRep(_name, engineManager_);
-         if (!p) {
+        if (!p) {
             cerr << "ManagerImpl::instanceNew new() failed" << endl;
             throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
         }
@@ -63,7 +64,7 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
         return p;
     } else if (_type == "Plane terminal") {
         Ptr<PlaneTerminalRep> p = new PlaneTerminalRep(_name, engineManager_);
-         if (!p) {
+        if (!p) {
             cerr << "ManagerImpl::instanceNew new() failed" << endl;
             throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
         }
@@ -71,7 +72,7 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
         return p;
     } else if (_type == "Truck segment" ){
         Ptr<TruckSegmentRep> p = new TruckSegmentRep(_name, engineManager_);
-         if (!p) {
+        if (!p) {
             cerr << "ManagerImpl::instanceNew new() failed" << endl;
             throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
         }
@@ -79,7 +80,7 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
         return p;
     } else if (_type == "Boat segment") {
         Ptr<BoatSegmentRep> p = new BoatSegmentRep(_name, engineManager_);
-         if (!p) {
+        if (!p) {
             cerr << "ManagerImpl::instanceNew new() failed" << endl;
             throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
         }
@@ -87,7 +88,7 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
         return p;
     } else if (_type == "Plane segment" ){
         Ptr<PlaneSegmentRep> p = new PlaneSegmentRep(_name, engineManager_);
-         if (!p) {
+        if (!p) {
             cerr << "ManagerImpl::instanceNew new() failed" << endl;
             throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
         }
@@ -98,11 +99,12 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
             return Ptr<StatsRep>(stats_);
         } else {
             Ptr<StatsRep> p = new StatsRep(_name, engineManager_);
-             if (!p) {
-            cerr << "ManagerImpl::instanceNew new() failed" << endl;
-            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
-        }
+            if (!p) {
+                cerr << "ManagerImpl::instanceNew new() failed" << endl;
+                throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+            }
             instance_[_name] = p;
+            stats_ = p.ptr();
             return p;
         }
     }  else if (_type == "Conn") {
@@ -110,11 +112,25 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
             return Ptr<ConnRep>(conn_);
         } else {
             Ptr<ConnRep> p = new ConnRep(_name, engineManager_);
-             if (!p) {
-            cerr << "ManagerImpl::instanceNew new() failed" << endl;
-            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
-        }
+            if (!p) {
+                cerr << "ManagerImpl::instanceNew new() failed" << endl;
+                throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+            }
             instance_[_name] = p;
+            conn_ = p.ptr();
+            return p;
+        }
+    } else if (_type == "Time manager") {
+        if (timeManager_) {
+            return Ptr<TimeManagerRep>(timeManager_);
+        } else {
+            Ptr<TimeManagerRep> p = new TimeManagerRep(_name, engineManager_);
+            if (!p) {
+                cerr << "ManagerImpl::instanceNew TimeManager new() failed" << endl;
+                throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+            }
+            instance_[_name] = p;
+            timeManager_ = p.ptr();
             return p;
         }
     } else if (_type == "Fleet") {
@@ -122,11 +138,12 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
             return Ptr<FleetRep>(fleet_);
         } else {
             Ptr<FleetRep> p = new FleetRep(_name, engineManager_);
-             if (!p) {
-            cerr << "ManagerImpl::instanceNew new() failed" << endl;
-            throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
-        }
+            if (!p) {
+                cerr << "ManagerImpl::instanceNew new() failed" << endl;
+                throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
+            }
             instance_[_name] = p;
+            fleet_ = p.ptr();
             return p;
         }
     }
