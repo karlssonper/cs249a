@@ -62,7 +62,7 @@ Customer::Customer(const string &_name, VirtualTimeActivityManager::Ptr vtAm)
         FWK_DEBUG("Customer constructor with name " << _name);
         string reactorName = _name;
         reactorName.append("Reactor");
-    CustomerReactor::Ptr p = CustomerReactor::CustomerReactorNew(reactorName,this, vtAm);
+    CustomerReactor::Ptr p = CustomerReactor::CustomerReactorNew(reactorName, this, vtAm);
     notifieeIs("unusedName",p);
 }
 
