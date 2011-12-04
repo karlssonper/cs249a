@@ -38,6 +38,8 @@ Fwk::NamedInterface(_name)
         RealTimeActivityManager::RealTimeActivityManagerNew(
         std::string("RealTimeActivityManager")
         );
+    virtualTimeActivityManager_->realTimeActivityManagerIs(realTimeActivityManager_);
+    realTimeActivityManager_->virtualTimeActivityManagerIs(virtualTimeActivityManager_);
 };
 
 void EngineManager::connIs(const std::string &_name) {
