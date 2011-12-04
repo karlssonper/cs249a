@@ -2,7 +2,7 @@
 #include "VirtualTimeActivityManager.h"
 #include "Exception.h"
 #include "Debug.h"
-#include <Dos.h>
+#include <windows.h>
 
 using namespace Shipping;
 long unsigned int RealTimeActivityManager::idx = 0;
@@ -68,7 +68,7 @@ void RealTimeActivityManager::nowIs(Fwk::Time t) {
 	    Fwk::Time diff = Fwk::Time(nextToRun->nextTime().value() - now_.value());
 	    
 	    //sleep 100ms (100,000 microseconds) for every unit of time
-	    sleep(( ((int)diff.value()) * 100000));
+	    Sleep(( ((int)diff.value()) * 1000));
 
         now_ = nextToRun->nextTime();
         scheduledActivities_.pop();

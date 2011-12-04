@@ -163,7 +163,7 @@ int main(int argc, char *argv[]) {
 
         conn->attributeIs("routing", "djikstras");
 
-        timeManager->attributeIs("time scale", "0.0000001");
+        timeManager->attributeIs("time scale", "0.0001");
         timeManager->attributeIs("simulation end", "100");
 
         std::cout << "Done!" << std::endl;
