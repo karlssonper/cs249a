@@ -9,7 +9,9 @@
 #include "ShortestDistance.h"
 #include "Location.h"
 #include <set>
+#include "Debug.h"
 using namespace Shipping;
+
 DjikstrasAlgorithm::DjikstrasAlgorithm(
         std::map<std::string, Location::PtrConst > * _graphLocation,
         std::map<std::string, Segment::PtrConst > * _graphSegment) :
@@ -71,8 +73,6 @@ ShortestDistance::Ptr DjikstrasAlgorithm::shortestDistance(
     }
 
     for (unsigned int i = 0; i < size; ++i) {
-        Miles lol = dist[i];
-        std::cout << lol.value() << std::endl;
         if (dist[i] == Miles::max() || dist[i] == 0) continue;
         std::string name = intToName[i];
 
@@ -83,7 +83,8 @@ ShortestDistance::Ptr DjikstrasAlgorithm::shortestDistance(
             p = prev[p->name()];
         }
         s->next[name] = old;
-        std::cout << "SOURCE: " << source << " DEST: " << name << " NEXT: " << old->name() << std::endl;
+        FWK_DEBUG("SOURCE: " << source << " DEST: " << name << " NEXT: " <<
+            old->name() << " DIST : " << dist[i].value());
     }
 
     return s;
