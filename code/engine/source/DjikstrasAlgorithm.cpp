@@ -44,9 +44,9 @@ ShortestDistance::Ptr DjikstrasAlgorithm::shortestDistance(
     while (!Q.empty()) {
         Miles minDist = Miles::max();
         unsigned int u;
-        for (unsigned int i = 0; i < size; ++i) {
-            if (dist[i] < minDist) {
-                u = i;
+        for (std::set<unsigned int>::iterator it = Q.begin(); it != Q.end(); ++it) {
+            if (dist[*it] < minDist) {
+                u = *it;
                 minDist = dist[u];
             }
         }
@@ -58,7 +58,7 @@ ShortestDistance::Ptr DjikstrasAlgorithm::shortestDistance(
         for (unsigned int i = 0; i < outSegs; ++i, ++it) {
             std::string returnStr = (*it)->returnSegment();
             std::string neighborLocStr =
-                    graphSegment_->operator [](returnStr)->name();
+                    graphSegment_->operator [](returnStr)->source();
             if (graphLocation_->find(neighborLocStr) !=graphLocation_->end() ) {
                 Miles alt = dist[u].value() + (*it)->length().value();
                unsigned int v = nameToInt[neighborLocStr];
@@ -70,8 +70,10 @@ ShortestDistance::Ptr DjikstrasAlgorithm::shortestDistance(
         }
     }
 
-    for (unsigned int i = 0; i < size; ++i, ++it) {
-        if (dist[i] == Miles::max()) continue;
+    for (unsigned int i = 0; i < size; ++i) {
+        Miles lol = dist[i];
+        std::cout << lol.value() << std::endl;
+        if (dist[i] == Miles::max() || dist[i] == 0) continue;
         std::string name = intToName[i];
 
         Location::PtrConst p = prev[name];
