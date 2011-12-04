@@ -36,7 +36,7 @@ namespace Shipping {
         virtual void activityDel(const string& name);
         virtual Fwk::Time now() const { return now_; }
         TimeScale scale() const { return scale_ ;};
-        void scaleIs();
+        void scaleIs(TimeScale);
         virtual void nowIs(Fwk::Time time);
         virtual void lastActivityIs(Fwk::Activity::Ptr activity);
         void virtualTimeActivityManagerIs(Fwk::Ptr<VirtualTimeActivityManager>);

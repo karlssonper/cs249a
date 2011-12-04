@@ -11,7 +11,8 @@ SET(SOURCE source/Instance
            source/SegmentRep
            source/StatsRep
            source/ConnRep
-           source/FleetRep)
+           source/FleetRep
+           source/TimeManagerRep)
 
 ADD_LIBRARY(rep STATIC ${SOURCE})
 ADD_LIBRARY(rep_shared SHARED ${SOURCE})

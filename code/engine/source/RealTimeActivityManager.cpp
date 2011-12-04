@@ -67,6 +67,11 @@ void RealTimeActivityManager::nowIs(Fwk::Time t) {
     now_ = t;
 }
 
+void RealTimeActivityManager::scaleIs(TimeScale ts) {
+    if (ts != scale_)
+        scale_ = ts;
+};
+
 void RealTimeActivityManager::virtualTimeActivityManagerIs(
         VirtualTimeActivityManager::Ptr _virtualTimeActMgr) {
     virtualTimeActMgr_ = _virtualTimeActMgr;
