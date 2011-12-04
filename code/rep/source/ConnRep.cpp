@@ -130,6 +130,12 @@ string ConnRep::attribute(const string& attributeName) {
         } else { // no connection found
             return "";
         }
+    } else if(parseWords.front() == "routing") {
+        if (engineManager_->conn()->routing() == Conn::djikstras) {
+            output = std::string("djikstra's algorithm");
+        } else  if (engineManager_->conn()->routing() == Conn::breadthFirstSearch) {
+            output = std::string("breadth first search");
+        }
     } else {
         cerr << "ConnRep::attribute: " << parseWords.front() << " invalid attribute." << endl;
         throw(Fwk::UnknownArgException("ConnRep::attribute"));
@@ -137,9 +143,17 @@ string ConnRep::attribute(const string& attributeName) {
     return output;
 };
 
-// not actually implemented since it's read-only
 void ConnRep::attributeIs(const string& name, const string& v) {
     FWK_DEBUG("ConnRep::attributeIs with name: " << name << " and v: " << v);
+
+    if (name != std::string("routing")) return;
+    if (v == std::string("djikstras")) {
+        engineManager_->conn()->routingIs(Conn::djikstras);
+    } else if (v == std::string ("bfs")) {
+        engineManager_->conn()->routingIs(Conn::breadthFirstSearch);
+    } else {
+        //error
+    }
 };
 
 string ConnRep::pathStr(Path::PtrConst p) {
