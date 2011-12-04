@@ -10,6 +10,7 @@ namespace Shipping {
 
     class VirtualTimeActivityManager;
     class FleetChangeActivityReactor;
+
     class FleetReactor : public Fleet::Notifiee {
     public:
         typedef Fwk::Ptr<FleetReactor const> PtrConst;
@@ -22,14 +23,18 @@ namespace Shipping {
         static Status notActive() { return notActive_; }
         static Status active() { return active_; }
 
-        static Ptr FleetReactorNew(const string *_name, Fleet *_notifier);
-        ~FleetReactor();
+        static Ptr FleetReactorNew(const string &_name, 
+                                   Fleet *_notifier,
+                                   Fwk::Ptr<VirtualTimeActivityManager> _vtam);
+        ~FleetReactor() {}
 
         virtual void onTimeChange();
         
     protected:
         Status status_;
-        FleetReactor(const string* _name, Fleet *_notifier);
+        FleetReactor(const string &_name,
+                     Fleet *_notifier,
+                     Fwk::Ptr<VirtualTimeActivityManager> _vtam);
         FleetReactor();
         FleetReactor(const FleetReactor&);
         Fwk::Ptr<Fwk::Activity> activity1_;

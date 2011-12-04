@@ -1,9 +1,9 @@
 /*
- * FleetRep.cpp
- *
- *  Created on: Nov 4, 2011
- *      Author: per
- */
+* FleetRep.cpp
+*
+*  Created on: Nov 4, 2011
+*      Author: per
+*/
 
 #include "FleetRep.h"
 #include "Engine.h"
@@ -18,7 +18,7 @@ using namespace std;
 
 FleetRep::FleetRep(const string& _name, EngineManager::Ptr _engineManager)
     : DeletableInstance(_name), engineManager_(_engineManager) {
-    FWK_DEBUG("FleetRep::FleetRep with _name: " << _name);
+        FWK_DEBUG("FleetRep::FleetRep with _name: " << _name);
 }
 
 FleetRep::~FleetRep(){
@@ -32,11 +32,26 @@ string FleetRep::attribute(const string& attributeName) {
     if (fleetAttribute.prop == "speed" ) {
         s << fltPnt2str(engineManager_->fleet()->speed(fleetAttribute.vehicle).value());
         return s.str();
+    } else if (fleetAttribute.prop == "speedAlt") {
+        s << fltPnt2str(engineManager_->fleet()->speedBuffer(fleetAttribute.vehicle).value());
+        return s.str();
     } else if (fleetAttribute.prop == "cost") {
         s << fltPnt2str(engineManager_->fleet()->cost(fleetAttribute.vehicle).value());
         return s.str();
+    } else if (fleetAttribute.prop == "costAlt") {
+        s << fltPnt2str(engineManager_->fleet()->costBuffer(fleetAttribute.vehicle).value());
+        return s.str();
     } else if (fleetAttribute.prop == "capacity") {
         s << fltPnt2str(engineManager_->fleet()->capacity(fleetAttribute.vehicle).value());
+        return s.str();
+    } else if (fleetAttribute.prop == "capacityAlt") {
+        s << fltPnt2str(engineManager_->fleet()->capacityBuffer(fleetAttribute.vehicle).value());
+        return s.str();
+    } else if (fleetAttribute.prop == "altTimeStart") {
+        s << fltPnt2str(engineManager_->fleet()->bufferStart().value());
+        return s.str();
+    } else if (fleetAttribute.prop == "altTimeEnd") {
+        s << fltPnt2str(engineManager_->fleet()->bufferEnd().value());
         return s.str();
     } else {
         cerr << "FleetRep::attribute: << " << attributeName << " invalid." << endl;
@@ -54,19 +69,38 @@ void FleetRep::attributeIs(const string& name, const string& _v) {
         float speed = atof(_v.c_str());
         MilesPerHour mph(speed);
         engineManager_->fleet()->speedIs(fleetAttribute.vehicle, mph);
+    } else if (fleetAttribute.prop == "speedAlt" ) {
+        float speed = atof(_v.c_str());
+        MilesPerHour mph(speed);
+        engineManager_->fleet()->speedBufferIs(fleetAttribute.vehicle, mph);
     } else if (fleetAttribute.prop == "cost") {
         float cost = atof(_v.c_str());
         DollarsPerMile dpm(cost);
         engineManager_->fleet()->costIs(fleetAttribute.vehicle, dpm);
+    } else if (fleetAttribute.prop == "costAlt") {
+        float cost = atof(_v.c_str());
+        DollarsPerMile dpm(cost);
+        engineManager_->fleet()->costBufferIs(fleetAttribute.vehicle, dpm);
     } else if (fleetAttribute.prop == "capacity") {
         unsigned int capacity = atoi(_v.c_str());
         PackageCount pc(capacity);
         engineManager_->fleet()->capacityIs(fleetAttribute.vehicle, pc);
+    } else if (fleetAttribute.prop == "capacityAlt") {
+        unsigned int capacity = atoi(_v.c_str());
+        PackageCount pc(capacity);
+        engineManager_->fleet()->capacityBufferIs(fleetAttribute.vehicle, pc);
+    } else if (fleetAttribute.prop == "altTimeStart") {
+        unsigned int time = atoi(_v.c_str());
+        TimeOfDay tod(time);
+        engineManager_->fleet()->bufferStartIs(time);
+    } else if (fleetAttribute.prop == "altTimeEnd") {
+        unsigned int time = atoi(_v.c_str());
+        TimeOfDay tod(time);
+        engineManager_->fleet()->bufferEndIs(time);
     } else {
         cerr << "FleetRep error: Invalid property." << endl;
         throw(Fwk::UnknownArgException("FleetRep::attributeIs"));
     }
-    FWK_DEBUG("attributeIs done");
 }
 
 FleetRep::FleetAttribute FleetRep::parseFleetAttribute(const string & attributeName) {
