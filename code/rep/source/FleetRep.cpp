@@ -61,6 +61,21 @@ string FleetRep::attribute(const string& attributeName) {
 
 void FleetRep::attributeIs(const string& name, const string& _v) {
     FWK_DEBUG("FleetRep::attributeIs with name: " << name << " and v: " << _v);
+
+    if (name == "altTimeStart") {
+        unsigned int time = atoi(_v.c_str());
+        TimeOfDay tod(time);
+        engineManager_->fleet()->bufferStartIs(time);
+        return;
+    }  
+
+    if (name == "altTimeEnd") {
+        unsigned int time = atoi(_v.c_str());
+        TimeOfDay tod(time);
+        engineManager_->fleet()->bufferEndIs(time);
+        return;
+    }
+
     FleetRep::FleetAttribute fleetAttribute = parseFleetAttribute(name);
     if (fleetAttribute.vehicle == Fleet::undefined()) {
         cerr << "FleetRep::attributeIs: Undefined Fleet type." << endl;
@@ -89,14 +104,6 @@ void FleetRep::attributeIs(const string& name, const string& _v) {
         unsigned int capacity = atoi(_v.c_str());
         PackageCount pc(capacity);
         engineManager_->fleet()->capacityBufferIs(fleetAttribute.vehicle, pc);
-    } else if (fleetAttribute.prop == "altTimeStart") {
-        unsigned int time = atoi(_v.c_str());
-        TimeOfDay tod(time);
-        engineManager_->fleet()->bufferStartIs(time);
-    } else if (fleetAttribute.prop == "altTimeEnd") {
-        unsigned int time = atoi(_v.c_str());
-        TimeOfDay tod(time);
-        engineManager_->fleet()->bufferEndIs(time);
     } else {
         cerr << "FleetRep error: Invalid property." << endl;
         throw(Fwk::UnknownArgException("FleetRep::attributeIs"));
