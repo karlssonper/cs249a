@@ -23,7 +23,7 @@ CustomerReactor::Ptr CustomerReactor::CustomerReactorNew(const string &_name,
                                                          VirtualTimeActivityManager::Ptr _virtualTimeActivityManager,
                                                          Fwk::Ptr<EntityManager> _entityManager) {
         FWK_DEBUG("CustomerReactorNew " << _name);
-        CustomerReactor::Ptr p = new CustomerReactor(_name, _notifier,
+        CustomerReactor::Ptr p = new CustomerReactor(_name,  _notifier,
             _virtualTimeActivityManager, _entityManager);
         if (!p) {
             std::cerr << "CustomerReactorNew new() failed" << std::endl;
@@ -51,7 +51,8 @@ void CustomerReactor::onAttributeUpdate() {
                     injectorName.append("Reactor");
                     FWK_DEBUG("Creating new InjectActivityReactor");
                     injectReactor_ = new InjectActivityReactor(
-                        injectorName, 
+                        injectorName,
+                        notifier()->name(),
                         activityManager_,
                         activity_, 
                         notifier()->destination(),

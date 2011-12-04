@@ -12,6 +12,7 @@ namespace Shipping {
     public:
         InjectActivityReactor(
             const string &_name,
+            const string &_customer,
             Fwk::Ptr<VirtualTimeActivityManager> _virtualManager,
             Fwk::Activity::Ptr _activity,
             const string &_destination,
@@ -35,6 +36,7 @@ namespace Shipping {
 
     protected:
         string destination_;
+        string customer_;
         TransferRate transferRate_;
         PackageCount shipmentSize_;
         Fwk::Activity::Ptr activity_;

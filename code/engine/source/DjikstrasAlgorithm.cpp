@@ -71,7 +71,7 @@ ShortestDistance::Ptr DjikstrasAlgorithm::shortestDistance(
     }
 
     for (unsigned int i = 0; i < size; ++i, ++it) {
-        if (dist[i] == Miles::max()) break;
+        if (dist[i] == Miles::max()) continue;
         std::string name = intToName[i];
 
         Location::PtrConst p = prev[name];
@@ -81,6 +81,7 @@ ShortestDistance::Ptr DjikstrasAlgorithm::shortestDistance(
             p = prev[p->name()];
         }
         s->next[name] = old;
+        std::cout << "SOURCE: " << source << " DEST: " << name << " NEXT: " << old->name() << std::endl;
     }
 
     return s;

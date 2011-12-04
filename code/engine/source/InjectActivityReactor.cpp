@@ -8,6 +8,7 @@ using namespace Shipping;
 
 InjectActivityReactor::InjectActivityReactor(
     const string &_name,
+    const string &_customer,
     VirtualTimeActivityManager::Ptr _virtualManager,
     Fwk::Activity::Ptr _activity,
     const string &_destination,
@@ -15,6 +16,7 @@ InjectActivityReactor::InjectActivityReactor(
     PackageCount _shipmentSize,
     Fwk::Ptr<EntityManager> _entityManager) :
     Notifiee(_name, _activity.ptr()),
+    customer_(_customer),
     destination_(_destination),
     transferRate_(_transferRate),
     shipmentSize_(_shipmentSize),
@@ -53,9 +55,8 @@ void InjectActivityReactor::onStatus() {
     switch(activity_->status()) {
 
     case Fwk::Activity::executing:
-
         shipment = new Shipment(shipmentSize_, entityManager_->location(destination_));
-
+        entityManager_->locationShipmentNew(customer_, shipment);
         FWK_DEBUG(name() << " executing");
         FWK_DEBUG(name() << " d: " << destination_ << " sz: " << shipmentSize_.value() << " tr: " << transferRate_.value());
         break;
