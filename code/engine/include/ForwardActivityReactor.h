@@ -15,6 +15,8 @@
 
 namespace Shipping{
 class Shipment;
+class Location;
+class EntityManager;
 class ForwardActivityReactor : public Fwk::Activity::Notifiee {
 public:
     ForwardActivityReactor(const std::string &_name,
@@ -23,6 +25,8 @@ public:
                            Fwk::Ptr<Fleet const>,
                            Fwk::Ptr<Segment> ,
                            Fwk::Ptr<Shipment>,
+                           Fwk::Ptr<Location>,
+                           Fwk::Ptr<EntityManager>,
                            PackageCount);
     virtual void onStatus();
 protected:
@@ -31,6 +35,8 @@ protected:
        Fwk::Ptr<Fleet const> fleet_;
        Fwk::Ptr<Shipment> shipment_;
        Fwk::Ptr<Segment> segment_;
+       Fwk::Ptr<EntityManager> entityManager_;
+       Fwk::Ptr<Location> nextLocation_;
        PackageCount activePackages_;
        PackageCount queuedPackages_;
        void removeActivePackagesFromSegment();

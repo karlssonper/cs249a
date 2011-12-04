@@ -8,6 +8,7 @@
 #include "Path.h"
 
 namespace Shipping {
+class RouteTable;
 class Conn : public EntityManager::Notifiee {
 public:
     typedef Fwk::Ptr<Conn const> PtrConst;
@@ -27,6 +28,12 @@ public:
         Ptr p = new Conn(_name, _owner, _entityManager);
         return p;
     };
+    enum Routing {
+        breadthFirstSearch,
+        djikstras
+    };
+    Routing routing() const { return routing_;} ;
+    void routingIs(Routing ) ;
 
 private:
     Conn();
@@ -37,6 +44,8 @@ private:
     map<string, Location::PtrConst> graphLocation_;
     void removeGraphSegment(Segment::PtrConst);
     void removeGraphLocation(Location::PtrConst);
+    Fwk::Ptr<RouteTable> routeTable_;
+    Routing routing_;
     enum Insertable{
         insertable_ = 0,
         missingReturn_ = 1,

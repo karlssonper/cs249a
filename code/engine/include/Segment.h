@@ -18,7 +18,9 @@
 
 namespace Shipping {
     class Fleet;
+    class Location;
     class VirtualTimeActivityManager;
+    class EntityManager;
     class SegmentDifficulty : public Ordinal<SegmentDifficulty, float> {
     public:
         SegmentDifficulty() : Ordinal<SegmentDifficulty, float>(1.f) {}
@@ -33,6 +35,10 @@ namespace Shipping {
 
     class Segment : public Fwk::NamedInterface {
     public:
+        struct shipmentAndNextLoc {
+            Shipment::Ptr shipment;
+            Fwk::Ptr<Location> nextLocation;
+        };
         typedef Fwk::Ptr<Segment const> PtrConst;
         typedef Fwk::Ptr<Segment> Ptr;
         virtual ~Segment();
@@ -82,9 +88,9 @@ namespace Shipping {
         void recievedShipmentsInc();
         void refusedShipmentsInc();
 
-        void shipmentEnq(Shipment::Ptr);
+        void shipmentEnq(Shipment::Ptr, Fwk::Ptr<Location>);
         void shipmentDeq();
-        typedef std::deque<Shipment::Ptr>::const_iterator ShipmentIteratorConst;
+        typedef std::deque<shipmentAndNextLoc>::const_iterator ShipmentIteratorConst;
         ShipmentIteratorConst shipmentIterConst() const {
             return shipment_.begin();
         };
@@ -95,7 +101,7 @@ namespace Shipping {
             typedef Fwk::Ptr<Segment::Notifiee const> PtrConst;
             typedef Fwk::Ptr<Segment::Notifiee> Ptr;
 
-            virtual void onShipmentEnq(Fwk::Ptr<Shipment>);
+            virtual void onShipmentEnq(Fwk::Ptr<Shipment>, Fwk::Ptr<Location>);
             virtual void onShipmentDeq();
             virtual void onActivePackageInc(PackageCount);
             virtual void onActivePackageDec(PackageCount);
@@ -107,11 +113,12 @@ namespace Shipping {
 
     protected:
         Segment(const string &_name, SegmentType _st,
-                Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<Fleet const>);
+                Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<Fleet const>,
+                Fwk::Ptr<EntityManager>);
         Segment();
         Segment(const Segment&);
         Notifiee::Ptr notifiee_;
-        std::deque<Shipment::Ptr> shipment_;
+        std::deque<shipmentAndNextLoc> shipment_;
         string source_;
         Miles length_;
         string returnSegment_;
@@ -130,10 +137,11 @@ namespace Shipping {
         typedef Fwk::Ptr<TruckSegment> Ptr;
         virtual ~TruckSegment();
         static Ptr TruckSegmentNew(const string &_name,
-                Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<Fleet const>);
+                Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<Fleet const>,
+                Fwk::Ptr<EntityManager>);
     protected:
         TruckSegment(const string &_name, Fwk::Ptr<VirtualTimeActivityManager>,
-                Fwk::Ptr<Fleet const>);
+                Fwk::Ptr<Fleet const>, Fwk::Ptr<EntityManager>);
         TruckSegment();
         TruckSegment(const TruckSegment&);
     };
@@ -144,10 +152,11 @@ namespace Shipping {
         typedef Fwk::Ptr<BoatSegment> Ptr;
         virtual ~BoatSegment();
         static Ptr BoatSegmentNew(const string &_name,
-                Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<Fleet const>);
+                Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<Fleet const>,
+                Fwk::Ptr<EntityManager>);
     protected:
         BoatSegment(const string &_name, Fwk::Ptr<VirtualTimeActivityManager>,
-                Fwk::Ptr<Fleet const>);
+                Fwk::Ptr<Fleet const>, Fwk::Ptr<EntityManager>);
         BoatSegment();
         BoatSegment(const BoatSegment&);
 
@@ -159,10 +168,11 @@ namespace Shipping {
         typedef Fwk::Ptr<PlaneSegment> Ptr;
         virtual ~PlaneSegment();
         static Ptr PlaneSegmentNew(const string &name,
-                Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<Fleet const>);
+                Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<Fleet const>,
+                Fwk::Ptr<EntityManager>);
     protected:
         PlaneSegment(const string &_name, Fwk::Ptr<VirtualTimeActivityManager>,
-                Fwk::Ptr<Fleet const>);
+                Fwk::Ptr<Fleet const>, Fwk::Ptr<EntityManager>);
         PlaneSegment();
         PlaneSegment(const PlaneSegment&);
     };

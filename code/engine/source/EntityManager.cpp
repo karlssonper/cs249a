@@ -363,14 +363,15 @@ void EntityManager::segmentIs(string _name, Segment::Ptr _segment) {
     }
 }
 
-void EntityManager::segmentShipmentEnq(const string & _segName, Shipment::Ptr s) {
+void EntityManager::segmentShipmentEnq(const string & _segName, Shipment::Ptr s,
+        Location::Ptr _nextLocation) {
     FWK_DEBUG("EntityManager::segmentShipmentEnq with name " << _segName);
     map<string, Segment::Ptr>::iterator segIt = segment_.find(_segName);
     if (segIt == segment_.end()) {
         cerr << "EntityManager::segmentShipmentEnq: " << _segName << " not found." << endl;
         throw(Fwk::EntityNotFoundException("EntityManager::segmentShipmentEnq"));
     }
-    segIt->second->shipmentEnq(s);
+    segIt->second->shipmentEnq(s,_nextLocation);
 }
 
 void EntityManager::segmentShipmentDeq(const string & _segName) {
@@ -575,6 +576,16 @@ void EntityManager::customerRecievedShipmentsInc(const string &_customerName) {
 
     Customer::Ptr p = static_cast<Customer*>(it->second.ptr());
     p->recievedShipmentsInc();
+}
+
+void EntityManager::locationShipmentNew(string _name, Fwk::Ptr<Shipment> _shipment) {
+    Location::PtrConst loc = location_[_name].ptr();
+
+    map<string, EntityManager::Notifiee::Ptr>::iterator notIt;
+    for (notIt=notifiee_.begin(); notIt!=notifiee_.end(); notIt++) {
+        FWK_DEBUG("EntityManager::locationShipmentNew notifying " << notIt->second->name());
+        notIt->second->onLocationShipmentNew(loc, _shipment);
+    }
 }
 
 void EntityManager::customerAverageLatencyIs(const string &_customerName, Latency _averageLatency) {

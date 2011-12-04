@@ -25,6 +25,7 @@ public:
     PackageCount transferedPackages() const { return transfered_; } ;
     PackageCount queuedPackages() const { return queued_; } ;
     PackageCount packages() const { return total_; } ;
+    Fwk::Ptr<Location const> destination() const;
     void transferedPackagesInc(PackageCount p);
     void queuedPackagesInc(PackageCount p);
     void queuedPackagesDec(PackageCount p);

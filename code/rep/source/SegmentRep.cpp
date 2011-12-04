@@ -30,7 +30,7 @@ TruckSegmentRep::TruckSegmentRep(const string &_name, EngineManager::Ptr _engine
     FWK_DEBUG("TruckSegmentRep::TruckSegmentRep with _name: " << _name);
         TruckSegment::Ptr p = TruckSegment::TruckSegmentNew(_name,
                 _engineManager->virtualTimeActivityManager(),
-                _engineManager->fleet());
+                _engineManager->fleet(), _engineManager->entityManager());
         if (!p) {
             std::cerr << "TruckSegmentRep new() failed" << std::endl;
             throw(Fwk::MemoryException("TruckSegmentRep"));
@@ -47,7 +47,7 @@ BoatSegmentRep::BoatSegmentRep(const string &_name, Ptr<EngineManager> _engineMa
     FWK_DEBUG("BoatSegmentRep::BoatSegmentRep with _name: " << _name);
         BoatSegment::Ptr p = BoatSegment::BoatSegmentNew(_name,
                 _engineManager->virtualTimeActivityManager(),
-                _engineManager->fleet());
+                _engineManager->fleet(), _engineManager->entityManager());
         if (!p) {
             std::cerr << "BoatSegmentRep new() failed" << std::endl;
             throw(Fwk::MemoryException("BoatSegmentRep"));
@@ -64,7 +64,7 @@ PlaneSegmentRep::PlaneSegmentRep(const string &_name, Ptr<EngineManager> _engine
     FWK_DEBUG("PlaneSegmentRep::PlaneSegmentRep with _name: " << _name);
         PlaneSegment::Ptr p = PlaneSegment::PlaneSegmentNew(_name,
                 _engineManager->virtualTimeActivityManager(),
-                _engineManager->fleet());
+                _engineManager->fleet(), _engineManager->entityManager());
         if (!p) {
             std::cerr << "PlaneSegmentRep new() failed" << std::endl;
             throw(Fwk::MemoryException("PlaneSegmentRep"));

@@ -23,17 +23,24 @@ class ShortestDistance;
 
 class RouteTable : public Fwk::PtrInterface<RouteTable>{
 public:
-    enum Routing {
-        breadthFirstSearch, djikstras
+    enum Status{
+        needsUpdate, performDjikstras, performDFS, updated
     };
-    RouteTable(Routing, map<string, Fwk::Ptr<Location const> > *
+    RouteTable(map<string, Fwk::Ptr<Location const> > *
             , map<string, Fwk::Ptr<Segment const> > *);
-    std::string nextLocation (const std::string & cur,
-            const std::string & dest) const;
+    Fwk::Ptr<Location const> nextLocation (Fwk::Ptr<Location const>,Fwk::Ptr<Location const>);
+
+    Status status() const { return status_;};
+    void statusIs(Status s);
 private:
+    map<string, Fwk::Ptr<Segment const> > * graphSegment_;
+    map<string, Fwk::Ptr<Location const> > * graphLocation_;
     map<string,  Fwk::Ptr<ShortestDistance> > table_;
+    Status status_;
+    Status latestUpdate_;
     RouteTable();
     RouteTable(const RouteTable & );
+    void updateRouteTable();
 };
 };
 #endif /* ROUTETABLE_H_ */
