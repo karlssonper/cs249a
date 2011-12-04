@@ -16,7 +16,8 @@ DjikstrasAlgorithm::DjikstrasAlgorithm(
         graphLocation_(_graphLocation), graphSegment_(_graphSegment) {
 };
 
-ShortestDistance::Ptr DjikstrasAlgorithm::shortestDistance(const std::string & source){
+ShortestDistance::Ptr DjikstrasAlgorithm::shortestDistance(
+        const std::string & source){
     ShortestDistance::Ptr s = new ShortestDistance();
     const unsigned int size = graphLocation_->size();
 
@@ -39,7 +40,6 @@ ShortestDistance::Ptr DjikstrasAlgorithm::shortestDistance(const std::string & s
         else
             dist[i] = Miles::max();
     }
-
 
     while (!Q.empty()) {
         Miles minDist = Miles::max();
