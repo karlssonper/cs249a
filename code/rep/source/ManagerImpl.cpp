@@ -13,7 +13,7 @@ using namespace Shipping;
 
 ManagerImpl::ManagerImpl(string _name) :
 engineManager_(EngineManager::EngineManagerNew(_name)),
-    stats_(NULL), fleet_(NULL), conn_(NULL){
+    stats_(NULL), fleet_(NULL), conn_(NULL), timeManager_(NULL){
         FWK_DEBUG("ManagerImpl constructor with name " << _name);
 };
 
