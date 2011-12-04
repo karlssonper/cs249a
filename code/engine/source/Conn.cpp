@@ -98,7 +98,7 @@ void Conn::onLocationDel(Location::PtrConst loc) {
 
 void Conn::onLocationShipmentNew(Location::PtrConst _cur,
         Shipment::Ptr _shipment) {
-    FWK_DEBUG("Conn::onLocationShipmentNew() with name: " << loc->name());
+    FWK_DEBUG("Conn::onLocationShipmentNew() with name: " << _cur->name());
 
     Location::PtrConst next =
             routeTable_->nextLocation(_cur, _shipment->destination());

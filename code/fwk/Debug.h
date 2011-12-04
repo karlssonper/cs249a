@@ -9,7 +9,7 @@
 #define DEBUG_H_
 #include <iostream>
 
-//#define DEBUG_OUTPUT
+#define DEBUG_OUTPUT
 
 #ifdef DEBUG_OUTPUT
 #define FWK_DEBUG(arg) (std::cout << arg << std::endl)
