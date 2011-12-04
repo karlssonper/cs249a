@@ -113,9 +113,21 @@ string LocationRep::attribute(const string& attributeName) {
 };
 
 
-void LocationRep::attributeIs(const string& name, const string& v) {
-    FWK_DEBUG("LocationRep::attributeIs with _name: " << name << " and v: " << v << ", doing nothing");
-    return;
+void LocationRep::attributeIs(const string& _name, const string& v) {
+    FWK_DEBUG("LocationRep::attributeIs with _name: " << _name << " and v: " << v);
+
+    if (_name == "transfer rate") {
+        float r = atof(v.c_str());
+        TransferRate rate(r);
+        engineManager_->entityManager()->customerTransferRateIs(name(), rate);
+    } else if (_name == "shipment size") {
+        float s = atof(v.c_str());
+        PackageCount size(s);
+        engineManager_->entityManager()->customerShipmentSizeIs(name(), size);
+    } else if (_name == "destination") {
+        engineManager_->entityManager()->customerDestinationIs(name(), v);
+    }
+   
 };
 
 CustomerRep::CustomerRep(const string &_name, EngineManager::Ptr _engineManager)

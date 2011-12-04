@@ -23,6 +23,7 @@ RealTimeActivityReactor::RealTimeActivityReactor(const std::string &_name,
 void RealTimeActivityReactor::onStatus() {
     switch (activity_->status()) {
         case Fwk::Activity::executing: {
+            FWK_DEBUG("RealTImeActivityReactor executing");
             virtualTimeActivityManager_->nowIs(nextVirtualTime_);
             break;
         }
