@@ -14,6 +14,7 @@ CustomerReactor::CustomerReactor(const string &_name,
     : Customer::Notifiee(_name, _notifier),
     activityManager_(_virtualTimeActivityManager),
     entityManager_(_entityManager),
+    activity_(NULL),
     status_(notActive()) {
         FWK_DEBUG("CustomerReactor constructor, name(): " << name() << " notifier: " << notifier()->name());  
 }
