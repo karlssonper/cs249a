@@ -10,6 +10,8 @@
 #include "DjikstrasAlgorithm.h"
 #include "Location.h"
 #include "Segment.h"
+#include "Debug.h"
+
 using namespace Shipping;
 RouteTable::RouteTable(
         map<string, Location::PtrConst> * _graphLocation,
@@ -53,6 +55,7 @@ void RouteTable::updateRouteTable() {
             break;
         }
         case performDjikstras : {
+            FWK_DEBUG("DjikstrasAlgorithm d(graphLocation_, graphSegment_);");
             DjikstrasAlgorithm d(graphLocation_, graphSegment_);
             map<string, Location::PtrConst>::iterator it =
                     graphLocation_->begin();
