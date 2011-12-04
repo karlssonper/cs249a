@@ -73,7 +73,7 @@ void RealTimeActivityManager::nowIs(Fwk::Time t) {
         now_ = nextToRun->nextTime();
         scheduledActivities_.pop();
         nextToRun->statusIs(Fwk::Activity::executing);
-        nextToRun->statusIs(Fwk::Activity::free);
+        //nextToRun->statusIs(Fwk::Activity::free);
     }
     now_ = t;
 }
