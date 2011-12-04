@@ -68,7 +68,7 @@ void RealTimeActivityManager::nowIs(Fwk::Time t) {
 	    Fwk::Time diff = Fwk::Time(nextToRun->nextTime().value() - now_.value());
 	    
 	    //sleep 100ms (100,000 microseconds) for every unit of time
-	    Sleep(( ((int)diff.value()) * 1000));
+	    Sleep(( ((int)diff.value()) * 3600000));
 
         now_ = nextToRun->nextTime();
         scheduledActivities_.pop();
