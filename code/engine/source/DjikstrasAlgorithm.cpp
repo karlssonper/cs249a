@@ -69,6 +69,20 @@ ShortestDistance::Ptr DjikstrasAlgorithm::shortestDistance(const std::string & s
             }
         }
     }
+
+    for (unsigned int i = 0; i < size; ++i, ++it) {
+        if (dist[i] == Miles::max()) break;
+        std::string name = intToName[i];
+
+        Location::PtrConst p = prev[name];
+        Location::PtrConst old = graphLocation_->operator [](name);
+        while (p->name() != source) {
+            old = p;
+            p = prev[p->name()];
+        }
+        s->next[name] = old;
+    }
+
     return s;
 };
 

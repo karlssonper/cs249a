@@ -28,6 +28,8 @@ public:
     };
     RouteTable(Routing, map<string, Fwk::Ptr<Location const> > *
             , map<string, Fwk::Ptr<Segment const> > *);
+    std::string nextLocation (const std::string & cur,
+            const std::string & dest) const;
 private:
     map<string,  Fwk::Ptr<ShortestDistance> > table_;
     RouteTable();

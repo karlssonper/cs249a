@@ -27,7 +27,6 @@ RouteTable::RouteTable(Routing _routing,
                 const std::string name = it->second->name();
                 table_[name] = d.shortestDistance(name);
                 ++it;
-                std::cout << "snopp, hihi" << std::endl;
             }
             break;
         }
