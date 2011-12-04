@@ -3,12 +3,14 @@
 
 #include "Instance.h"
 #include <map>
+
 using std::map;
 namespace Shipping {
 class EngineManager;
 class StatsRep;
 class ConnRep;
 class FleetRep;
+class TimeManagerRep;
 class ManagerImpl : public Instance::Manager {
 public:
     ManagerImpl(string name);
@@ -23,7 +25,9 @@ private:
     StatsRep* stats_;
     ConnRep* conn_;
     FleetRep* fleet_;
+    TimeManagerRep* timeManager_;
     Ptr<EngineManager> engineManager_;
+
 };
 }
 
