@@ -11,20 +11,22 @@
 #include "ForwardActivityReactor.h"
 #include "Exception.h"
 #include <sstream>
-
+#include "Location.h"
+#include "EntityManager.h"
 using namespace Shipping;
 
 SegmentReactor::SegmentReactor(std::string _name, Segment * seg,
-        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) :
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet,
+        EntityManager::Ptr _entityManager) :
         Segment::Notifiee(_name, seg), owner_(seg), activityManager_(vtam),
-        fleet_(_fleet) {
+        fleet_(_fleet), entityManager_(_entityManager) {
 
 };
 
 SegmentReactor::Ptr SegmentReactor::SegmentReactorNew(std::string _name,
         Segment * _owner, VirtualTimeActivityManager::Ptr vtam,
-        Fleet::PtrConst _fleet) {
-    Ptr p = new SegmentReactor(_name, _owner, vtam, _fleet);
+        Fleet::PtrConst _fleet, EntityManager::Ptr _entityManager) {
+    Ptr p = new SegmentReactor(_name, _owner, vtam, _fleet,_entityManager);
     if (!p) {
         std::cerr << "SegmentReactorNew new() failed" << std::endl;
         throw(Fwk::MemoryException("SegmentReactorNew"));
@@ -37,10 +39,10 @@ SegmentReactor::~SegmentReactor() {
 };
 
 
-void SegmentReactor::onShipmentEnq(Shipment::Ptr _shipment) {
+void SegmentReactor::onShipmentEnq(Shipment::Ptr _shipment, Location::Ptr _nextLocation) {
     FWK_DEBUG("SegmentReactor::onShipmentEnq() for name " << name());
     if (owner_->activePackages().value() < owner_->capacity().value()){
-        createActivity(_shipment);
+        createActivity(_shipment,_nextLocation);
     } 
 }
 
@@ -58,7 +60,7 @@ void SegmentReactor::onActivePackageDec(PackageCount c) {
     FWK_DEBUG("SegmentReactor::onActivePackageDec() for name " << name());
 };
 
-void SegmentReactor::createActivity(Shipment::Ptr _shipment) {
+void SegmentReactor::createActivity(Shipment::Ptr _shipment, Location::Ptr _nextLocation) {
 
     PackageCount availableSegmentCapacity = owner_->capacity().value() -
                                             owner_->activePackages().value();
@@ -87,6 +89,8 @@ void SegmentReactor::createActivity(Shipment::Ptr _shipment) {
                 fleet_,
                 owner_,
                 _shipment,
+                _nextLocation,
+                entityManager_,
                 queuedPackages
             )
     );
@@ -102,8 +106,8 @@ void SegmentReactor::addShipmentFromQueue() {
     PackageCount vehicleCapacity = fleet_->capacity(segTypeToFleetVehicle(owner_->type()));
     PackageCount totalCapacity = owner_->capacity().value() * vehicleCapacity.value();
     while (packages < totalCapacity && i < owner_->shipments()) {
-        if ((*it)->waitingPackages() != 0) {
-            createActivity(*it);
+        if (it->shipment->waitingPackages() != 0) {
+            createActivity(it->shipment,it->nextLocation);
             break;
         }
         ++i;

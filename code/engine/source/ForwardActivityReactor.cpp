@@ -7,7 +7,8 @@
 
 #include "ForwardActivityReactor.h"
 #include "Shipment.h"
-
+#include "EntityManager.h"
+#include "Location.h"
 
 using namespace Shipping;
 
@@ -19,13 +20,17 @@ ForwardActivityReactor::ForwardActivityReactor(
     Fleet::PtrConst _fleet,
     Segment::Ptr _segment,
     Shipment::Ptr _shipment,
+    Location::Ptr _nextLocation,
+    EntityManager::Ptr _entityManager,
     PackageCount _quededPackages) :
 Notifiee(_name,_activity),
     manager_(_manager),
     activity_(_activity),
     fleet_(_fleet),
+    nextLocation_(_nextLocation),
     segment_(_segment),
     shipment_(_shipment),
+    entityManager_(_entityManager),
     activePackages_(0),
     queuedPackages_(_quededPackages)
 {
@@ -43,9 +48,7 @@ void ForwardActivityReactor::onStatus() {
             }
             if (shipment_->waitingPackages().value() == 0){
                 segment_->shipmentDeq();
-
-                //ADD TO NEXT LOCATION
-
+                entityManager_->locationShipmentNew(nextLocation_->name(), shipment_);
                 return;
             }
             addActivePackagesToSegment();

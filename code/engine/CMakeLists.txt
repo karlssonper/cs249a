@@ -23,6 +23,8 @@ SET(SOURCE source/Location
            source/ShortestDistance
            source/DjikstrasAlgorithm
            source/BreadthFirstSearch
+           source/FleetReactor
+           source/FleetChangeActivityReactor
            )
 
 ADD_LIBRARY(engine_shared SHARED ${SOURCE})

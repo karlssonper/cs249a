@@ -9,6 +9,10 @@ Shipment::Shipment(PackageCount _packages, Location::PtrConst _dest) :
 
 };
 
+Location::PtrConst Shipment::destination() const {
+    return dest_;
+};
+
 void Shipment::transferedPackagesInc(PackageCount p)
 {
     transfered_ = transfered_.value() + p.value();

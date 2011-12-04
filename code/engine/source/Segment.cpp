@@ -5,11 +5,12 @@
 #include "VirtualTimeActivityManager.h"
 #include "Fleet.h"
 #include "Exception.h"
-
+#include "Location.h"
+#include "EntityManager.h"
 using namespace Shipping;
 
 Segment::Segment(const string &_name, SegmentType _st,
-        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) :
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet, EntityManager::Ptr _entityManager) :
     Fwk::NamedInterface(_name),
     source_(""),
     returnSegment_(""),
@@ -18,7 +19,7 @@ Segment::Segment(const string &_name, SegmentType _st,
     type_(_st) {
     FWK_DEBUG("Segment constructor with name " << _name);
     notifiee_ = SegmentReactor::SegmentReactorNew(_name +std::string("Reactor"),
-            this, vtam, _fleet);
+            this, vtam, _fleet, _entityManager);
 }
 
 Segment::~Segment(){
@@ -34,7 +35,7 @@ Segment::Notifiee::Notifiee(std::string _name, Segment * seg) :
     FWK_DEBUG("Segment::Notifiee::Notifiee() with name: " << name());
 };
 
-void Segment::Notifiee::onShipmentEnq(Shipment::Ptr p) {
+void Segment::Notifiee::onShipmentEnq(Shipment::Ptr p, Location::Ptr nl) {
 
 };
 
@@ -79,12 +80,15 @@ void Segment::activePackageDec(PackageCount c) {
     notifiee_->onActivePackageDec(c);
 }
 
-void Segment::shipmentEnq(Fwk::Ptr<Shipment> _s) {
+void Segment::shipmentEnq(Fwk::Ptr<Shipment> _s, Location::Ptr _nextLocation) {
     FWK_DEBUG("Segment::shipmentEnq with name: " << name());
-    shipment_.push_back(_s);
+    shipmentAndNextLoc item;
+    item.shipment = _s;
+    item.nextLocation = _nextLocation;
+    shipment_.push_back(item);
 
     FWK_DEBUG("Notifying -> " << notifiee_->name());
-    notifiee_->onShipmentEnq(_s);
+    notifiee_->onShipmentEnq(_s, _nextLocation);
 }
 
 void Segment::shipmentDeq() {
@@ -142,8 +146,9 @@ void Segment::refusedShipmentsInc() {
 }
 
 TruckSegment::TruckSegment(const string &_name,
-        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) :
-        Segment(_name, truckSegment(), vtam, _fleet) {
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet,
+        EntityManager::Ptr _entityManager) :
+        Segment(_name, truckSegment(), vtam, _fleet, _entityManager) {
     FWK_DEBUG("TruckSegment constructor with name " << _name);
 }
 
@@ -152,9 +157,10 @@ TruckSegment::~TruckSegment(){
 };
 
 TruckSegment::Ptr TruckSegment::TruckSegmentNew(const string &_name,
-        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) {
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet,
+        EntityManager::Ptr _entityManager) {
     FWK_DEBUG("TruckSegmet::TruckSegmentNew with name " << _name);
-    TruckSegment::Ptr p = new TruckSegment(_name, vtam, _fleet);
+    TruckSegment::Ptr p = new TruckSegment(_name, vtam, _fleet,_entityManager);
     if (!p) {
         std::cerr << "TruckSegmentNew new() failed" << std::endl;
         throw(Fwk::MemoryException("TruckSegmentNew"));
@@ -163,8 +169,9 @@ TruckSegment::Ptr TruckSegment::TruckSegmentNew(const string &_name,
 }
 
 BoatSegment::BoatSegment(const string &_name,
-        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) :
-        Segment(_name, boatSegment(), vtam, _fleet) {
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet,
+        EntityManager::Ptr _entityManager) :
+        Segment(_name, boatSegment(), vtam, _fleet, _entityManager) {
     FWK_DEBUG("BoatSegment constructor with name " << _name);
 }
 
@@ -173,9 +180,10 @@ BoatSegment::~BoatSegment(){
 };
 
 BoatSegment::Ptr BoatSegment::BoatSegmentNew(const string &_name,
-        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) {
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet,
+        EntityManager::Ptr _entityManager) {
     FWK_DEBUG("BoatSegment::BoatSegmentNew with name " << _name);
-    BoatSegment::Ptr p = new BoatSegment(_name, vtam, _fleet);
+    BoatSegment::Ptr p = new BoatSegment(_name, vtam, _fleet,_entityManager);
      if (!p) {
         std::cerr << "BoatSegmentNew new() failed" << std::endl;
         throw(Fwk::MemoryException("BoatSegmentNew"));
@@ -184,8 +192,9 @@ BoatSegment::Ptr BoatSegment::BoatSegmentNew(const string &_name,
 }
 
 PlaneSegment::PlaneSegment(const string &_name,
-        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) :
-        Segment(_name, planeSegment(), vtam, _fleet) {
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet,
+        EntityManager::Ptr _entityManager) :
+        Segment(_name, planeSegment(), vtam, _fleet, _entityManager) {
     FWK_DEBUG("PlaneSegment constructor with name " << _name);
 }
 
@@ -195,9 +204,10 @@ PlaneSegment::~PlaneSegment(){
 
 
 PlaneSegment::Ptr PlaneSegment::PlaneSegmentNew(const string &_name,
-        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet) {
+        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet,
+        EntityManager::Ptr _entityManager) {
     FWK_DEBUG("PlaneSegment::PlaneSegmentNew with name " << _name);
-    PlaneSegment::Ptr p = new PlaneSegment(_name, vtam, _fleet);
+    PlaneSegment::Ptr p = new PlaneSegment(_name, vtam, _fleet,_entityManager);
       if (!p) {
         std::cerr << "PlaneSegmentNew new() failed" << std::endl;
         throw(Fwk::MemoryException("PlaneSegmentNew"));

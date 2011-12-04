@@ -65,7 +65,7 @@ namespace Shipping {
         void segmentIs(string _name, Segment::Ptr _segment);
         void locationIs(string _name, Location::Ptr _location);
         void locationDel(const string &_name);
-        void locationShipmentNew();
+        void locationShipmentNew(string _name, Fwk::Ptr<Shipment> _shipment);
         void segmentDel(const string &_name);
         void segmentSourceIs(const string &_segmentName, const string &_sourceName);
         void segmentReturnSegmentIs(const string &_segmentName, const string &_returnSegmentName);
@@ -73,7 +73,7 @@ namespace Shipping {
         void segmentLengthIs(const string &_segmentName, Miles _length);
         void segmentExpediteSupportIs(const string &_segmentName,Segment::ExpediteSupport _exp);
         void segmentCapacityIs(const string &_segmentName, ShipmentCount _capacity);
-        void segmentShipmentEnq(const string & _segmentName, Fwk::Ptr<Shipment>);
+        void segmentShipmentEnq(const string & _segmentName, Fwk::Ptr<Shipment>, Fwk::Ptr<Location>);
         void segmentShipmentDeq(const string & _segmentName);
         void segmentPackageInc(const string & _segmentName, PackageCount pc);
         void segmentPackageDec(const string & _segmentName, PackageCount pc);

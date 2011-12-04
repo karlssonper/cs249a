@@ -9,17 +9,30 @@
 #include "Debug.h"
 #include <queue>
 #include "Engine.h"
+#include "RouteTable.h"
 using namespace Shipping;
 
 Conn::Conn(std::string & _name, const EngineManager * _owner,
         EntityManager  * _notifier) :
         EntityManager::Notifiee(_name, _notifier), owner_(_owner)
 {
+    routeTable_ = new RouteTable(&graphLocation_, &graphSegment_);
     FWK_DEBUG("Constructing Conn objec with name " << _name);
 };
 
 Conn::~Conn(){
     FWK_DEBUG("Conn::Conn() with name: " << name());
+};
+
+void Conn::routingIs(Routing _routing){
+    FWK_DEBUG("Conn::routingIs() with name: " << name());
+    if (routing_ != _routing)
+        routing_ = _routing;
+    if (routing_ == djikstras) {
+        routeTable_->statusIs(RouteTable::performDjikstras);
+    } else if (routing_ == breadthFirstSearch) {
+        routeTable_->statusIs(RouteTable::performDFS);
+    }
 };
 
 PathTree::Ptr Conn::explore(string locStr, ExploreData ed){
@@ -69,6 +82,7 @@ void Conn::removeGraphLocation(Location::PtrConst loc) {
         if ( graphSegment_.find((*it)->name()) != graphSegment_.end()) return;
     };
     graphLocation_.erase(loc->name());
+    routeTable_->statusIs(RouteTable::needsUpdate);
 };
 
 void Conn::onLocationDel(Location::PtrConst loc) {
@@ -82,8 +96,24 @@ void Conn::onLocationDel(Location::PtrConst loc) {
     };
 };
 
-void Conn::onLocationShipmentNew(Location::PtrConst, Shipment::Ptr) {
+void Conn::onLocationShipmentNew(Location::PtrConst _cur,
+        Shipment::Ptr _shipment) {
+    FWK_DEBUG("Conn::onLocationShipmentNew() with name: " << loc->name());
 
+    Location::PtrConst next =
+            routeTable_->nextLocation(_cur, _shipment->destination());
+    Segment::PtrConst out;
+    Location::OutSegmentIteratorConst it = _cur->outSegmenterIterConst();
+    for (int i =0; i < _cur->outSegments(); ++i) {
+        Segment::PtrConst r = graphSegment_.at((*it)->returnSegment());
+        if (r->source() == next->name()){
+            out = *it;
+            break;
+        }
+    }
+    Segment * s = const_cast<Segment *> (out.ptr());
+    Location::Ptr p =  const_cast<Location *>(next.ptr());
+    s->shipmentEnq(_shipment,p);
 };
 
 void Conn::onSegmentUpdate(Segment::PtrConst seg0) {
@@ -101,11 +131,13 @@ void Conn::onSegmentUpdate(Segment::PtrConst seg0) {
                 Location::PtrConst loc0 = owner_->entityManager()->location(seg0->source());
                 FWK_DEBUG("Conn::onSegmentUpdate() Adding " << loc0->name() << " to graph");
                 graphLocation_[loc0->name()] = loc0;
+                routeTable_->statusIs(RouteTable::needsUpdate);
             }
             if (graphLocation_.find(seg1->source()) == graphLocation_.end()){
                 Location::PtrConst loc1 = owner_->entityManager()->location(seg1->source());
                 FWK_DEBUG("Conn::onSegmentUpdate() Adding " << loc1->name() << " to graph");
                 graphLocation_[loc1->name()] = loc1;
+                routeTable_->statusIs(RouteTable::needsUpdate);
             }
         } else {
             FWK_DEBUG("Conn::onSegmentUpdate() " << seg0->name() << " is not insertable");
