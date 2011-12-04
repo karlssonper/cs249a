@@ -3,23 +3,28 @@
 #include "InjectActivityReactor.h"
 #include "VirtualTimeActivityManager.h"
 #include "Exception.h"
+#include "EntityManager.h"
 
 using namespace Shipping;
 
-CustomerReactor::CustomerReactor(const string &_name, Customer* _notifier,
-    VirtualTimeActivityManager::Ptr _virtualTimeActivityManager)
+CustomerReactor::CustomerReactor(const string &_name, 
+                                 Customer* _notifier,
+                                 VirtualTimeActivityManager::Ptr _virtualTimeActivityManager,
+                                 Fwk::Ptr<EntityManager> _entityManager)
     : Customer::Notifiee(_name, _notifier),
     activityManager_(_virtualTimeActivityManager),
+    entityManager_(_entityManager),
     status_(notActive()) {
         FWK_DEBUG("CustomerReactor constructor, name(): " << name() << " notifier: " << notifier()->name());  
 }
 
 CustomerReactor::Ptr CustomerReactor::CustomerReactorNew(const string &_name,
-    Customer *_notifier,
-    VirtualTimeActivityManager::Ptr _virtualTimeActivityManager) {
+                                                         Customer *_notifier,
+                                                         VirtualTimeActivityManager::Ptr _virtualTimeActivityManager,
+                                                         Fwk::Ptr<EntityManager> _entityManager) {
         FWK_DEBUG("CustomerReactorNew " << _name);
         CustomerReactor::Ptr p = new CustomerReactor(_name, _notifier,
-            _virtualTimeActivityManager);
+            _virtualTimeActivityManager, _entityManager);
         if (!p) {
             std::cerr << "CustomerReactorNew new() failed" << std::endl;
             throw(Fwk::MemoryException("CustomerReactor::CustomerReactorNew"));
@@ -51,7 +56,8 @@ void CustomerReactor::onAttributeUpdate() {
                         activity_, 
                         notifier()->destination(),
                         notifier()->transferRate(),
-                        notifier()->shipmentSize());
+                        notifier()->shipmentSize(),
+                        entityManager_);
                     activity_->nextTimeIs(activityManager_->now());
                     activity_->notifieeIs(injectorName, injectReactor_);
                     activity_->statusIs(Fwk::Activity::nextTimeScheduled);

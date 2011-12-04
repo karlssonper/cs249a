@@ -3,6 +3,7 @@
 #include "Debug.h"
 #include "CustomerReactor.h"
 #include "VirtualTimeActivityManager.h"
+#include "EntityManager.h"
 
 using namespace Shipping;
 
@@ -57,22 +58,24 @@ void Location::outSegmentDel(Segment::Ptr _p) {
     outSegment_.erase(it);
 }
 
-Customer::Customer(const string &_name, VirtualTimeActivityManager::Ptr vtAm)
-    : Location(_name,customer()) {
-        FWK_DEBUG("Customer constructor with name " << _name);
-        string reactorName = _name;
-        reactorName.append("Reactor");
-    CustomerReactor::Ptr p = CustomerReactor::CustomerReactorNew(reactorName, this, vtAm);
-    notifieeIs("unusedName",p);
+Customer::Customer(const string &_name,
+                   VirtualTimeActivityManager::Ptr vtAm, 
+                   Fwk::Ptr<EntityManager> _entityManager)
+                   : Location(_name,customer()), entityManager_(_entityManager) {
+                       FWK_DEBUG("Customer constructor with name " << _name);
+                       string reactorName = _name;
+                       reactorName.append("Reactor");
+                       CustomerReactor::Ptr p = CustomerReactor::CustomerReactorNew(reactorName, this, vtAm, _entityManager);
+                       notifieeIs("unusedName",p);
 }
 
 Customer::~Customer(){
     FWK_DEBUG("Customer::~Customer() with name: " << name());
 };
 
-Customer::Ptr Customer::CustomerNew(const string &_name, VirtualTimeActivityManager::Ptr vtAm) {
+Customer::Ptr Customer::CustomerNew(const string &_name, VirtualTimeActivityManager::Ptr vtAm, Fwk::Ptr<EntityManager> _entityManager) {
     FWK_DEBUG("Customer::CustomerNew with name " << _name);
-    Customer::Ptr p = new Customer(_name, vtAm);
+    Customer::Ptr p = new Customer(_name, vtAm, _entityManager);
     if (!p) {
         cerr << "Customer::CustomeNew new() failed" << endl;
         throw(Fwk::MemoryException("Customer::CustomerNew"));

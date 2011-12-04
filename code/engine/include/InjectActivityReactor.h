@@ -7,6 +7,7 @@
 
 namespace Shipping {
     class Location;
+    class EntityManager;
     class InjectActivityReactor : public Fwk::Activity::Notifiee {
     public:
         InjectActivityReactor(
@@ -15,7 +16,8 @@ namespace Shipping {
             Fwk::Activity::Ptr _activity,
             const string &_destination,
             Shipping::TransferRate _transferRate,
-            Shipping::PackageCount _shipmentSize);
+            Shipping::PackageCount _shipmentSize,
+            Fwk::Ptr<EntityManager> _entityManager);
 
         void onStatus();
 
@@ -37,6 +39,7 @@ namespace Shipping {
         PackageCount shipmentSize_;
         Fwk::Activity::Ptr activity_;
         Fwk::Ptr<VirtualTimeActivityManager> virtualManager_;
+        Fwk::Ptr<EntityManager> entityManager_;
     };
 
 }

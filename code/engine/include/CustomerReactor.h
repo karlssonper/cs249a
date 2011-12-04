@@ -8,6 +8,7 @@ namespace Fwk {class Activity; };
 namespace Shipping {
 class InjectActivityReactor;
 class VirtualTimeActivityManager;
+class EntityManager;
 class CustomerReactor : public Customer::Notifiee {
 public:
     typedef Fwk::Ptr<CustomerReactor const> PtrConst;
@@ -23,7 +24,8 @@ public:
     
     static CustomerReactor::Ptr CustomerReactorNew(const string& _name,
             Customer *_notifier,
-            Fwk::Ptr<VirtualTimeActivityManager> _virtualTimeActivityManager );
+            Fwk::Ptr<VirtualTimeActivityManager> _virtualTimeActivityManager,
+            Fwk::Ptr<EntityManager> _entityManager);
     ~CustomerReactor();
 
     virtual void onAttributeUpdate();
@@ -31,11 +33,13 @@ public:
 protected:
     Status status_;
     CustomerReactor(const string &_name, Customer* _notifier,
-            Fwk::Ptr<VirtualTimeActivityManager> _virtualTimeActivityManager);
+            Fwk::Ptr<VirtualTimeActivityManager> _virtualTimeActivityManager,
+            Fwk::Ptr<EntityManager> _entityManager);
     CustomerReactor(const CustomerReactor&);
     Fwk::Ptr<VirtualTimeActivityManager> activityManager_;
     Fwk::Ptr<Fwk::Activity> activity_;
     InjectActivityReactor* injectReactor_;
+    Fwk::Ptr<EntityManager> entityManager_;
 };
 };//end of namespace
 

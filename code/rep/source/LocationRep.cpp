@@ -121,7 +121,7 @@ void LocationRep::attributeIs(const string& name, const string& v) {
 CustomerRep::CustomerRep(const string &_name, EngineManager::Ptr _engineManager)
     : LocationRep(_name, _engineManager) {
         FWK_DEBUG("CustomerRep::CustomerRep with _name: " << _name);
-        Customer::Ptr p = Customer::CustomerNew(_name, _engineManager->virtualTimeActivityManager());
+        Customer::Ptr p = Customer::CustomerNew(_name, _engineManager->virtualTimeActivityManager(), _engineManager->entityManager() );
         engineManager_->entityManager()->locationIs(_name, p);
 };
 

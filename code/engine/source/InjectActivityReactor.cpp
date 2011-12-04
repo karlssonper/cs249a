@@ -1,6 +1,8 @@
 #include "InjectActivityReactor.h"
 #include "Location.h"
 #include "Exception.h"
+#include "Shipment.h"
+#include "EntityManager.h"
 
 using namespace Shipping;
 
@@ -10,13 +12,15 @@ InjectActivityReactor::InjectActivityReactor(
     Fwk::Activity::Ptr _activity,
     const string &_destination,
     TransferRate _transferRate,
-    PackageCount _shipmentSize) :
+    PackageCount _shipmentSize,
+    Fwk::Ptr<EntityManager> _entityManager) :
     Notifiee(_name, _activity.ptr()),
     destination_(_destination),
     transferRate_(_transferRate),
     shipmentSize_(_shipmentSize),
     activity_(_activity),
-    virtualManager_(_virtualManager) {
+    virtualManager_(_virtualManager),
+    entityManager_(_entityManager) {
         FWK_DEBUG("InjectActivityReactor " << name() << " constructor");
 }
 
@@ -45,11 +49,12 @@ void InjectActivityReactor::shipmentSizeIs(PackageCount _shipmentSize) {
 
 void InjectActivityReactor::onStatus() {
 
+    Shipment::Ptr shipment;
     switch(activity_->status()) {
 
     case Fwk::Activity::executing:
 
-
+        shipment = new Shipment(shipmentSize_, entityManager_->location(destination_));
 
         FWK_DEBUG(name() << " executing");
         FWK_DEBUG(name() << " d: " << destination_ << " sz: " << shipmentSize_.value() << " tr: " << transferRate_.value());
