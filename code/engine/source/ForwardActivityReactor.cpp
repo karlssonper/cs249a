@@ -9,6 +9,7 @@
 #include "Shipment.h"
 #include "EntityManager.h"
 #include "Location.h"
+#include "Debug.h"
 
 using namespace Shipping;
 
@@ -41,6 +42,7 @@ void ForwardActivityReactor::onStatus() {
     try {
         switch (activity_->status()) {
         case Fwk::Activity::executing: {
+            FWK_DEBUG("ForwardActivityReactor executing");
             removeActivePackagesFromSegment();
             if (queuedPackages_ > 0 ){
                 shipment_->queuedPackagesDec(queuedPackages_);
@@ -56,6 +58,7 @@ void ForwardActivityReactor::onStatus() {
             break;
                                        }
         case Fwk::Activity::nextTimeScheduled:
+            FWK_DEBUG("ForwardActivityReactor nextTimeScheduled");
             manager_->lastActivityIs(activity_);
             break;
         default: 

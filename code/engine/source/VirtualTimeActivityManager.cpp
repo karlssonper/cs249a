@@ -1,6 +1,7 @@
 #include "VirtualTimeActivityManager.h"
 #include "RealTimeActivityManager.h"
 #include "RealTimeActivityReactor.h"
+#include "Debug.h"
 #include <sstream>
 
 using namespace Shipping;
@@ -31,6 +32,7 @@ void VirtualTimeActivityManager::activityDel(const string &_name) {
 }
 
 void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
+    FWK_DEBUG("VirtualTimeActivityManager::lastActivityIs " << _activity->name());
     scheduledActivities_.push(_activity);
     ++idx;
 
@@ -51,6 +53,7 @@ void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
 }
 
 void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
+    FWK_DEBUG("VirtualTimeActivityManager::nowIs " << t.value());
     while (!scheduledActivities_.empty()) {
         Fwk::Activity::Ptr nextToRun = scheduledActivities_.top();
         if (nextToRun->nextTime() > t) {
@@ -66,6 +69,7 @@ void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
 }
 
 void VirtualTimeActivityManager::simluationEndIs(Fwk::Time _time) {
+    FWK_DEBUG("VirtualTimeActivityManagaer::simulationEndIs " << _time.value());
     if (_time.value() < now_.value()){
         //error bla bla. Time can't be less than the current value
     }

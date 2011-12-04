@@ -1,6 +1,7 @@
 #include "RealTimeActivityManager.h"
 #include "VirtualTimeActivityManager.h"
 #include "Exception.h"
+#include "Debug.h"
 
 using namespace Shipping;
 long unsigned int RealTimeActivityManager::idx = 0;
@@ -46,6 +47,7 @@ Fwk::Activity::Ptr RealTimeActivityManager::activity(const string &_name)const {
 }
 
 void RealTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
+    FWK_DEBUG("RealTimeActivityManager::lastActivityIs " << _activity->name());
     scheduledActivities_.push(_activity);
 }
 
@@ -54,6 +56,7 @@ void RealTimeActivityManager::activityDel(const string &_name) {
 }
 
 void RealTimeActivityManager::nowIs(Fwk::Time t) {
+    FWK_DEBUG("RealTimeActivityManager::nowIs " << t.value());
     while (!scheduledActivities_.empty()) {
         Fwk::Activity::Ptr nextToRun = scheduledActivities_.top();
         if (nextToRun->nextTime() > t) {
@@ -68,6 +71,7 @@ void RealTimeActivityManager::nowIs(Fwk::Time t) {
 }
 
 void RealTimeActivityManager::scaleIs(TimeScale ts) {
+    FWK_DEBUG("RealTimeActivityManager::scaleIs " << ts.value());
     if (ts != scale_)
         scale_ = ts;
 };
