@@ -10,6 +10,7 @@
 #include <queue>
 #include "Engine.h"
 #include "RouteTable.h"
+#include "Exception.h"
 using namespace Shipping;
 
 Conn::Conn(std::string & _name, const EngineManager * _owner,
@@ -26,9 +27,12 @@ Conn::~Conn(){
 
 void Conn::routingIs(Routing _routing){
     FWK_DEBUG("Conn::routingIs() with name: " << name());
-    if (routing_ != _routing)
+    if (routing_ != _routing) {
+        FWK_DEBUG("Conn::routingIs() routing_ = _routing ");
         routing_ = _routing;
+    }
     if (routing_ == djikstras) {
+        FWK_DEBUG("Conn::routingIs() routeTable_->statusIs(RouteTable::performDjikstras)");
         routeTable_->statusIs(RouteTable::performDjikstras);
     } else if (routing_ == breadthFirstSearch) {
         routeTable_->statusIs(RouteTable::performDFS);
