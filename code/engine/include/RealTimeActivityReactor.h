@@ -12,16 +12,18 @@
 
 namespace Shipping{
 class VirtualTimeActivityManager;
+class RealTimeActivityManager;
 class RealTimeActivityReactor : public Fwk::Activity::Notifiee {
 public:
     RealTimeActivityReactor(const std::string &_name,
                            Fwk::Activity*,
                            Fwk::Ptr<VirtualTimeActivityManager>,
+                           Fwk::Ptr<RealTimeActivityManager>,
                            Fwk::Time _nextVirtualTime);
     virtual void onStatus();
 protected:
     Fwk::Activity::Ptr activity_;
-    Fwk::Ptr<Fwk::Activity::Manager> manager_;
+    Fwk::Ptr<RealTimeActivityManager> manager_;
     Fwk::Time nextVirtualTime_;
     Fwk::Ptr<VirtualTimeActivityManager> virtualTimeActivityManager_;
     RealTimeActivityReactor();

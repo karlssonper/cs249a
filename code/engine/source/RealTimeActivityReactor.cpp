@@ -7,6 +7,7 @@
 
 #include "RealTimeActivityReactor.h"
 #include "VirtualTimeActivityManager.h"
+#include "RealTimeActivityManager.h"
 #include "Exception.h"
 
 using namespace Shipping;
@@ -14,8 +15,11 @@ using namespace Shipping;
 RealTimeActivityReactor::RealTimeActivityReactor(const std::string &_name,
                        Fwk::Activity* _activity,
                        VirtualTimeActivityManager::Ptr _vtam,
+                       RealTimeActivityManager::Ptr _rtam,
                        Fwk::Time _nextVirtualTime) :
                        Fwk::Activity::Notifiee(_name,_activity),
+                       activity_(_activity),
+                       manager_(_rtam),
                        virtualTimeActivityManager_(_vtam),
                        nextVirtualTime_(_nextVirtualTime) {
 }
