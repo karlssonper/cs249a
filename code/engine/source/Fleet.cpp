@@ -40,3 +40,11 @@ void Fleet::capacityIs(Vehicle _vehicle, PackageCount _capacity) {
     if (vehicleData_[_vehicle].capacity_ == _capacity) return;
     vehicleData_[_vehicle].capacity_ = _capacity;
 }
+
+void Fleet::swapData() {
+    for (int i=0; i<3; ++i) {
+        Fleet::Data temp = vehicleData_[i];
+        vehicleData_[i] = vehicleBufferData_[i];
+        vehicleBufferData_[i] = temp;
+    }
+}

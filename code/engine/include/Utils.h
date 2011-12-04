@@ -105,6 +105,18 @@ namespace Shipping {
         static Latency max() { return std::numeric_limits<double>::max(); }
     };
 
+    class TimeOfDay : public Ordinal<TimeOfDay, unsigned int> {
+    public:
+        TimeOfDay() : Ordinal<TimeOfDay, unsigned int>(0) {}
+        TimeOfDay(unsigned int value) : Ordinal<TimeOfDay, unsigned int>(value){
+             if (value > 23)
+            {
+                cerr << "TimeOfDay out of range" << std::endl;
+                throw(Fwk::RangeException("TimeOfDay"));
+            }
+        }
+    };
+
 
 }
 

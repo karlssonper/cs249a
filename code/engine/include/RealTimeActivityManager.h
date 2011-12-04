@@ -5,6 +5,7 @@
 #include <string>
 #include <queue>
 #include "Activity.h"
+#include "Exception.h"
 
 namespace Shipping {
     class EntityManager;
@@ -19,8 +20,8 @@ namespace Shipping {
             TimeScale(double value) : Ordinal<TimeScale, double>(value) {
                 if (value <= 0.0)
                 {
-                    std::cerr << "TimeScale out of range, using default value (1.0) " << std::endl;
-                    value = 1.0;
+                    std::cerr << "TimeScale out of range" << std::endl;
+                    throw(Fwk::RangeException("TimeScale"));
                 }
             }
         };
