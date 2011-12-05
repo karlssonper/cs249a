@@ -30,7 +30,7 @@ void FleetChangeActivityReactor::onStatus() {
             activity_->statusIs(Fwk::Activity::nextTimeScheduled);
             break;
         case Fwk::Activity::nextTimeScheduled:
-            FWK_DEBUG("FleetChangeActivityReactor nextTimeScheduled");
+            FWK_DEBUG("FleetChangeActivityReactor nextTimeScheduled: " << activity_->nextTime().value());
             virtualManager_->lastActivityIs(activity_);
             break;
         default: 

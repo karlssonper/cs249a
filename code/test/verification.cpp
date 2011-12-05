@@ -32,6 +32,8 @@ int main(int argc, char *argv[]) {
         Ptr<Instance> fleet = manager->instanceNew("myFleet", "Fleet");
         Ptr<Instance> timeManager = manager->instanceNew("myTimeManager", "Time manager");
 
+        timeManager->attributeIs("time scale", "0.0001");
+
         fleet->attributeIs("Boat, speed", "20");
         fleet->attributeIs("Boat, speedAlt", "20");
         fleet->attributeIs("Boat, capacity", "1000");
@@ -162,7 +164,6 @@ int main(int argc, char *argv[]) {
 
         conn->attributeIs("routing", "bfs");
 
-        timeManager->attributeIs("time scale", "0.0001");
         timeManager->attributeIs("simulation end", "100");
 
         std::cout << std::endl;
