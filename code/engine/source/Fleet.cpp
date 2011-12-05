@@ -37,7 +37,7 @@ void Fleet::speedIs(Vehicle _vehicle, MilesPerHour _speed) {
 }
 
 void Fleet::speedBufferIs(Vehicle _vehicle, MilesPerHour _speed) {
-    FWK_DEBUG("Fleet::speedIs on" << name());
+    FWK_DEBUG("Fleet::speedBufferIs on" << name());
     if (vehicleBufferData_[_vehicle].speed_ == _speed) return;
     vehicleBufferData_[_vehicle].speed_ = _speed;
 }
@@ -49,7 +49,7 @@ void Fleet::costIs(Vehicle _vehicle, DollarsPerMile _cost) {
 }
 
 void Fleet::costBufferIs(Vehicle _vehicle, DollarsPerMile _cost) {
-    FWK_DEBUG("Fleet::costIs on" << name());
+    FWK_DEBUG("Fleet::costBufferIs on" << name());
     if (vehicleBufferData_[_vehicle].cost_ == _cost) return;
     vehicleBufferData_[_vehicle].cost_ = _cost;
 }
@@ -61,23 +61,19 @@ void Fleet::capacityIs(Vehicle _vehicle, PackageCount _capacity) {
 }
 
 void Fleet::capacityBufferIs(Vehicle _vehicle, PackageCount _capacity) {
-    FWK_DEBUG("Fleet::capacityIs on" << name());
+    FWK_DEBUG("Fleet::capacityBufferIs on" << name());
     if (vehicleData_[_vehicle].capacity_ == _capacity) return;
     vehicleData_[_vehicle].capacity_ = _capacity;
 }
 
-void Fleet::bufferStartIs(TimeOfDay _tod) {
-    if (bufferStart_ == _tod) return;
-    bufferStart_ = _tod;
+void Fleet::bufferIs(TimeOfDay _start, TimeOfDay _end) {
+    bufferStart_ = _start;
+    bufferEnd_ = _end;
+    notifiee_->onTimeChange();
 }
-
-void Fleet::bufferEndIs(TimeOfDay _tod) {
-    if (bufferEnd_ == _tod) return;
-    bufferEnd_ = _tod;
-}
-
 
 void Fleet::swapData() {
+    SIM("Swapping fleet data");
     for (int i=0; i<3; ++i) {
         Fleet::Data temp = vehicleData_[i];
         vehicleData_[i] = vehicleBufferData_[i];

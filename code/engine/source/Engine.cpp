@@ -25,7 +25,7 @@ Fwk::NamedInterface(_name)
 {
     FWK_DEBUG("EngineManager::EngineManager constructor with name: " << _name);
 
-    fleet_ = Fleet::FleetNew(std::string("Fleet"), virtualTimeActivityManager_);
+    
     entityManager_ =
         EntityManager::EntityManagerNew(std::string("EntityManager"));
     stats_ = Stats::StatsNew(std::string("Stats"), this, entityManager_.ptr());
@@ -40,6 +40,7 @@ Fwk::NamedInterface(_name)
         );
     virtualTimeActivityManager_->realTimeActivityManagerIs(realTimeActivityManager_);
     realTimeActivityManager_->virtualTimeActivityManagerIs(virtualTimeActivityManager_);
+    fleet_ = Fleet::FleetNew(std::string("Fleet"), virtualTimeActivityManager_);
 };
 
 void EngineManager::connIs(const std::string &_name) {

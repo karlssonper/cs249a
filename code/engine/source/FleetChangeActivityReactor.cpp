@@ -9,7 +9,9 @@ FleetChangeActivityReactor::FleetChangeActivityReactor(const string &_name,
     Fwk::Ptr<Fwk::Activity> _activity,
     Fleet* _fleet,
     TimeOfDay _timeToSwap) :
-Notifiee(_name, _activity.ptr()),
+    Notifiee(_name, _activity.ptr()),
+    virtualManager_(_virtualManager),
+    activity_(_activity),
     fleet_(_fleet),
     timeToSwap_(_timeToSwap) {}
 
@@ -18,12 +20,12 @@ void FleetChangeActivityReactor::onStatus() {
         switch(activity_->status()) {
 
         case Fwk::Activity::executing:
-            FWK_DEBUG("FleetChangeActivityReactor executing");
+            FWK_DEBUG("FleetChangeActivityReactor executing: " << activity_->name());
             fleet_->swapData();
             break;
         case Fwk::Activity::free:
             FWK_DEBUG("FleetChangeActivityReactor free");
-            // run again in 24 hours
+             //run again in 24 hours
             activity_->nextTimeIs(Fwk::Time(activity_->nextTime().value() + 24.0));
             activity_->statusIs(Fwk::Activity::nextTimeScheduled);
             break;

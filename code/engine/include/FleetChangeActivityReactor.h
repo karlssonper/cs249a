@@ -23,7 +23,13 @@ namespace Shipping {
             timeToSwap_ == _timeToSwap;
         }
 
+        ~FleetChangeActivityReactor() {}
+
+        void activityIs(Fwk::Ptr<Fwk::Activity> _activity) { activity_ = _activity; }
+
     protected:
+        FleetChangeActivityReactor();
+        FleetChangeActivityReactor(const FleetChangeActivityReactor&);
         Fleet* fleet_;
         Fwk::Ptr<VirtualTimeActivityManager> virtualManager_;
         TimeOfDay timeToSwap_;

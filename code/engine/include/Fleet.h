@@ -51,9 +51,8 @@ public:
     void capacityBufferIs(Vehicle _vehicle, PackageCount capacity_);
 
     TimeOfDay bufferStart() { return bufferStart_; }
-    void bufferStartIs(TimeOfDay _tod);
+    void bufferIs(TimeOfDay _start, TimeOfDay _end);
     TimeOfDay bufferEnd() { return bufferEnd_; }
-    void bufferEndIs(TimeOfDay _tod);
 
     virtual ~Fleet();
     static Fleet::Ptr FleetNew(const string &_name,
