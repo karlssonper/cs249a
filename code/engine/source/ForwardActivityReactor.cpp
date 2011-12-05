@@ -59,6 +59,11 @@ void ForwardActivityReactor::onStatus() {
                     entityManager_->locationShipmentNew(nextLocation_->name(), shipment_);
                 } else {
                     SIM("A shipment has reached its destination: " << shipment_->destination()->name());
+                    Customer::PtrConst destConst;
+                    destConst = static_cast<const Customer*>(entityManager_->location(shipment_->destination()->name()).ptr());
+                    Customer::Ptr dest;
+                    dest = const_cast<Customer*>(destConst.ptr());
+                    dest->recievedShipmentsInc();
                 }
 
                 return;
