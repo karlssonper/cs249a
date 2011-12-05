@@ -62,8 +62,8 @@ void Fleet::capacityIs(Vehicle _vehicle, PackageCount _capacity) {
 
 void Fleet::capacityBufferIs(Vehicle _vehicle, PackageCount _capacity) {
     FWK_DEBUG("Fleet::capacityBufferIs on" << name());
-    if (vehicleData_[_vehicle].capacity_ == _capacity) return;
-    vehicleData_[_vehicle].capacity_ = _capacity;
+    if (vehicleBufferData_[_vehicle].capacity_ == _capacity) return;
+    vehicleBufferData_[_vehicle].capacity_ = _capacity;
 }
 
 void Fleet::bufferIs(TimeOfDay _start, TimeOfDay _end) {
