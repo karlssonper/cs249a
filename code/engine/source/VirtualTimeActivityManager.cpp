@@ -17,7 +17,7 @@ Fwk::Activity::Ptr VirtualTimeActivityManager::activityNew(const string &_name){
     activity = new Fwk::Activity(_name, this);
     if (!activity) {
         std::cerr << "VirtualTimeActivityManager::activityNew new() failed" << std::endl;
-        throw("VirtualTimeActivityManager::activityNew"));
+        throw(Fwk::MemoryException("VirtualTimeActivityManager::activityNew"));
     }
     activities_[_name] = activity;
     return activity;
