@@ -1,4 +1,5 @@
-
+user: perk
+user: vsand
 
 
   .oooooo.    .oooooo..o   .oooo.         .o    .ooooo.         .o.       
@@ -20,15 +21,15 @@
 
 																		  
 SHIPMENT INJECTION
-The Customer location type has been equipped with a set of extra attributes, as well a notifiee class. The notifiees responds to changes in the 'shipment size', 'transfer rate' and 'destination' attributes. When all three are set, the notifiee (CustomerReactor) creates activities that when executed injects shipments into the network at the rate (via the InjectActivityReactor class that is a notifiee to the activites).
+The Customer location type has been equipped with a set of extra attributes compared to those in assignment 2, as well a notifiee class. The notifiees responds to changes in the 'shipment size', 'transfer rate' and 'destination' attributes. When all three are set, the notifiee (CustomerReactor) creates activities that when executed injects shipments into the network at the rate (via the InjectActivityReactor class that is a notifiee to the activites).
 
-SHIPMENT FORWARDING
+SHIPMENT FORWARDING 
 
 CAPACITY
 
 																		  
 REAL TIME ACTIVITY MANAGER
-Activities are added to the virtual time manager, and corresponding activities are at the same time added to the real time activity manager. In the real time activity manager, the executing points are scaled with a factor. For example, factor of 0.1 makes one hour in the virtual time manager run in a tenth of the time. With each activity executing, the real time activity manager sets nowIs() for the virtual time manager and sleeps the proper amount of time between calls. The user sets the time scale factor through the TimeManager instance in the client layer:
+Activities are added to the virtual time manager, and corresponding activities are at the same time added to the real time activity manager. In the real time activity manager, the executing points are scaled with a factor. For example, a factor of 0.1 makes one hour in the virtual time manager run in a tenth of the time. With each activity executing, the real time activity manager sets nowIs() for the virtual time manager and sleeps the proper amount of time between calls. The user sets the time scale factor through the TimeManager instance in the client layer:
 
     Ptr<Instance> timeManager = manager->instanceNew("myTimeManager", "Time manager");
     timeManager->attributeIs("time scale", "0.0001");
@@ -41,13 +42,13 @@ The time scale needs to be set at the beginning of the client program, so that f
 ROUTING ALGORITHMS
 
 EXCEPTION BASED ERROR HANDLING
-Our exception based error handling is based on the Fwk::Exception class, which have a set of derived exception types. When an error occurs anywhere in the engine or rep layer, the active function prints a meaningful error message to cerr with some information of what state the function has when the error occures. Then the function throws the proper type of exception. The exceptions are not caught until the client code (or in the case of exceptions in reactors, in the BaseNotifiee object which prints a message and exits the application). 
+Our exception based error handling is based on the Fwk::Exception class, which have a set of derived exception types. When an error occurs anywhere in the engine or rep layer, the active function prints a meaningful error message to cerr with some information of what state the function had when the error occured. Then the function throws the proper type of exception. The exceptions are not caught until the client code (or in the case of exceptions in reactors, they are caught in the BaseNotifiee object which prints an error message and exits the application). 
 Instansiating functions and mutators can throw exceptions when new() allocations fails, or when entities are not found. We've chosen to throw exceptions for when entities are not found (rather then just ignoring the call and continuing) because a missing entity could corrupt a network and make it hard to track down. Therefore, it is better to throw an exception and let the user handle the error. The same argument holds for throwing a TypeMismatch exception when, for example, trying to connect a boat segment to a truck terminal or querying a port for shipments recieved.
-We have chosen to let deleting instances just continue (not throw exceptions) even if the entities to be deleted are not found, because the end result is the same (the entity does not exist anymore). In this case, the application can just run as usual.
+We have chosen to let deleting instances just continue (not throw exceptions) even if the entities to be deleted are not found, because the end result is the same (the entity does not exist anymore). In this case, the application can run as usual.
 
 
 SCHEDULING FLEET UPDATES
-To enable the fleet's stats to be updated at certain times, we have implemented a solution where the fleet instance keeps track of two different sets of data (for example, one for daytime and one for nighttime). The user specifies the alternate set of data by using "costAlt" instead of "cost" as fleet attributes. The time interval when this alternate set of data becomes active is specified via the "alt time" attribute, and the input should be formatted as a string with two integers. For example, fleet->attributeIs("alt time", "10 22") would switch to the alternate at time 10, and then switch back at 22. The network queries the fleet object at different points in time and will always get the active set of data.
+To enable the fleet's stats to be updated at certain times, we have implemented a solution where the fleet instance keeps track of two different sets of data (for example, one for daytime and one for nighttime). The user specifies the alternate set of data by using "costAlt" instead of "cost" as fleet attributes. The time interval when this alternate set of data becomes active is specified via the "alt time" attribute, and the input should be formatted as a string with two integers. For example, fleet->attributeIs("alt time", "10 22") would make the simulation switch to the alternate data set at time 10, and then switch back at 22. Then the switches occurs with 24 hour intervals for as long as the simulation runs. The network queries the fleet object at different points in time and will always get the active set of data through the usual accessors.
 
 
 TESTING NETWORKS
@@ -71,15 +72,15 @@ Our testing network is based on actual locations in Sweden :)
 					  Vaxjo _______________ Timmernabben
 				(truck terminal)      		 (producer)
 
-    Hyssna <-> Goteborg: 	  Truck segments	
-  Goteborg <-> Gotland: 	  Plane segments
-  Goteborg <-> Jonkoping:	  Truck segments
-        DH <-> Jonkoping:	  Truck segments
-   Gotland <-> Oskarshamn:    Boat segments
- Jonkoping <-> Oskarshamn:    Truck segments
- Jonkoping <-> Vaxjo:         Truck segments
-Oskarshamn <-> Timmernabben:  Truck segments
-     Vaxjo <-> Timmernabben:  Truck segments
+    Hyssna <-> Goteborg: 	 Truck segments  length 50    capacity
+  Goteborg <-> Gotland: 	 Plane segments  length 400   capacity
+  Goteborg <-> Jonkoping:	 Truck segments  length 150   capacity 
+        DH <-> Jonkoping:	 Truck segments  length 5     capacity
+   Gotland <-> Oskarshamn:   Boat segments   length 130   capacity
+ Jonkoping <-> Oskarshamn:   Truck segments  length 180   capacity
+ Jonkoping <-> Vaxjo:        Truck segments  length 120   capacity
+Oskarshamn <-> Timmernabben: Truck segments  length 50    capacity
+     Vaxjo <-> Timmernabben: Truck segments  length 120   capacity
 	 
 Timmernabben produces with DH as destination
 Hyssna produces with Gotland as destination

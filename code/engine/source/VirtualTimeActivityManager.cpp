@@ -15,6 +15,10 @@ Fwk::Activity::Ptr VirtualTimeActivityManager::activityNew(const string &_name){
         throw(Fwk::NameInUseException("VirtualTimeActivityManager::activityNew"));
     }
     activity = new Fwk::Activity(_name, this);
+    if (!activity) {
+        std::cerr << "VirtualTimeActivityManager::activityNew new() failed" << std::endl;
+        throw("VirtualTimeActivityManager::activityNew"));
+    }
     activities_[_name] = activity;
     return activity;
 }
@@ -97,6 +101,10 @@ Shipping::VirtualTimeActivityManager::Ptr
 Shipping::VirtualTimeActivityManager::VirtualTimeActivityManagerNew(
         const std::string &_name) {
     VirtualTimeActivityManager::Ptr p = new VirtualTimeActivityManager(_name);
+    if (!p) {
+        std::cerr << "VirtualTimeActivityManagerNew new() failed" << std::endl;
+        throw(Fwk::MemoryException("VirtualTimeActivityManagerNew"));
+    }
     return p;
 }
 
