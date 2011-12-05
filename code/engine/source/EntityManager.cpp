@@ -579,7 +579,6 @@ void EntityManager::locationShipmentNew(string _name, Fwk::Ptr<Shipment> _shipme
     Location::PtrConst loc = location_[_name].ptr();
     _shipment->arrivedPackagesIs(0);
 
-    _shipment->transferedIs();
     map<string, EntityManager::Notifiee::Ptr>::iterator notIt;
     for (notIt=notifiee_.begin(); notIt!=notifiee_.end(); notIt++) {
         FWK_DEBUG("EntityManager::locationShipmentNew notifying " << notIt->second->name());

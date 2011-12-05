@@ -124,8 +124,9 @@ availableVehicleCapacity : availableSegmentCapacity;
     } else {
         activePackages_ = shipment_->waitingPackages();
         SIM("addActivePackagesToSegment: adding all leftover packages"  << shipment_->waitingPackages().value());
-        shipment_->transferedPackagesInc(shipment_->waitingPackages());
         segment_->activePackageInc(shipment_->waitingPackages());
+        shipment_->transferedPackagesInc(shipment_->waitingPackages());
+        
     }
 };
 

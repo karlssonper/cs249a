@@ -74,7 +74,9 @@ void Segment::activePackageInc(PackageCount c) {
 }
 void Segment::activePackageDec(PackageCount c) {
     FWK_DEBUG("Segment::activePackageDec with name: " << name());
+    std::cout << "BEFORE: " << activePackages_.value() <<std::endl;
     activePackages_ = activePackages_.value() - c.value();
+    std::cout << "AFTER: " << activePackages_.value() <<std::endl;
 
     FWK_DEBUG("Notifying -> " << notifiee_->name());
     notifiee_->onActivePackageDec(c);
