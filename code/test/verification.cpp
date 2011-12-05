@@ -74,8 +74,8 @@ int main(int argc, char *argv[]) {
         osk_tim->attributeIs("source", "Oskarshamn");
         tim_osk->attributeIs("length", "50");
         osk_tim->attributeIs("length", "50");
-        tim_osk->attributeIs("capacity", "2");
-        osk_tim->attributeIs("capacity", "2");
+        tim_osk->attributeIs("capacity", "100");
+        osk_tim->attributeIs("capacity", "100");
 
         Ptr<Instance> osk_gotl = manager->instanceNew("osk_gotl", "Boat segment");
         Ptr<Instance> gotl_osk = manager->instanceNew("gotl_osk", "Boat segment");
@@ -84,8 +84,8 @@ int main(int argc, char *argv[]) {
         gotl_osk->attributeIs("source", "Gotland");
         osk_gotl->attributeIs("length", "130");
         gotl_osk->attributeIs("length", "130");
-        osk_gotl->attributeIs("capacity", "2");
-        gotl_osk->attributeIs("capacity", "2");
+        osk_gotl->attributeIs("capacity", "1000");
+        gotl_osk->attributeIs("capacity", "1000");
 
         Ptr<Instance> osk_jon = manager->instanceNew("osk_jon", "Truck segment");
         Ptr<Instance> jon_osk = manager->instanceNew("jon_osk", "Truck segment");
@@ -94,8 +94,8 @@ int main(int argc, char *argv[]) {
         jon_osk->attributeIs("source", "Jonkoping");
         osk_jon->attributeIs("length", "180");
         jon_osk->attributeIs("length", "180");
-        osk_jon->attributeIs("capacity", "5");
-        jon_osk->attributeIs("capacity", "5");
+        osk_jon->attributeIs("capacity", "200");
+        jon_osk->attributeIs("capacity", "200");
         
         Ptr<Instance> tim_vax = manager->instanceNew("tim_vax", "Truck segment");
         Ptr<Instance> vax_tim = manager->instanceNew("vax_tim", "Truck segment");
@@ -104,8 +104,8 @@ int main(int argc, char *argv[]) {
         vax_tim->attributeIs("source", "Vaxjo");
         tim_vax->attributeIs("length", "120");
         vax_tim->attributeIs("length", "120");
-        tim_vax->attributeIs("capacity", "3");
-        vax_tim->attributeIs("capacity", "3");
+        tim_vax->attributeIs("capacity", "80");
+        vax_tim->attributeIs("capacity", "80");
 
         Ptr<Instance> vax_jon = manager->instanceNew("vax_jon", "Truck segment");
         Ptr<Instance> jon_vax = manager->instanceNew("jon_vax", "Truck segment");
@@ -114,8 +114,8 @@ int main(int argc, char *argv[]) {
         vax_jon->attributeIs("source", "Vaxjo");
         jon_vax->attributeIs("length", "120");
         vax_jon->attributeIs("length", "120");
-        jon_vax->attributeIs("capacity", "3");
-        vax_jon->attributeIs("capacity", "3");
+        jon_vax->attributeIs("capacity", "100");
+        vax_jon->attributeIs("capacity", "100");
 
         Ptr<Instance> jon_dh = manager->instanceNew("jon_dh", "Truck segment");
         Ptr<Instance> dh_jon = manager->instanceNew("dh_jon", "Truck segment");
@@ -124,8 +124,8 @@ int main(int argc, char *argv[]) {
         dh_jon->attributeIs("source", "DH");
         jon_dh->attributeIs("length", "5");
         dh_jon->attributeIs("length", "5");
-        jon_dh->attributeIs("capacity", "2");
-        dh_jon->attributeIs("capacity", "2");
+        jon_dh->attributeIs("capacity", "130");
+        dh_jon->attributeIs("capacity", "130");
 
         Ptr<Instance> jon_gote = manager->instanceNew("jon_gote", "Truck segment");
         Ptr<Instance> gote_jon = manager->instanceNew("gote_jon", "Truck segment");
@@ -134,8 +134,8 @@ int main(int argc, char *argv[]) {
         gote_jon->attributeIs("source", "Goteborg");
         jon_gote->attributeIs("length", "150");
         gote_jon->attributeIs("length", "150");
-        jon_gote->attributeIs("capacity", "6");
-        gote_jon->attributeIs("capacity", "6");
+        jon_gote->attributeIs("capacity", "200");
+        gote_jon->attributeIs("capacity", "200");
 
         Ptr<Instance> gote_hys = manager->instanceNew("gote_hys", "Truck segment");
         Ptr<Instance> hys_gote = manager->instanceNew("hys_gote", "Truck segment");
@@ -144,8 +144,8 @@ int main(int argc, char *argv[]) {
         hys_gote->attributeIs("source", "Hyssna");
         gote_hys->attributeIs("length", "50");
         hys_gote->attributeIs("length", "50");
-        gote_hys->attributeIs("capacity", "2");
-        hys_gote->attributeIs("capacity", "2");
+        gote_hys->attributeIs("capacity", "100");
+        hys_gote->attributeIs("capacity", "100");
 
         Ptr<Instance> gote_gotl = manager->instanceNew("gote_gotl", "Plane segment");
         Ptr<Instance> gotl_gote = manager->instanceNew("gotl_gote", "Plane segment");
@@ -154,8 +154,8 @@ int main(int argc, char *argv[]) {
         gotl_gote->attributeIs("source", "Gotland");
         gote_gotl->attributeIs("length", "400");
         gotl_gote->attributeIs("length", "400");
-        gote_gotl->attributeIs("capacity", "1");
-        gotl_gote->attributeIs("capacity", "1");
+        gote_gotl->attributeIs("capacity", "200");
+        gotl_gote->attributeIs("capacity", "200");
 
         conn->attributeIs("djikstras", "bfs");
 

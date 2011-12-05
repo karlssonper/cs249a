@@ -17,6 +17,16 @@
                                                                           
 
 																		  
+
+																		  
+SHIPMENT INJECTION
+The Customer location type has been equipped with a set of extra attributes, as well a notifiee class. The notifiees responds to changes in the 'shipment size', 'transfer rate' and 'destination' attributes. When all three are set, the notifiee (CustomerReactor) creates activities that when executed injects shipments into the network at the rate (via the InjectActivityReactor class that is a notifiee to the activites).
+
+SHIPMENT FORWARDING
+
+CAPACITY
+
+																		  
 REAL TIME ACTIVITY MANAGER
 Activities are added to the virtual time manager, and corresponding activities are at the same time added to the real time activity manager. In the real time activity manager, the executing points are scaled with a factor. For example, factor of 0.1 makes one hour in the virtual time manager run in a tenth of the time. With each activity executing, the real time activity manager sets nowIs() for the virtual time manager and sleeps the proper amount of time between calls. The user sets the time scale factor through the TimeManager instance in the client layer:
 
@@ -41,7 +51,6 @@ To enable the fleet's stats to be updated at certain times, we have implemented 
 
 
 TESTING NETWORKS
-
 ** Experiment
 
 ** Verification network
