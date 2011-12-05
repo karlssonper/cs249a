@@ -55,7 +55,12 @@ void ForwardActivityReactor::onStatus() {
                     return;
                 }
                 segment_->shipmentDeq();
-                entityManager_->locationShipmentNew(nextLocation_->name(), shipment_);
+                if (nextLocation_->name() != shipment_->destination()->name()) {
+                    entityManager_->locationShipmentNew(nextLocation_->name(), shipment_);
+                } else {
+                    SIM("A shipment has reached its destination: " << shipment_->destination()->name());
+                }
+
                 return;
             }// else if (shipment_->transfered()){
           //      return;
@@ -117,10 +122,10 @@ availableVehicleCapacity : availableSegmentCapacity;
         segment_->activePackageInc(availableCapacity);
         activePackages_ = availableCapacity;
     } else {
-        segment_->activePackageInc(shipment_->waitingPackages());
         activePackages_ = shipment_->waitingPackages();
         SIM("addActivePackagesToSegment: adding all leftover packages"  << shipment_->waitingPackages().value());
         shipment_->transferedPackagesInc(shipment_->waitingPackages());
+        segment_->activePackageInc(shipment_->waitingPackages());
     }
 };
 
