@@ -56,7 +56,7 @@ void ForwardActivityReactor::onStatus() {
             addActivePackagesToSegment();
             forwardActivity();
             break;
-                                       }
+        }
         case Fwk::Activity::nextTimeScheduled:
             FWK_DEBUG("ForwardActivityReactor nextTimeScheduled");
             manager_->lastActivityIs(activity_);

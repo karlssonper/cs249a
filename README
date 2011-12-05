@@ -1,0 +1,32 @@
+
+
+
+  .oooooo.    .oooooo..o   .oooo.         .o    .ooooo.         .o.       
+ d8P'  `Y8b  d8P'    `Y8 .dP""Y88b      .d88   888' `Y88.      .888.      
+888          Y88bo.            ]8P'   .d'888   888    888     .8"888.     
+888           `"Y8888o.      .d8P'  .d'  888    `Vbood888    .8' `888.    
+888               `"Y88b   .dP'     88ooo888oo       888'   .88ooo8888.   
+`88b    ooo  oo     .d8P .oP     .o      888       .88P'   .8'     `888.  
+ `Y8bood8P'  8""88888P'  8888888888     o888o    .oP'     o88o     o8888o 
+ 
+					 ~~~~~~~~~ ASSIGNMENT 3 ~~~~~~~~~
+					 Per Karlsson (perk@stanford.edu)
+					 Victor Sand (vsand@stanford.edu)
+					  
+
+                                                                          
+ROUTING ALGORITHMS
+
+EXCEPTION BASED ERROR HANDLING
+Our exception based error handling is based on the Fwk::Exception class, which have a set of derived exception types. When an error occurs anywhere in the engine or rep layer, the active function prints a meaningful error message to cerr with some information of what state the function has when the error occures. Then the function throws the proper type of exception. The exceptions are not caught until the client code (or in the case of exceptions in reactors, in the BaseNotifiee object which prints a message and exits the application). 
+Instansiating functions and mutators can throw exceptions when new() allocations fails, or when entities are not found. We've chosen to throw exceptions for when entities are not found (rather then just ignoring the call and continuing) because a missing entity could corrupt a network and make it hard to track down. Therefore, it is better to throw an exception and let the user handle the error.
+We have chosen to let deleting instances just continue (not throw exceptions) even if the entities to be deleted are not found, because the end result is the same (the entity does not exist anymore). In this case, the application can just run as usual.
+
+SCHEDULING FLEET UPDATES
+To enable the fleet's stats to be updated at certain times, we have implemented a solution where the fleet instance keeps track of two different sets of data (for example, one for daytime and one for nighttime). The user specifies the alternate set of data by using "costAlt" instead of "cost" as fleet attributes. The time interval when this alternate set of data becomes active is specified via the "alt time" attribute, and the input should be formatted as a string with two integers. For example, fleet->attributeIs("alt time", "10 22") would switch to the alternate at time 10, and then switch back at 22. The network queries the fleet object at different times and will always get the active set of data.
+
+TESTING NETWORKS
+
+** Experiment
+
+** Verification
