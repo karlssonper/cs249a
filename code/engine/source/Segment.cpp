@@ -111,7 +111,7 @@ void Segment::lengthIs(Miles _length) {
     length_ = _length;
 }
 
-void Segment::capacityIs(ShipmentCount _capacity) {
+void Segment::capacityIs(PackageCount _capacity) {
     FWK_DEBUG("Segment::capacityIs");
     if (capacity_ == _capacity) return;
     capacity_ = _capacity;

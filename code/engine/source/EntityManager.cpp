@@ -289,7 +289,7 @@ void EntityManager::segmentLengthIs(const string &_segmentName,
         }
 }
 
-void EntityManager::segmentCapacityIs(const string &_segmentName, ShipmentCount _capacity) {
+void EntityManager::segmentCapacityIs(const string &_segmentName, PackageCount _capacity) {
 
     map<string, Segment::Ptr>::iterator segIt = segment_.find(_segmentName);
     if (segIt == segment_.end()) {

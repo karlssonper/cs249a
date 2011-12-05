@@ -141,7 +141,7 @@ void SegmentRep::attributeIs(const string &_name, const string &_v) {
         engineManager_->entityManager()->segmentDifficultyIs(name(),d);
     } else if (_name == "capacity") {
         float cap = atof(_v.c_str());
-        ShipmentCount c((int)cap);
+        PackageCount c((int)cap);
         engineManager_->entityManager()->segmentCapacityIs(name(), c);
     
     } else if (_name == "expedite support") {
