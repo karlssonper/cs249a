@@ -81,10 +81,17 @@ ConnectPathTree::ConnectPathTree(Location::PtrConst _root, Location::PtrConst _e
     }
     PathIterator it = pathIter();
     unsigned int i = 0;
-    while (i < paths()){
-        PathIterator curIt = it;
+    unsigned int n =paths();
+    while (i < n){
+        PathIterator curIt = path_.end();
+        //std::cout << (*it)->lastPathItem().loc->name() << " " << end_->name();
+        if ((*it)->lastPathItem().loc->name() != end_->name()) {// || (*curIt)->pathItems() == 1)
+            curIt = it;
+            //std::cout << " DELETE";
+        }
+        //std::cout << std::endl;
         ++it; ++i;
-        if ((*curIt)->lastPathItem().loc->name() != end_->name())
+        if (curIt != path_.end())
             path_.erase(curIt);
     }
 };

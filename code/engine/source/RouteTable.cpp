@@ -8,23 +8,27 @@
 #include "RouteTable.h"
 #include "ShortestDistance.h"
 #include "DjikstrasAlgorithm.h"
+#include "BreadthFirstSearch.h"
 #include "Location.h"
 #include "Segment.h"
 #include "Debug.h"
+#include "Conn.h"
 
 using namespace Shipping;
 RouteTable::RouteTable(
         map<string, Location::PtrConst> * _graphLocation,
-        map<string, Segment::PtrConst> * _graphSegment) :
+        map<string, Segment::PtrConst> * _graphSegment,
+        Conn * _conn) :
         graphSegment_(_graphSegment),
         graphLocation_(_graphLocation),
+        conn_(_conn),
         status_(needsUpdate), latestUpdate_(performDjikstras){
 };
 
 void RouteTable::statusIs(Status s) {
     if (s != status_)
         status_ = s;
-    if (status_  == performDjikstras || status_  == performDFS) {
+    if (status_  == performDjikstras || status_  == performBFS) {
         latestUpdate_ = status_;
         updateRouteTable();
     }
@@ -50,8 +54,16 @@ Location::PtrConst RouteTable::nextLocation (Location::PtrConst cur,
 
 void RouteTable::updateRouteTable() {
     switch(latestUpdate_) {
-        case performDFS: {
-
+        case performBFS: {
+            FWK_DEBUG("BFS d(graphLocation_, graphSegment_);");
+            BreadthFirstSearch d(graphLocation_, graphSegment_, conn_);
+            map<string, Location::PtrConst>::iterator it =
+                    graphLocation_->begin();
+            while(it != graphLocation_->end()) {
+                const std::string name = it->second->name();
+                table_[name] = d.shortestDistance(name);
+                ++it;
+            }
             break;
         }
         case performDjikstras : {

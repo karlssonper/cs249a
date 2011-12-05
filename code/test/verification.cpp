@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
         gote_gotl->attributeIs("capacity", "1");
         gotl_gote->attributeIs("capacity", "1");
 
-        conn->attributeIs("routing", "djikstras");
+        conn->attributeIs("routing", "bfs");
 
         timeManager->attributeIs("time scale", "0.0001");
         timeManager->attributeIs("simulation end", "100");

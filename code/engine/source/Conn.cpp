@@ -17,7 +17,7 @@ Conn::Conn(std::string & _name, const EngineManager * _owner,
         EntityManager  * _notifier) :
         EntityManager::Notifiee(_name, _notifier), owner_(_owner)
 {
-    routeTable_ = new RouteTable(&graphLocation_, &graphSegment_);
+    routeTable_ = new RouteTable(&graphLocation_, &graphSegment_, this);
     FWK_DEBUG("Constructing Conn objec with name " << _name);
 };
 
@@ -35,7 +35,7 @@ void Conn::routingIs(Routing _routing){
         FWK_DEBUG("Conn::routingIs() routeTable_->statusIs(RouteTable::performDjikstras)");
         routeTable_->statusIs(RouteTable::performDjikstras);
     } else if (routing_ == breadthFirstSearch) {
-        routeTable_->statusIs(RouteTable::performDFS);
+        routeTable_->statusIs(RouteTable::performBFS);
     }
 };
 

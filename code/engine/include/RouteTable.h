@@ -20,14 +20,15 @@ namespace Shipping {
 class Location;
 class Segment;
 class ShortestDistance;
-
+class Conn;
 class RouteTable : public Fwk::PtrInterface<RouteTable>{
 public:
     enum Status{
-        needsUpdate, performDjikstras, performDFS, updated
+        needsUpdate, performDjikstras, performBFS, updated
     };
-    RouteTable(map<string, Fwk::Ptr<Location const> > *
-            , map<string, Fwk::Ptr<Segment const> > *);
+    RouteTable(map<string, Fwk::Ptr<Location const> > *,
+             map<string, Fwk::Ptr<Segment const> > *,
+             Conn *);
     Fwk::Ptr<Location const> nextLocation (Fwk::Ptr<Location const>,Fwk::Ptr<Location const>);
 
     Status status() const { return status_;};
@@ -36,6 +37,7 @@ private:
     map<string, Fwk::Ptr<Segment const> > * graphSegment_;
     map<string, Fwk::Ptr<Location const> > * graphLocation_;
     map<string,  Fwk::Ptr<ShortestDistance> > table_;
+    Fwk::Ptr<Conn> conn_;
     Status status_;
     Status latestUpdate_;
     RouteTable();
