@@ -15,13 +15,13 @@ FleetReactor::FleetReactor(const string &_name,
                            activity1_(NULL),
                            activity2_(NULL) {
 reactor1_ = new FleetChangeActivityReactor(
-                                   "foo",
+                                   "FleetChangeActReactor1",
                                    activityManager_,
                                    NULL,
                                    notifier(),
                                    notifier()->bufferStart());
 reactor2_ = new FleetChangeActivityReactor(
-                                   "foo",
+                                   "FleetChangeReactor2",
                                    activityManager_,
                                    NULL,
                                    notifier(),

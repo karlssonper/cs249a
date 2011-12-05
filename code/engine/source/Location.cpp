@@ -73,7 +73,9 @@ Customer::~Customer(){
     FWK_DEBUG("Customer::~Customer() with name: " << name());
 };
 
-Customer::Ptr Customer::CustomerNew(const string &_name, VirtualTimeActivityManager::Ptr vtAm, Fwk::Ptr<EntityManager> _entityManager) {
+Customer::Ptr Customer::CustomerNew(const string &_name,
+                                   VirtualTimeActivityManager::Ptr vtAm, 
+                                   Fwk::Ptr<EntityManager> _entityManager) {
     FWK_DEBUG("Customer::CustomerNew with name " << _name);
     Customer::Ptr p = new Customer(_name, vtAm, _entityManager);
     if (!p) {

@@ -1,21 +1,18 @@
-/*
- * Conn.cpp
- *
- *  Created on: Nov 4, 2011
- *      Author: per
- */
-
 #include "Conn.h"
 #include "Debug.h"
 #include <queue>
 #include "Engine.h"
 #include "RouteTable.h"
 #include "Exception.h"
+
 using namespace Shipping;
 
-Conn::Conn(std::string & _name, const EngineManager * _owner,
-        EntityManager  * _notifier) :
-        EntityManager::Notifiee(_name, _notifier), owner_(_owner)
+Conn::Conn(
+    std::string & _name, 
+    const EngineManager * _owner,
+    EntityManager  * _notifier) :
+    EntityManager::Notifiee(_name, _notifier),
+    owner_(_owner)
 {
     routeTable_ = new RouteTable(&graphLocation_, &graphSegment_, this);
     FWK_DEBUG("Constructing Conn objec with name " << _name);
@@ -76,7 +73,7 @@ void Conn::removeGraphSegment(Segment::PtrConst seg) {
     FWK_DEBUG("Conn::removeGraphSegment() with name: " << seg->name());
     graphSegment_.erase(seg->name());
     if (graphLocation_.find(seg->source()) != graphLocation_.end())
-       removeGraphLocation(graphLocation_[seg->source()]);
+        removeGraphLocation(graphLocation_[seg->source()]);
 };
 
 void Conn::removeGraphLocation(Location::PtrConst loc) {
@@ -101,23 +98,23 @@ void Conn::onLocationDel(Location::PtrConst loc) {
 };
 
 void Conn::onLocationShipmentNew(Location::PtrConst _cur,
-        Shipment::Ptr _shipment) {
-    FWK_DEBUG("Conn::onLocationShipmentNew() with name: " << _cur->name());
+    Shipment::Ptr _shipment) {
+        FWK_DEBUG("Conn::onLocationShipmentNew() with name: " << _cur->name());
 
-    Location::PtrConst next =
+        Location::PtrConst next =
             routeTable_->nextLocation(_cur, _shipment->destination());
-    Segment::PtrConst out;
-    Location::OutSegmentIteratorConst it = _cur->outSegmenterIterConst();
-    for (int i =0; i < _cur->outSegments(); ++i) {
-        Segment::PtrConst r = graphSegment_.at((*it)->returnSegment());
-        if (r->source() == next->name()){
-            out = *it;
-            break;
+        Segment::PtrConst out;
+        Location::OutSegmentIteratorConst it = _cur->outSegmenterIterConst();
+        for (int i =0; i < _cur->outSegments(); ++i) {
+            Segment::PtrConst r = graphSegment_.at((*it)->returnSegment());
+            if (r->source() == next->name()){
+                out = *it;
+                break;
+            }
         }
-    }
-    Segment * s = const_cast<Segment *> (out.ptr());
-    Location::Ptr p =  const_cast<Location *>(next.ptr());
-    s->shipmentEnq(_shipment,p);
+        Segment * s = const_cast<Segment *> (out.ptr());
+        Location::Ptr p =  const_cast<Location *>(next.ptr());
+        s->shipmentEnq(_shipment,p);
 };
 
 void Conn::onSegmentUpdate(Segment::PtrConst seg0) {
@@ -174,9 +171,9 @@ Conn::Insertable Conn::isInsertable(Segment::PtrConst seg){
     }
     if (!owner_->entityManager()->location(
         owner_->entityManager()->segment(
-            seg->returnSegment())->source())) {
-        FWK_DEBUG("Conn::isInsertable() Missing Return Source");
-        return missingReturnSource_;
+        seg->returnSegment())->source())) {
+            FWK_DEBUG("Conn::isInsertable() Missing Return Source");
+            return missingReturnSource_;
     }
     FWK_DEBUG("Conn::isInsertable() Insertable");
     return insertable_;

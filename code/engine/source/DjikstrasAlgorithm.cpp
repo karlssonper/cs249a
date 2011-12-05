@@ -21,6 +21,10 @@ DjikstrasAlgorithm::DjikstrasAlgorithm(
 ShortestDistance::Ptr DjikstrasAlgorithm::shortestDistance(
         const std::string & source){
     ShortestDistance::Ptr s = new ShortestDistance();
+     if (!s) {
+        std::cerr << "DjikstrasAlgorithm new() failed" << std::endl;
+        throw(Fwk::MemoryException("DjikstrasAlgorithm::shortestDistance"));
+    }
     const unsigned int size = graphLocation_->size();
 
     //Djikstras!

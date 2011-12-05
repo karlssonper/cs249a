@@ -49,6 +49,9 @@ int main(int argc, char *argv[]) {
         Ptr<Instance> stats = manager->instanceNew("myStats", "Stats");
         Ptr<Instance> conn = manager->instanceNew("myConn", "Conn");
         Ptr<Instance> fleet = manager->instanceNew("myFleet", "Fleet");
+        Ptr<Instance> timeManager = manager->instanceNew("timeManager", "Time manager");
+
+        timeManager->attributeIs("time scale", "0.00001");
 
         fleet->attributeIs("Boat, speed", "20");
         fleet->attributeIs("Boat, capacity", "1000");
@@ -129,6 +132,8 @@ int main(int argc, char *argv[]) {
                 segments[segmentNameA]->attributeIs("return segment", segmentNameB);
             }
         }
+
+        timeManager->attributeIs("simulation end", "100");
 
         // print some stats
         cout << "STATS:" << endl;

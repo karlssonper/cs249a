@@ -15,16 +15,8 @@ using std::endl;
 using std::string;
 
 int main(int argc, char *argv[]) {
-    try {
 
-        /*
-        Construct a shipping network with at least four locations, 
-        and confirm that shipments move between them as expected. 
-        Run tests with different segment capacity values to compare 
-        your network under light and heavy congestion. Add a diagram 
-        of this network to your README file, and discuss the tests performed. 
-        The code for this client should be named verification.cpp.
-        */
+    try {
 
         Ptr<Instance::Manager> manager = shippingInstanceManager();
         Ptr<Instance> stats = manager->instanceNew("myStats", "Stats");
@@ -32,6 +24,7 @@ int main(int argc, char *argv[]) {
         Ptr<Instance> fleet = manager->instanceNew("myFleet", "Fleet");
         Ptr<Instance> timeManager = manager->instanceNew("myTimeManager", "Time manager");
 
+        // make one virtual hour run in a 10 000th of the time
         timeManager->attributeIs("time scale", "0.0001");
 
         fleet->attributeIs("Boat, speed", "20");
@@ -53,6 +46,8 @@ int main(int argc, char *argv[]) {
         fleet->attributeIs("Plane, capacityAlt", "200");
         fleet->attributeIs("Plane, costAlt", "100");
 
+        // switch fleet attributes at virtual time 10 and 22
+        // (and then with 24 hour intervals)
         fleet->attributeIs("alt time", "10 22");
 
         Ptr<Instance> timmernabben = manager->instanceNew("Timmernabben", "Customer");
@@ -164,9 +159,7 @@ int main(int argc, char *argv[]) {
 
         conn->attributeIs("routing", "bfs");
 
-
-        timeManager->attributeIs("time scale", "0.0001");
-
+        // runs the simulation until the virtual time is 100
         timeManager->attributeIs("simulation end", "100");
 
         std::cout << std::endl;

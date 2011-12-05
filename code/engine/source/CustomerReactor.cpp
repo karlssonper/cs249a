@@ -7,10 +7,11 @@
 
 using namespace Shipping;
 
-CustomerReactor::CustomerReactor(const string &_name, 
-                                 Customer* _notifier,
-                                 VirtualTimeActivityManager::Ptr _virtualTimeActivityManager,
-                                 Fwk::Ptr<EntityManager> _entityManager)
+CustomerReactor::CustomerReactor(
+    const string &_name, 
+    Customer* _notifier,
+    VirtualTimeActivityManager::Ptr _virtualTimeActivityManager,
+    Fwk::Ptr<EntityManager> _entityManager)
     : Customer::Notifiee(_name, _notifier),
     activityManager_(_virtualTimeActivityManager),
     entityManager_(_entityManager),
@@ -19,10 +20,11 @@ CustomerReactor::CustomerReactor(const string &_name,
         FWK_DEBUG("CustomerReactor constructor, name(): " << name() << " notifier: " << notifier()->name());  
 }
 
-CustomerReactor::Ptr CustomerReactor::CustomerReactorNew(const string &_name,
-                                                         Customer *_notifier,
-                                                         VirtualTimeActivityManager::Ptr _virtualTimeActivityManager,
-                                                         Fwk::Ptr<EntityManager> _entityManager) {
+CustomerReactor::Ptr CustomerReactor::CustomerReactorNew(
+    const string &_name,
+    Customer *_notifier,
+    VirtualTimeActivityManager::Ptr _virtualTimeActivityManager,
+    Fwk::Ptr<EntityManager> _entityManager) {
         FWK_DEBUG("CustomerReactorNew " << _name);
         CustomerReactor::Ptr p = new CustomerReactor(_name,  _notifier,
             _virtualTimeActivityManager, _entityManager);
