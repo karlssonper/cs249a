@@ -1,6 +1,3 @@
-
-// TODO: notifieeIs deletion case
-
 #include "EntityManager.h"
 #include "Shipment.h"
 #include "CustomerReactor.h"
@@ -415,7 +412,7 @@ void EntityManager::notifieeIs(string _name, Notifiee* _p) {
 
     if (notifiee_.find(_name) != notifiee_.end()) {
         cerr << "EntityManager::notifieeIs: " << _name << " already exists" << endl;
-        return;
+        throw(Fwk::NameInUseException("EntityManager::notifieeIs"));
     }
 
     Notifiee::Ptr p = _p;
@@ -486,7 +483,7 @@ void EntityManager::customerTransferRateIs(const string &_customerName, Transfer
     it = location_.find(_customerName);
     if (it == location_.end()) {
         FWK_DEBUG("EntityManager::customerTransferRateIs: " << _customerName << " not found, nothing to do.");
-        return;
+        throw(Fwk::EntityNotFoundException("EntityManager::customerTransferRateIs"));
     }
 
     if (it->second->type() != Location::customer()) {
@@ -566,7 +563,7 @@ void EntityManager::customerRecievedShipmentsInc(const string &_customerName) {
     it = location_.find(_customerName);
     if (it == location_.end()) {
         FWK_DEBUG("EntityManager::customerRecievedShipmentsInc: " << _customerName << " not found, nothing to do.");
-        return;
+        throw(Fwk::EntityNotFoundException("EntityManager::customerRecievedShipmentsInc"));
     }
 
     if (it->second->type() != Location::customer()) {

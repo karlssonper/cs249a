@@ -1,17 +1,10 @@
-/*
-* Engine.cpp
-*
-*  Created on: Nov 4, 2011
-*      Author: per
-*/
-
 #include "Engine.h"
 #include "Debug.h"
 #include "Exception.h"
 
 using namespace Shipping;
 
-EngineManager::Ptr EngineManager::EngineManagerNew(std::string name){
+EngineManager::Ptr EngineManager::EngineManagerNew(std::string name) {
     Ptr p = new EngineManager(name);
     if (!p) {
         std::cerr << "EngineManager::EngineManagerNew new() failed" << std::endl;
@@ -25,7 +18,6 @@ Fwk::NamedInterface(_name)
 {
     FWK_DEBUG("EngineManager::EngineManager constructor with name: " << _name);
 
-    
     entityManager_ =
         EntityManager::EntityManagerNew(std::string("EntityManager"));
     stats_ = Stats::StatsNew(std::string("Stats"), this, entityManager_.ptr());
