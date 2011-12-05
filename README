@@ -29,4 +29,39 @@ TESTING NETWORKS
 
 ** Experiment
 
-** Verification
+** Verification network
+Our testing network is based on actual locations in Sweden :)
+
+                     Hyssna
+                   (producer)
+					   |
+					   |
+					Goteborg _______________  Gotland
+					 (port)                 (destination)
+					   |                          |
+					   |                          |
+		DH__________Jonkoping _____________  Oskarshamn 
+   (destination)  (truck terminal)          (destination)   
+					   |                          |
+					   |                          |
+					  Vaxjo _______________ Timmernabben
+				(truck terminal)      		 (producer)
+
+    Hyssna <-> Goteborg: 	  Truck segments	
+  Goteborg <-> Gotland: 	  Plane segments
+  Goteborg <-> Jonkoping:	  Truck segments
+        DH <-> Jonkoping:	  Truck segments
+   Gotland <-> Oskarshamn:    Boat segments
+ Jonkoping <-> Oskarshamn:    Truck segments
+ Jonkoping <-> Vaxjo:         Truck segments
+Oskarshamn <-> Timmernabben:  Truck segments
+     Vaxjo <-> Timmernabben:  Truck segments
+	 
+Timmernabben produces with DH as destination
+Hyssna produces with Gotland as destination
+
+All segments have identical return segments (same length and capacity).
+
+
+
+

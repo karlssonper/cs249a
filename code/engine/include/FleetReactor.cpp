@@ -42,7 +42,6 @@ FleetReactor::Ptr FleetReactor::FleetReactorNew(const string &_name,
 
 void FleetReactor::onTimeChange() {
     try {
-
         if (status_ == notActive()) {
             if (notifier()->bufferStart() != notifier()->bufferEnd()) {
                 status_ = active();

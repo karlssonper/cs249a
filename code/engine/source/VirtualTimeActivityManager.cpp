@@ -2,15 +2,17 @@
 #include "RealTimeActivityManager.h"
 #include "RealTimeActivityReactor.h"
 #include "Debug.h"
+#include "Exception.h"
 #include <sstream>
 
 using namespace Shipping;
 long unsigned int VirtualTimeActivityManager::idx = 0;
+
 Fwk::Activity::Ptr VirtualTimeActivityManager::activityNew(const string &_name){
     Fwk::Activity::Ptr activity = activities_[_name];
     if (activity != NULL) {
         std::cerr << "Activity already exists!" << std::endl;
-        return NULL;
+        throw(Fwk::NameInUseException("VirtualTimeActivityManager::activityNew"));
     }
     activity = new Fwk::Activity(_name, this);
     activities_[_name] = activity;
@@ -24,7 +26,8 @@ VirtualTimeActivityManager::activity(const string &_name) const {
     if(it != activities_.end() ) {
         return (*it).second;
     }
-    return NULL; 
+    std::cerr << "Activity " << _name << " not found" << std::endl;
+    throw(Fwk::EntityNotFoundException("VirtualTimeActivityManager::activity"));
 }
 
 void VirtualTimeActivityManager::activityDel(const string &_name) {
@@ -41,7 +44,7 @@ void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
     Fwk::Activity::Ptr realTimeActivity = realTimeActMgr_->activityNew(ss.str());
     Fwk::Time nextTime =
             _activity->nextTime().value() * realTimeActMgr_->scale().value();
-    realTimeActivity->nextTimeIs(nextTime);
+    realTimeActivity->nextTimeIs(_activity->nextTime().value() * realTimeActMgr_->scale().value());
     realTimeActivity->lastNotifieeIs(
             new RealTimeActivityReactor(
                 ss.str() + std::string("Reactor"),
