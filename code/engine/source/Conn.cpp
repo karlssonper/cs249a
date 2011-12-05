@@ -103,18 +103,18 @@ void Conn::onLocationShipmentNew(Location::PtrConst _cur,
 
         Location::PtrConst next =
             routeTable_->nextLocation(_cur, _shipment->destination());
-        Segment::PtrConst out;
+        Segment::Ptr out;
         Location::OutSegmentIteratorConst it = _cur->outSegmenterIterConst();
-        for (int i =0; i < _cur->outSegments(); ++i) {
+        for (int i =0; i < _cur->outSegments(); ++i, ++it) {
             Segment::PtrConst r = graphSegment_.at((*it)->returnSegment());
             if (r->source() == next->name()){
                 out = *it;
                 break;
             }
         }
-        Segment * s = const_cast<Segment *> (out.ptr());
+        //Segment * s = const_cast<Segment *> (out.ptr());
         Location::Ptr p =  const_cast<Location *>(next.ptr());
-        s->shipmentEnq(_shipment,p);
+        out->shipmentEnq(_shipment,p);
 };
 
 void Conn::onSegmentUpdate(Segment::PtrConst seg0) {

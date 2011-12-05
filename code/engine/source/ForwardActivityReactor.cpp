@@ -46,14 +46,20 @@ void ForwardActivityReactor::onStatus() {
             FWK_DEBUG("ForwardActivityReactor executing");
             removeActivePackagesFromSegment();
             if (queuedPackages_ > 0 ){
+                std::cout << "queued LOL?\n" ;
                 shipment_->queuedPackagesDec(queuedPackages_);
                 queuedPackages_ = 0;
             }
             if (shipment_->waitingPackages().value() == 0){
+                if (shipment_->arrivedPackages() != shipment_->packages()) {
+                    return;
+                }
                 segment_->shipmentDeq();
                 entityManager_->locationShipmentNew(nextLocation_->name(), shipment_);
                 return;
-            }
+            }// else if (shipment_->transfered()){
+          //      return;
+        //    }
             addActivePackagesToSegment();
             forwardActivity();
             break;
@@ -76,13 +82,14 @@ void ForwardActivityReactor::onStatus() {
 }
 
 void ForwardActivityReactor::removeActivePackagesFromSegment() {
-    FWK_DEBUG("ForwardActivityReactor::removeActivePackagesFromSegment");
+    FWK_SIM_DEBUG("ForwardActivityReactor::removeActivePackagesFromSegment - Active Packages: " << activePackages_.value());
     if (activePackages_.value() > 0) {
-        FWK_DEBUG("Removing " << activePackages_.value() << " packages.");
-        //segment_->packagesDec(activePackages_.value());
+        SIM("Removing " << activePackages_.value() << " packages.");
+        segment_->activePackageDec(activePackages_.value());
+        shipment_->arrivedPackagesIs(shipment_->arrivedPackages().value() + activePackages_.value());
         activePackages_ = 0;
     } else {
-        SIM(segment_->source() << " just recieved a new shipment. Destination: " <<
+        SIM(segment_->source() << " has no active packages. Destination: " <<
             shipment_->destination()->name() << ". Next Location: " << nextLocation_->name());
     }
 };
@@ -93,19 +100,27 @@ void ForwardActivityReactor::addActivePackagesToSegment() {
     PackageCount availableVehicleCapacity = fleet_->capacity(
         segTypeToFleetVehicle(segment_->type())
         );
+    FWK_SIM_DEBUG("ForwardActivityReactor::addActivePackagesToSegment: availableSegCapacity: " << availableSegmentCapacity.value());
+    FWK_SIM_DEBUG("ForwardActivityReactor::addActivePackagesToSegment: availableVehicleCapacity: " << availableVehicleCapacity.value());
+
 
     PackageCount availableCapacity =
         availableVehicleCapacity <  availableSegmentCapacity ?
 availableVehicleCapacity : availableSegmentCapacity;
 
+    if (availableCapacity.value() == 0) return;
+
+    FWK_SIM_DEBUG("addActivePackagesToSegment: shipment waiting packages: " << shipment_->waitingPackages().value());
     if (shipment_->waitingPackages() > availableCapacity) {
-        segment_->activePackageInc(availableCapacity);
         shipment_->transferedPackagesInc(availableCapacity);
+        SIM("addActivePackagesToSegment: adding " << availableCapacity.value());
+        segment_->activePackageInc(availableCapacity);
         activePackages_ = availableCapacity;
     } else {
         segment_->activePackageInc(shipment_->waitingPackages());
-        shipment_->transferedPackagesInc(shipment_->waitingPackages());
         activePackages_ = shipment_->waitingPackages();
+        SIM("addActivePackagesToSegment: adding all leftover packages"  << shipment_->waitingPackages().value());
+        shipment_->transferedPackagesInc(shipment_->waitingPackages());
     }
 };
 
@@ -114,8 +129,9 @@ void ForwardActivityReactor::forwardActivity() {
     Miles length = segment_->length();
 
     activity_->nextTimeIs(
-        Fwk::Time(activity_->nextTime().value() +speed.value() / length.value())
+        Fwk::Time(activity_->nextTime().value() +length.value()/speed.value() )
         );
+    
     activity_->statusIs(Fwk::Activity::nextTimeScheduled);
 };
 

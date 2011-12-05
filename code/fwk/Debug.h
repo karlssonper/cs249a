@@ -11,7 +11,7 @@
 
 //#define DEBUG_OUTPUT
 
-#define DEBUG_SIM_OUTPUT
+//#define DEBUG_SIM_OUTPUT
 #define SIM_OUTPUT
 
 #ifdef DEBUG_OUTPUT

@@ -37,6 +37,8 @@ void VirtualTimeActivityManager::activityDel(const string &_name) {
 void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
     FWK_DEBUG("VirtualTimeActivityManager::lastActivityIs " << _activity->name());
     scheduledActivities_.push(_activity);
+    std::cout << "lastActivity: " << _activity->name() << std::endl;
+    SIM("QUEUEING FOR FUTURE " << _activity->nextTime().value() << " name: " << _activity->name());
     ++idx;
 
     std::stringstream ss;
@@ -59,7 +61,6 @@ void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
 
 void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
     FWK_DEBUG("VirtualTimeActivityManager::nowIs " << t.value());
-    SIM(std::endl << "[" << t.value() << "]");
     while (!scheduledActivities_.empty()) {
         Fwk::Activity::Ptr nextToRun = scheduledActivities_.top();
         if (nextToRun->nextTime() > t) {
@@ -67,7 +68,9 @@ void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
         }
         Fwk::Time diff = Fwk::Time(nextToRun->nextTime().value() -now_.value());
         now_ = nextToRun->nextTime();
+        SIM(std::endl << "[" << now_.value() << "]");
         scheduledActivities_.pop();
+        std::cout << "executing " << nextToRun->name() << std::endl;
         nextToRun->statusIs(Fwk::Activity::executing);
         nextToRun->statusIs(Fwk::Activity::free);
     }

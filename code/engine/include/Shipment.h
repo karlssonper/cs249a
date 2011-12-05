@@ -27,10 +27,17 @@ public:
     PackageCount packages() const { return total_; } ;
     Fwk::Ptr<Location const> destination() const;
     void transferedPackagesInc(PackageCount p);
+    void transferedPackagesDec(PackageCount p);
+    PackageCount arrivedPackages() const {return arrived_;};
+    void arrivedPackagesIs(PackageCount c);
     void queuedPackagesInc(PackageCount p);
     void queuedPackagesDec(PackageCount p);
+    void transferedIs() {transferedComp_ = false;};
+    bool transfered() const { return transferedComp_;};
 protected:
+    bool transferedComp_;
     PackageCount transfered_;
+    PackageCount arrived_;
     PackageCount queued_;
     const PackageCount total_;
     Fwk::Ptr<Location const> dest_;

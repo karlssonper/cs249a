@@ -70,7 +70,9 @@ void SegmentReactor::createActivity(Shipment::Ptr _shipment, Location::Ptr _next
 
     PackageCount availableCapacity =
             availableVehicleCapacity <  availableSegmentCapacity ?
-                    availableVehicleCapacity : availableSegmentCapacity;
+availableVehicleCapacity : availableSegmentCapacity;
+    FWK_SIM_DEBUG("SegmentReactor::createActivity availableCapacity: " << availableCapacity.value());
+    if (availableCapacity == 0) return;
 
     PackageCount queuedPackages =
             _shipment->waitingPackages() > availableCapacity ?
@@ -95,7 +97,6 @@ void SegmentReactor::createActivity(Shipment::Ptr _shipment, Location::Ptr _next
             )
     );
     activity->statusIs(Fwk::Activity::nextTimeScheduled);
-
 };
 
 void SegmentReactor::addShipmentFromQueue() {
@@ -105,8 +106,7 @@ void SegmentReactor::addShipmentFromQueue() {
     // owner (segment's) total package capacity is
     // the segment's shipment capacity (nr of shipments)
     // times the vehicles' capacity (nr of packages)
-    PackageCount vehicleCapacity = fleet_->capacity(segTypeToFleetVehicle(owner_->type()));
-    PackageCount totalCapacity = owner_->capacity().value() * vehicleCapacity.value();
+    PackageCount totalCapacity = owner_->capacity().value();
     while (packages < totalCapacity && i < owner_->shipments()) {
         if (it->shipment->waitingPackages() != 0) {
             createActivity(it->shipment,it->nextLocation);

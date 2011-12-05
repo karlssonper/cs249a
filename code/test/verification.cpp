@@ -160,7 +160,7 @@ int main(int argc, char *argv[]) {
         conn->attributeIs("djikstras", "bfs");
 
         // runs the simulation until the virtual time is 100
-        timeManager->attributeIs("simulation end", "100");
+        timeManager->attributeIs("simulation end", "6");
 
         std::cout << std::endl;
         std::cout << " -- STATS -- " << std::endl;
