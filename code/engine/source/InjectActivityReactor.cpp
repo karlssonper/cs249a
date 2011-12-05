@@ -55,6 +55,7 @@ void InjectActivityReactor::onStatus() {
     switch(activity_->status()) {
 
     case Fwk::Activity::executing:
+        SIM(customer_ << " creating shipment, size " << shipmentSize_.value() << ", destinaton " << destination_);
         shipment = new Shipment(shipmentSize_, entityManager_->location(destination_));
         entityManager_->locationShipmentNew(customer_, shipment);
         FWK_DEBUG(name() << " executing");

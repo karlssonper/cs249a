@@ -11,7 +11,23 @@ FleetReactor::FleetReactor(const string &_name,
                            VirtualTimeActivityManager::Ptr _vtam) :
                            Fleet::Notifiee(_name, _notifier),
                            activityManager_(_vtam),
-                           status_(notActive()) {}
+                           status_(notActive()),
+                           activity1_(NULL),
+                           activity2_(NULL) {
+reactor1_ = new FleetChangeActivityReactor(
+                                   "foo",
+                                   activityManager_,
+                                   NULL,
+                                   notifier(),
+                                   notifier()->bufferStart());
+reactor2_ = new FleetChangeActivityReactor(
+                                   "foo",
+                                   activityManager_,
+                                   NULL,
+                                   notifier(),
+                                   notifier()->bufferStart());
+
+}
 
 FleetReactor::Ptr FleetReactor::FleetReactorNew(const string &_name, 
                                    Fleet *_notifier,
@@ -42,32 +58,26 @@ void FleetReactor::onTimeChange() {
                 }
                 tempName = name();
                 tempName.append("Swapper1Reactor");
-                reactor1_ = new FleetChangeActivityReactor(tempName,
-                    activityManager_,
-                    activity1_,
-                    notifier(),
-                    notifier()->bufferStart());
+                reactor1_->activityIs(activity1_);
                 activity1_->nextTimeIs(Fwk::Time(notifier()->bufferStart().value()));
                 activity1_->notifieeIs(tempName, reactor1_);
                 activity1_->statusIs(Fwk::Activity::nextTimeScheduled);
                 tempName = name();
                 tempName.append("Swapper2Reactor");
-                reactor2_ = new FleetChangeActivityReactor(tempName,
-                    activityManager_,
-                    activity2_,
-                    notifier(),
-                    notifier()->bufferEnd());
+                reactor2_->activityIs(activity2_);
                 activity2_->nextTimeIs(Fwk::Time(notifier()->bufferEnd().value()));
-                activity1_->notifieeIs(tempName, reactor2_);
-                activity1_->statusIs(Fwk::Activity::nextTimeScheduled);
+                activity2_->notifieeIs(tempName, reactor2_);
+                activity2_->statusIs(Fwk::Activity::nextTimeScheduled);
             } 
         } else /*active*/ {
             if (notifier()->bufferStart() != notifier()->bufferEnd()) {
-                // still active, update
-                reactor1_->timeToSwapIs(notifier()->bufferStart());
-                activity1_->nextTimeIs(notifier()->bufferStart().value());
-                reactor2_->timeToSwapIs(notifier()->bufferEnd());
-                activity1_->nextTimeIs(notifier()->bufferEnd().value());
+
+               activity1_->nextTimeIs(notifier()->bufferStart().value());
+               reactor1_->timeToSwapIs(notifier()->bufferStart());
+          
+               reactor2_->timeToSwapIs(notifier()->bufferEnd());
+               activity2_->nextTimeIs(notifier()->bufferEnd().value());
+
             } else {
                 // deactivate
                 status_ = notActive();

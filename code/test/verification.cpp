@@ -51,8 +51,7 @@ int main(int argc, char *argv[]) {
         fleet->attributeIs("Plane, capacityAlt", "200");
         fleet->attributeIs("Plane, costAlt", "100");
 
-        fleet->attributeIs("altTimeStart", "10");
-        fleet->attributeIs("altTimeEnd", "22");
+        fleet->attributeIs("alt time", "10 22");
 
         Ptr<Instance> timmernabben = manager->instanceNew("Timmernabben", "Customer");
         Ptr<Instance> oskarshamn = manager->instanceNew("Oskarshamn", "Port");
@@ -165,6 +164,16 @@ int main(int argc, char *argv[]) {
 
         timeManager->attributeIs("time scale", "0.0001");
         timeManager->attributeIs("simulation end", "100");
+
+        std::cout << std::endl;
+        std::cout << " -- STATS -- " << std::endl;
+        std::cout << "Gotland recieved shipments: " << gotland->attribute("shipments recieved") << std::endl;
+        std::cout << "Gotland average latency: " << gotland->attribute("average latency") << std::endl;
+        std::cout << std::endl;
+        std::cout << "DH recieved shipments: " << dh->attribute("shipments recieved") << std::endl;
+        std::cout << "DH average latency: " << dh->attribute("average latency") << std::endl;
+        std::cout << std::endl;
+
 
         std::cout << "Done!" << std::endl;
         

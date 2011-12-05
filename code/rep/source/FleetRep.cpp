@@ -12,6 +12,8 @@
 #include <sstream>
 #include "OutputFloatingPoint.h"
 #include "Exception.h"
+#include <algorithm>
+#include <iterator>
 
 using namespace Shipping;
 using namespace std;
@@ -62,19 +64,21 @@ string FleetRep::attribute(const string& attributeName) {
 void FleetRep::attributeIs(const string& name, const string& _v) {
     FWK_DEBUG("FleetRep::attributeIs with name: " << name << " and v: " << _v);
 
-    if (name == "altTimeStart") {
-        unsigned int time = atoi(_v.c_str());
-        TimeOfDay tod(time);
-        engineManager_->fleet()->bufferStartIs(time);
+    if (name == "alt time") {
+        
+        deque<string> parseWords;
+        istringstream iss(_v);
+        copy(std::istream_iterator<std::string>(iss), istream_iterator<std::string>(),
+        back_inserter<deque<std::string> >(parseWords) );
+
+        unsigned int firstTime = atoi(parseWords.front().c_str());
+        parseWords.pop_front();
+        unsigned int secondTime = atoi(parseWords.front().c_str());
+        TimeOfDay ftod(firstTime);
+        TimeOfDay stod(secondTime);
+        engineManager_->fleet()->bufferIs(ftod, stod);
         return;
     }  
-
-    if (name == "altTimeEnd") {
-        unsigned int time = atoi(_v.c_str());
-        TimeOfDay tod(time);
-        engineManager_->fleet()->bufferEndIs(time);
-        return;
-    }
 
     FleetRep::FleetAttribute fleetAttribute = parseFleetAttribute(name);
     if (fleetAttribute.vehicle == Fleet::undefined()) {

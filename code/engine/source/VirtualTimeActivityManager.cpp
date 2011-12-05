@@ -56,6 +56,7 @@ void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
 
 void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
     FWK_DEBUG("VirtualTimeActivityManager::nowIs " << t.value());
+    SIM(std::endl << "[" << t.value() << "]");
     while (!scheduledActivities_.empty()) {
         Fwk::Activity::Ptr nextToRun = scheduledActivities_.top();
         if (nextToRun->nextTime() > t) {
