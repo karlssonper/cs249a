@@ -94,6 +94,8 @@ void SegmentReactor::createActivity(Shipment::Ptr _shipment, Location::Ptr _next
                 queuedPackages
             )
     );
+    activity->statusIs(Fwk::Activity::nextTimeScheduled);
+
 };
 
 void SegmentReactor::addShipmentFromQueue() {

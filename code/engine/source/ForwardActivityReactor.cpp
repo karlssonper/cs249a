@@ -1,3 +1,4 @@
+
 /*
 * ForwardActivityReactor.cpp
 *
@@ -57,6 +58,8 @@ void ForwardActivityReactor::onStatus() {
             forwardActivity();
             break;
         }
+        case Fwk::Activity::free:
+            break;
         case Fwk::Activity::nextTimeScheduled:
             FWK_DEBUG("ForwardActivityReactor nextTimeScheduled");
             manager_->lastActivityIs(activity_);
@@ -78,6 +81,9 @@ void ForwardActivityReactor::removeActivePackagesFromSegment() {
         FWK_DEBUG("Removing " << activePackages_.value() << " packages.");
         //segment_->packagesDec(activePackages_.value());
         activePackages_ = 0;
+    } else {
+        SIM_OUTPUT(segment_->source() + " just recieved a new shipment. Destination: " +
+            shipment_->destination()->name() + ". Next Location: " + nextLocation_->name());
     }
 };
 

@@ -53,7 +53,7 @@ ShortestDistance::Ptr BreadthFirstSearch::shortestDistance(
             }
         }
         s->next[lIt->second->name()] = next;
-        FWK_SIM_DEBUG("SOURCE: " << source << " DEST: " << lIt->second->name() << " NEXT: " <<
+        FWK_DEBUG("SOURCE: " << source << " DEST: " << lIt->second->name() << " NEXT: " <<
             next->name() << " DIST : " << minDist.value());
         ++lIt;
     };
