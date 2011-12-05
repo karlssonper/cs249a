@@ -126,7 +126,8 @@ void Customer::recievedShipmentsIs(ShipmentCount _recievedShipments) {
 }
 
 void Customer::recievedShipmentsInc() {
-    //recievedShipments_++;
+    recievedShipments_ = recievedShipments_.value() + 1;
+    SIM(name() << " recievedShipmentsInc(), total now is " << recievedShipments().value());
 }
 
 void Customer::averageLatencyIs(Latency _averageLatency) {
