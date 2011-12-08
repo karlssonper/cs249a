@@ -12,6 +12,7 @@ namespace Fwk{
 /* Define the type 'Time' */
 class Time : public Ordinal<Time,double> {
 public:
+Time() : Ordinal<Time, double>(0.0) {}
     Time(double time) : Ordinal<Time,double>(time)
     {}
 };

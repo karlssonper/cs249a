@@ -50,11 +50,11 @@ namespace Shipping {
 
     class Hours : public Ordinal<Hours, double> {
     public:
-        Hours() : Ordinal<Hours, double>(1.0) {}
+        Hours() : Ordinal<Hours, double>(0.0) {}
         Hours(double value) : Ordinal<Hours, double>(value) {
             if (value < 0.0)
             {
-                cerr << "Hours out of range, using default value (1.0)" << std::endl;
+                cerr << "Hours out of range" << std::endl;
                 throw(Fwk::RangeException("Hours"));
             }
         }

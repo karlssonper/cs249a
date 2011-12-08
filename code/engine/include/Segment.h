@@ -76,6 +76,7 @@ namespace Shipping {
         ShipmentCount recievedShipments() const { return recievedShipments_; }
         ShipmentCount refusedShipments() const { return refusedShipments_; }
 
+
         // mutators
         void sourceIs(const string &_source);
         void lengthIs(Miles _length);
@@ -87,6 +88,7 @@ namespace Shipping {
         void activePackageDec(PackageCount c);
         void recievedShipmentsInc();
         void refusedShipmentsInc();
+
 
         void shipmentEnq(Shipment::Ptr, Fwk::Ptr<Location>);
         void shipmentDeq();
@@ -129,6 +131,7 @@ namespace Shipping {
         SegmentType type_;
         ShipmentCount recievedShipments_;
         ShipmentCount refusedShipments_;
+
     };
 
     class TruckSegment : public Segment {

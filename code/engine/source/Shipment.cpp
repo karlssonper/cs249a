@@ -1,5 +1,6 @@
 #include "Shipment.h"
 #include "Location.h"
+#include "Activity.h"
 
 using namespace Shipping;
 
@@ -46,4 +47,13 @@ void Shipment::queuedPackagesDec(PackageCount p)
 void Shipment::arrivedPackagesIs(PackageCount c) {
     if (arrived_ != c)
         arrived_ = c;
+}
+
+void Shipment::timeStampSentIs(Fwk::Time sent_) {
+    timeStampSent_ = sent_;
+
+}
+
+void Shipment::timeStampArrivedIs(Fwk::Time arrived_) {
+    timeStampArrived_ = arrived_;
 }
