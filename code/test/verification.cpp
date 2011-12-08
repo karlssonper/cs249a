@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
         Ptr<Instance> timeManager = manager->instanceNew("myTimeManager", "Time manager");
 
         // make one virtual hour run in a 10 000th of the time
-        timeManager->attributeIs("time scale", "0.0001");
+        timeManager->attributeIs("time scale", "0.000001");
 
         fleet->attributeIs("Boat, speed", "20");
         fleet->attributeIs("Boat, speedAlt", "20");
@@ -114,8 +114,8 @@ int main(int argc, char *argv[]) {
         vax_jon->attributeIs("source", "Vaxjo");
         jon_vax->attributeIs("length", "120");
         vax_jon->attributeIs("length", "120");
-        jon_vax->attributeIs("capacity", "100");
-        vax_jon->attributeIs("capacity", "100");
+        jon_vax->attributeIs("capacity", "5");
+        vax_jon->attributeIs("capacity", "5");
 
         Ptr<Instance> jon_dh = manager->instanceNew("jon_dh", "Truck segment");
         Ptr<Instance> dh_jon = manager->instanceNew("dh_jon", "Truck segment");
@@ -157,7 +157,7 @@ int main(int argc, char *argv[]) {
         gote_gotl->attributeIs("capacity", "200");
         gotl_gote->attributeIs("capacity", "200");
 
-        conn->attributeIs("djikstras", "bfs");
+        conn->attributeIs("routing", "bfs");
 
         // runs the simulation until the virtual time is 100
         timeManager->attributeIs("simulation end", "40");

@@ -152,7 +152,8 @@ void ConnRep::attributeIs(const string& name, const string& v) {
     } else if (v == std::string ("bfs")) {
         engineManager_->conn()->routingIs(Conn::breadthFirstSearch);
     } else {
-        //error
+        std::cerr << "Invalid Conn argument" << std::endl;
+        throw(Fwk::UnknownArgException("ConnRep::attributeIs"));
     }
 };
 
