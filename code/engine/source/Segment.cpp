@@ -74,9 +74,7 @@ void Segment::activePackageInc(PackageCount c) {
 }
 void Segment::activePackageDec(PackageCount c) {
     FWK_DEBUG("Segment::activePackageDec with name: " << name());
-    std::cout << "BEFORE: " << activePackages_.value() <<std::endl;
     activePackages_ = activePackages_.value() - c.value();
-    std::cout << "AFTER: " << activePackages_.value() <<std::endl;
 
     FWK_DEBUG("Notifying -> " << notifiee_->name());
     notifiee_->onActivePackageDec(c);
@@ -87,6 +85,7 @@ void Segment::shipmentEnq(Fwk::Ptr<Shipment> _s, Location::Ptr _nextLocation) {
     shipmentAndNextLoc item;
     item.shipment = _s;
     item.nextLocation = _nextLocation;
+
     shipment_.push_back(item);
 
     FWK_DEBUG("Notifying -> " << notifiee_->name());

@@ -160,7 +160,7 @@ int main(int argc, char *argv[]) {
         conn->attributeIs("djikstras", "bfs");
 
         // runs the simulation until the virtual time is 100
-        timeManager->attributeIs("simulation end", "6");
+        timeManager->attributeIs("simulation end", "40");
 
         std::cout << std::endl;
         std::cout << " -- STATS -- " << std::endl;
@@ -177,5 +177,7 @@ int main(int argc, char *argv[]) {
     } catch (Fwk::Exception e) {
         std::cerr << "Exception in main: " << e.what() << std::endl;
     }
+    int i;
+    std::cin >> i;
     return 0;
 }
