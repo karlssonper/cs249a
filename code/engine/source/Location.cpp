@@ -130,10 +130,16 @@ void Customer::recievedShipmentsInc() {
     SIM(name() << " recievedShipmentsInc(), total now is " << recievedShipments().value());
 }
 
-void Customer::averageLatencyIs(Latency _averageLatency) {
+void Customer::averageLatencyIs(Hours _averageLatency) {
     FWK_DEBUG(name() << " averageLatencyIs " << _averageLatency.value());
     if (averageLatency_ == _averageLatency) return;
     averageLatency_ = _averageLatency;
+}
+
+void Customer::totalLatencyIs(Hours _totalLatency) {
+    FWK_DEBUG(name() << " totalLatencyIs " << _totalLatency.value());
+    if (totalLatency_ == _totalLatency) return;
+    totalLatency_ = _totalLatency;
 }
 
 void Customer::totalCostIs(Dollars _totalCost) {

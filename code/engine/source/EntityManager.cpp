@@ -586,7 +586,7 @@ void EntityManager::locationShipmentNew(string _name, Fwk::Ptr<Shipment> _shipme
     }
 }
 
-void EntityManager::customerAverageLatencyIs(const string &_customerName, Latency _averageLatency) {
+void EntityManager::customerAverageLatencyIs(const string &_customerName, Hours _averageLatency) {
     FWK_DEBUG("EntityManager::customerAverageLatencyIs on " << _customerName);
 
     map<string, Location::Ptr>::iterator it;

@@ -84,7 +84,8 @@ namespace Shipping {
         PackageCount shipmentSize() const { return shipmentSize_; }
         string destination() const { return destination_; }
         ShipmentCount recievedShipments() const { return recievedShipments_; }
-        Latency averageLatency() const { return averageLatency_; }
+        Hours averageLatency() const { return averageLatency_; }
+        Hours totalLatency() const { return totalLatency_; }
         Dollars totalCost() const { return totalCost_; }
 
         // mutators
@@ -93,7 +94,8 @@ namespace Shipping {
         void destinationIs(const string &_destination);
         void recievedShipmentsIs(ShipmentCount _recievedShipments);
         void recievedShipmentsInc();
-        void averageLatencyIs(Latency _averageLatency);
+        void averageLatencyIs(Hours _averageLatency);
+        void totalLatencyIs(Hours _totalLatency);
         void totalCostIs(Dollars _totalCost);
 
     protected:
@@ -108,7 +110,8 @@ namespace Shipping {
 
         // for recieving customers
         ShipmentCount recievedShipments_;
-        Latency averageLatency_;
+        Hours averageLatency_;
+        Hours totalLatency_;
         Dollars totalCost_;
 
         Notifiee::Ptr notifiee_;

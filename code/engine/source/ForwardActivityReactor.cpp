@@ -68,6 +68,12 @@ void ForwardActivityReactor::onStatus() {
                     Customer::Ptr dest;
                     dest = const_cast<Customer*>(destConst.ptr());
                     dest->recievedShipmentsInc();
+                    shipment_->timeStampArrivedIs(activity_->nextTime());
+
+                    Hours latency(shipment_->timeStampArrived().value() - shipment_->timeStampSent().value()); 
+                    dest->totalLatencyIs(dest->totalLatency().value() + latency.value());
+                    dest->averageLatencyIs(dest->totalLatency().value() / (double)dest->recievedShipments().value());
+
                 }
 
                 return;
