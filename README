@@ -13,21 +13,53 @@ user: vsand
 					 ~~~~~~~~~ ASSIGNMENT 3 ~~~~~~~~~
 					 Per Karlsson (perk@stanford.edu)
 					 Victor Sand (vsand@stanford.edu)
-					  
+					 
+INTRODUCTION
 
-                                                                          
+This application simulates a shipping network. It allows a user to set up a network using 'Location' and 'Segment' entities, and simulate the network's behaviour as 'Shipments' are injected into and transported around the network. 
 
-																		  
+The Location entities can be Customers, (can send or recieve shipment), Terminals (connects segments of a certain type) or Ports (connects segments of any type).
 
-																		  
+The Segments can be of Truck, Boat or Plane type and support vehicles (defined in the network-wide Fleet) of corresponding types.					  
+																		 
+CLASS STRUCTURE AND HEIRARCHY
+
+* ENGINE LAYER
+
+The Engine later is responsible for managing the actual entity and
+value objects. These classes reside in the Engine layer:
+
+	Location - Class that represent location, has a subclass for each specific location type. Each location object has a list of pointer to its outgoing segments. It also keeps track of its own type through a LocationType enum attrivute. This LocationType makes it easy for the Rep layer to make sure that Locations do not get connected to the wrong type of Segments, for example. 
+	
+	Segment - In the same was as Location keeps track of its own type, the Segment subclasses for the different types of segments has a SegmentType enum attribute for the same reason (easy control of which segments that can be connected to which type of terminals and return segments). A segment also has a few more attributes (source, length, returnSegment, expeditite support) to fit the defined model.
+	
+	EntityManager - This is a class designed for keeping track of what we call "Entity object". Entity objects are, at this point, Locations and Segments (could be extended to handle more types of objects in the future). A network has one EntityManager (no more, no less). All operations from the Rep layer that has to do with Locations and Segments (adding, updating, reading or deleting) has to go trough here. The reason for that is that we want to be able to have several notifiees that all reacts to changes of these objects. To ensure that we don't accidentily change an Location or Segment directly using its pointer, all EntityManager accessors returns const pointers. To make this model possible, the EntityManager has collections keeping track of all Segments, Location and notifiees. It also has a set of mutators to read, create, update or delete these objects. For every relevant action taken, it sends notifications to all its notifiees (at this point these are fixed to Conn and Stats).
+	
+	Fleet - The class is pretty small and fairly straight-forward implemented using an enum for type and and an array for storing the vehicle attribute values. The fleet cannot be deleted or changed from it's Instance manager and is in that sense fixed to a network. 
+	
+	Conn - Conn is a reactor class and reacts on changes notified by the EntityManager. In the Conn Object, we store collections of const smart pointers to Locations and Segments (we call them "valid" Locations and Segments). The reasons for this is to optimize the queries later (in case we have a lots of different segments and locations, but only a small amount is properly connected to each other). The queries are returned as 'PathTrees' (lists of different Paths and properties) which can be interpreted by the rep layer.
+	
+	Stats - This class reacts to changes in the Locations and Segments in the network (it inherits from the EntityManager's notifiee class) to constantly keep updated attributes. 
+	
+	EngineManager - This class is the entry point into the Engine layer and all it does is providing pointers to the networks' Conn, Fleet, Stats and EntityManager Classes.
+	
+As mentioned, the Conn, Fleet and Stats objects are fixed to an Instance manager. These cannot be changed or deleted. This is a decision made to ensure that the user gets consistent results (so that the client doesn't try to change Fleet or Stats instances mid-simulation, for exampele) and keeping the notifier structure intact. It would also be unpredictable to change the Conn object in the middle of a simulation as that object keeps track of the connectivity in the graph.
+
+* REP LAYER
+
+The Rep layer has a class that corresponds to each class in the Engine layer. It's role is to parse the requests from the Client layer, and does so by making sure the input is correct and that the objects that it's trying to perform operations on actually exixts. We have tried to build the parsing in such a way that the program does not crash regardless of what the user tries to do. Any kind of invalid input should result in a cerr message, and all queries with invalid properties return empty strings. ConnRep returns '\n' if nothing is found (both valid and invalid inputs can return '\n'). 
+
+* ENGINEMANAGER ENTRY
+
+The Rep layer classes all have a pointer to the EngineManager to be able to send instructions to the Engine objects. This pointer has to be provided when the Rep layer objects are constructed, and this is done in ManagerImpl's instanceNew function. 
+																		 
 SHIPMENT INJECTION
-The Customer location type has been equipped with a set of extra attributes compared to those in assignment 2, as well a notifiee class. The notifiees responds to changes in the 'shipment size', 'transfer rate' and 'destination' attributes. When all three are set, the notifiee (CustomerReactor) creates activities that when executed injects shipments into the network at the rate (via the InjectActivityReactor class that is a notifiee to the activites).
+The Customer location type has been equipped with a set of extra attributes in extension to the ones that the other Location types have in common , as well a notifiee class. The notifiees responds to changes in the 'shipment size', 'transfer rate' and 'destination' attributes. When all three are set, the notifiee (CustomerReactor) creates activities that when executed injects shipments into the network at the rate (via the InjectActivityReactor class that is a notifiee to the activites).
 
 SHIPMENT FORWARDING 
 
 CAPACITY
 
-																		  
 REAL TIME ACTIVITY MANAGER
 Activities are added to the virtual time manager, and corresponding activities are at the same time added to the real time activity manager. In the real time activity manager, the executing points are scaled with a factor. For example, a factor of 0.1 makes one hour in the virtual time manager run in a tenth of the time. With each activity executing, the real time activity manager sets nowIs() for the virtual time manager and sleeps the proper amount of time between calls. The user sets the time scale factor through the TimeManager instance in the client layer:
 
