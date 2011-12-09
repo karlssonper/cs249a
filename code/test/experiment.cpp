@@ -163,7 +163,8 @@ int main(int argc, char *argv[]) {
             averageRefused += refused;
         }
 
-        cout << "Average refused shipments: " << averageRefused << endl;
+        cout << "Last segment refused shipments: " << segments["destTermSegB"]->attribute("shipments refused") << endl;
+        cout << "Average refused shipments: " << averageRefused/(float)segments.size() << endl;
         
 
     } catch (Fwk::Exception e) {
