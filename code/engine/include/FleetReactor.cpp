@@ -90,6 +90,8 @@ void FleetReactor::onTimeChange() {
                 activityManager_->activityDel(activity2_->name());
                 activity2_ = NULL;
                 reactor2_ = NULL;
+
+
             }
         }
 
