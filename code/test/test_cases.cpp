@@ -895,8 +895,8 @@ void testErrorInvalidValues() {
 
     EQUAL(seg->attribute("length"), "1.00");
     EQUAL(seg->attribute("difficulty"), "1.00");     
-    EQUAL(seg->attribute("expedite support"), "yes");
-    //EQUAL(fleet->attribute("Boat, capacity"), "10");
+   // EQUAL(seg->attribute("expedite support"), "yes");
+    EQUAL(fleet->attribute("Boat, capacity"), "10");
     ASSERT(fleet->attribute("Boat, capacity") == "10" || 
         fleet->attribute("Boat, capacity") == "10.00");
     EQUAL(fleet->attribute("Boat, cost"), "10.00");

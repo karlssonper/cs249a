@@ -38,18 +38,12 @@ ShortestDistance::Ptr BreadthFirstSearch::shortestDistance(
             }
             PathTree::Ptr p = conn_->connect(source, lIt->second->name());
             PathTree::PathIteratorConst it = p->pathIterConst();   
-            Miles minDist = Miles::max();
+            Hours minTime = Hours::max();
             Location::PtrConst next;
             for (unsigned int i = 0; i < p->paths(); ++i, ++it){
-                Path::PathItemIteratorConst pit = (*it)->pathItemIterConst();
-                Miles dist = 0;
-                for (unsigned int j = 0; j < (*it)->pathItems(); ++j, ++pit){
-                    if (pit->seg){
-                        dist = dist.value() + pit->seg->length().value();
-                    }
-                }
-                if (dist < minDist) {
-                    minDist = dist;
+                Hours time = (*it)->time();
+                if (time < minTime) {
+                    minTime = time;
                     Path::PathItemIteratorConst temp = 
                         (*it)->pathItemIterConst();
                     ++temp;

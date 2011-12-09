@@ -112,11 +112,13 @@ void FleetRep::attributeIs(const string& name, const string& _v) {
         DollarsPerMile dpm(cost);
         engineManager_->fleet()->costBufferIs(fleetAttribute.vehicle, dpm);
     } else if (fleetAttribute.prop == "capacity") {
-        unsigned int capacity = atoi(_v.c_str());
+        int capacity = atoi(_v.c_str());
+        if (capacity < 0 ) return;
         PackageCount pc(capacity);
         engineManager_->fleet()->capacityIs(fleetAttribute.vehicle, pc);
     } else if (fleetAttribute.prop == "capacityAlt") {
-        unsigned int capacity = atoi(_v.c_str());
+        int capacity = atoi(_v.c_str());
+        if (capacity < 0 ) return;
         PackageCount pc(capacity);
         engineManager_->fleet()->capacityBufferIs(fleetAttribute.vehicle, pc);
     } else {

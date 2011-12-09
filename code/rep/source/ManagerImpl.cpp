@@ -161,8 +161,8 @@ void ManagerImpl::instanceDel(const string &_name) {
 
     map<string,Ptr<Instance> >::iterator instIt = instance_.find(_name);
     if (instIt == instance_.end()) {
-        cerr << "ManagerImpl::instanceDel: " <<
-            _name << " was not found." << endl;
+        //cerr << "ManagerImpl::instanceDel: " <<
+            //_name << " was not found." << endl;
         return;
     }
     Ptr<DeletableInstance> deletablePtr= 

@@ -150,6 +150,7 @@ PathTree::Addable ExplorePathTree::isAddable(Path::Ptr p, PathItem pI) {
     }
     if (p->distance() + pI.seg->length() > exploreData_.distance()) {
         FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns false(lengthMaxReached)");
+        std::cout << p->distance().value() + pI.seg->length().value() << std::endl;;
         return lengthMaxReached_;
     }
     FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns true");
@@ -205,6 +206,7 @@ Path::Ptr PathTree::addChildren(unsigned int children,
             FWK_DEBUG("Conn::ExplorePathTree::processQueueFront() adding same Path to queue");
             frontPath->costIs(Dollars(frontPath->cost().value() + segmentCost(pI.seg, frontPath->expediteSupport())));
             frontPath->timeIs(Hours(frontPath->time().value() + segmentTime(pI.seg, frontPath->expediteSupport())));
+            frontPath->distanceIs(Miles(frontPath->distance().value() + pI.seg->length().value()));
             queue_.push(frontPath);
         }
         queue_.back()->nextPathItemIs(pI);

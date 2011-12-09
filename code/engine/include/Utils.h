@@ -85,7 +85,9 @@ namespace Shipping {
     public:
         PackageCount() : Ordinal<PackageCount, unsigned int>(0) {}
         PackageCount(unsigned int value)
-            : Ordinal<PackageCount, unsigned int>(value) {}
+            : Ordinal<PackageCount, unsigned int>(value) {
+
+        }
     };
 
     class ShipmentCount : public Ordinal<ShipmentCount, unsigned int> {
