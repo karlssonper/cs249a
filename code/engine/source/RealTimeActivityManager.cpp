@@ -2,7 +2,9 @@
 #include "VirtualTimeActivityManager.h"
 #include "Exception.h"
 #include "Debug.h"
-#include <windows.h>
+#ifdef WIN32
+    #include <windows.h>
+#endif
 
 using namespace Shipping;
 long unsigned int RealTimeActivityManager::idx = 0;

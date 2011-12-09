@@ -63,9 +63,9 @@ Location::PtrConst RouteTable::nextLocation (Location::PtrConst cur,
     std::cout << "Capacity: "  << out->capacity().value() << std::endl;
 
     if (out->activePackages() != out->capacity()) {
-        
         return next;
     } else {
+        addRS(out);
         Miles minDist = Miles::max();
         it = cur->outSegmenterIterConst();
         for (int i =0; i < cur->outSegments(); ++i, ++it) {
@@ -87,7 +87,12 @@ Location::PtrConst RouteTable::nextLocation (Location::PtrConst cur,
     }
 
     return next;
-};
+    };
+
+    void 
+    RouteTable::addRS(Segment::PtrConst s) {
+    const_cast<Segment*>(s.ptr())->refusedShipmentsInc();
+}
 
 void RouteTable::updateRouteTable() {
     switch(latestUpdate_) {

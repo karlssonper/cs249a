@@ -43,6 +43,7 @@ private:
     RouteTable();
     RouteTable(const RouteTable & );
     void updateRouteTable();
+    void addRS(Fwk::Ptr<Segment const>);
 };
 };
 #endif /* ROUTETABLE_H_ */
