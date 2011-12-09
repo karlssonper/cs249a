@@ -69,7 +69,7 @@ Customer::Customer(const string &_name,
                        notifieeIs("unusedName",p);
 }
 
-Customer::~Customer(){
+Customer::~Customer() {
     FWK_DEBUG("Customer::~Customer() with name: " << name());
 };
 

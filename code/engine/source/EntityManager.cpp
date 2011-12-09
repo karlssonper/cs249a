@@ -88,6 +88,15 @@ void EntityManager::segmentSourceIs(const string &_segmentName,
                 throw(Fwk::EntityNotFoundException("EntityManager::segmentSourceIs"));
             } 
 
+            // find out if the segment has a source
+            if (sp->source() != "") {
+                map<string, Location::Ptr>::iterator locIt = location_.find(sp->source());
+                if (locIt != location_.end()) {
+                    lp = locIt->second;
+                    lp->outSegmentDel(sp.ptr());
+                }
+            }
+
             lp = locIt->second;
 
             if (sp->source() == lp->name()) {

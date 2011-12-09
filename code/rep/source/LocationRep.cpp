@@ -48,8 +48,8 @@ string LocationRep::attribute(const string& attributeName) {
     if (attributeName.substr(0,7) == "segment" ) {
         unsigned int segNr = LocationRep::segmentNumber(attributeName)-1;
         if (segNr >= locPtr->outSegments() ) {
-            cerr << "Segment number " << segNr+1 << " does not exist. Returning empty string.\n";
-            return "";
+            cerr << "Segment number " << segNr+1 << " does not exist." << endl;
+            throw(Fwk::UnknownArgException("LocationRep::attribute"));
         }
         Location::OutSegmentIteratorConst it = 
             engineManager_->entityManager()->location(name())->outSegmenterIterConst(segNr);
@@ -88,28 +88,6 @@ string LocationRep::attribute(const string& attributeName) {
         }
         
     }
-
-
-    /*
-    if (attributeName.substr(0,7) != "segment" ) {
-    cerr << "LocationRep::attribute: " << attributeName << " is not a valid attribute name" << endl;
-    return "";
-    }
-
-    unsigned int segNr = LocationRep::segmentNumber(attributeName)-1;
-
-    FWK_DEBUG("segNr " << segNr << ", outSegments(): " << locPtr->outSegments() );
-    if (segNr >= locPtr->outSegments() ) {
-    cerr << "Segment number " << segNr+1 << " does not exist. Returning empty string.\n";
-    return "";
-    }
-
-    Location::OutSegmentIteratorConst it = 
-    engineManager_->entityManager()->location(name())->outSegmenterIterConst(segNr);
-    string attr = locPtr->outSegment(it)->name();
-
-    return attr;
-    */
 };
 
 

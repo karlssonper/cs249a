@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
 
         */
 
+
         Ptr<Instance::Manager> manager = shippingInstanceManager();
         Ptr<Instance> stats = manager->instanceNew("myStats", "Stats");
         Ptr<Instance> conn = manager->instanceNew("myConn", "Conn");
@@ -154,6 +155,16 @@ int main(int argc, char *argv[]) {
         cout << "STATS:" << endl;
         cout << "Destination shipments recieved: " << destination->attribute("shipments recieved") << endl;
         cout << "Destination average latency: " << destination->attribute("average latency") << endl;
+
+        float averageRefused = 0;
+        std::map<string, Ptr<Instance> >::iterator segIt;
+        for (segIt = segments.begin(); segIt != segments.end(); segIt++) {
+            float refused = atof(segIt->second->attribute("shipments refused").c_str());
+            averageRefused += refused;
+        }
+
+        cout << "Average refused shipments: " << averageRefused << endl;
+        
 
     } catch (Fwk::Exception e) {
         std::cerr << "Exception in main: " << e.what() << std::endl;

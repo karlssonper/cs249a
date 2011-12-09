@@ -79,8 +79,8 @@ PlaneSegmentRep::~PlaneSegmentRep(){
 string SegmentRep::attribute(const string &_attributeName) {
 
     if (engineManager_->entityManager()->segment(name()) == NULL) {
-        cerr << name() << " not a valid segment (maybe deleted), returning empty string for " << _attributeName << endl;
-            return "";
+        cerr << name() << " not a valid segment: " << _attributeName << endl;
+        throw(Fwk::EntityNotFoundException("SegmentRep::attribute"));
     }
 
     FWK_DEBUG("SegmentRep::attribute with attribute: " << _attributeName);
@@ -114,7 +114,7 @@ string SegmentRep::attribute(const string &_attributeName) {
         return s.str();
     } else {  
         cerr << "SegmentRep::attribute: SegmentRep error: " << _attributeName << " is an invalid attribute." << endl;
-        return "";
+        throw(Fwk::UnknownArgException("SegmentRep::attribute"));
     }
 }
 
