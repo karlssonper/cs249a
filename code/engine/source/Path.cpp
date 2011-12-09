@@ -11,6 +11,7 @@ Path::Ptr Path::cloneIs() {
     clonedPath->traversedItems_ = traversedItems_;
     clonedPath->costIs(cost());
     clonedPath->timeIs(time());
+    clonedPath->distanceIs(distance());
     return clonedPath;
 };
 
@@ -116,6 +117,12 @@ void ExplorePathTree::processQueueFront() {
     }
 };
 
+void Path::distanceIs(Miles m) {
+    if (distance_ != m) {
+        distance_ = m;
+    }
+};
+
 PathTree::Addable ExplorePathTree::isAddable(Path::Ptr p, PathItem pI) {
     Path::PathItemIterator it = p->pathItemIter();
     for (unsigned int i= 0 ; i < p->pathItems(); ++i, ++it){
@@ -140,6 +147,10 @@ PathTree::Addable ExplorePathTree::isAddable(Path::Ptr p, PathItem pI) {
     if (p->time() + segmentTime(pI.seg, p->expediteSupport()) > exploreData_.time()){
         FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns false(timeLimitReached_)");
         return timeLimitReached_;
+    }
+    if (p->distance() + pI.seg->length() > exploreData_.distance()) {
+        FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns false(lengthMaxReached)");
+        return lengthMaxReached_;
     }
     FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns true");
     return addable_;
@@ -187,6 +198,7 @@ Path::Ptr PathTree::addChildren(unsigned int children,
             Path::Ptr newPath = curPath->cloneIs();
             newPath->costIs(Dollars(newPath->cost().value() + segmentCost(pI.seg, newPath->expediteSupport())));
             newPath->timeIs(Hours(newPath->time().value() + segmentTime(pI.seg, newPath->expediteSupport())));
+            newPath->distanceIs(Miles(newPath->distance().value() + pI.seg->length().value()));
             path_.push_back(newPath);
             queue_.push(path_.back());
         } else {
@@ -199,7 +211,7 @@ Path::Ptr PathTree::addChildren(unsigned int children,
         return queue_.back();
 };
 
-Path::Path() : cost_(0), time_(0), expediteSupport_(Segment::fullExpediteSupport()){};
+Path::Path() : cost_(0), time_(0), distance_(0), expediteSupport_(Segment::fullExpediteSupport()){};
 
 PathItem PathTree::pathItem(Segment::PtrConst p) {
     Segment::PtrConst retSeg = seg(p->returnSegment());
@@ -292,5 +304,6 @@ bool PathTree::locExists(const string & _name) {
     return owner_->graphLocation_.find(_name) != 
         owner_->graphLocation_.end();
 };
+
 
 
