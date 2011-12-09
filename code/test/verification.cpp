@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
         Ptr<Instance> gotland = manager->instanceNew("Gotland", "Customer");
         Ptr<Instance> goteborg = manager->instanceNew("Goteborg", "Port");
         Ptr<Instance> hyssna = manager->instanceNew("Hyssna", "Customer");
-        Ptr<Instance> jonkoping = manager->instanceNew("Jonkoping", "Truck terminal");
+        Ptr<Instance> jonkoping = manager->instanceNew("Jonkoping", "Port");
         Ptr<Instance> vaxjo = manager->instanceNew("Vaxjo", "Truck terminal");
         Ptr<Instance> dh = manager->instanceNew("DH", "Customer");
 
@@ -117,6 +117,16 @@ int main(int argc, char *argv[]) {
         jon_vax->attributeIs("capacity", "100");
         vax_jon->attributeIs("capacity", "100");
 
+        Ptr<Instance> tim_jon = manager->instanceNew("tim_jon", "Plane segment");
+        Ptr<Instance> jon_tim = manager->instanceNew("jon_tim", "Plane segment");
+        jon_tim->attributeIs("return segment", "tim_jon");
+        jon_tim->attributeIs("source", "Jonkoping");
+        tim_jon->attributeIs("source", "Timmernabben");
+        jon_tim->attributeIs("length", "300");
+        tim_jon->attributeIs("length", "300");
+        jon_tim->attributeIs("capacity", "1000");
+        tim_jon->attributeIs("capacity", "1000");
+
         Ptr<Instance> jon_dh = manager->instanceNew("jon_dh", "Truck segment");
         Ptr<Instance> dh_jon = manager->instanceNew("dh_jon", "Truck segment");
         jon_dh->attributeIs("return segment", "dh_jon");
@@ -175,8 +185,9 @@ int main(int argc, char *argv[]) {
 
     } catch (Fwk::Exception e) {
         std::cerr << "Exception in main: " << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Unknown exception in main" << std::endl;
     }
-    int i;
-    std::cin >> i;
+
     return 0;
 }
