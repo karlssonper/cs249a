@@ -50,7 +50,8 @@ ShortestDistance::Ptr DjikstrasAlgorithm::shortestDistance(
     while (!Q.empty()) {
         Miles minDist = Miles::max();
         unsigned int u;
-        for (std::set<unsigned int>::iterator it = Q.begin(); it != Q.end(); ++it) {
+        for (std::set<unsigned int>::iterator it = 
+            Q.begin(); it != Q.end(); ++it) {
             if (dist[*it] < minDist) {
                 u = *it;
                 minDist = dist[u];

@@ -20,26 +20,31 @@ void FleetChangeActivityReactor::onStatus() {
         switch(activity_->status()) {
 
         case Fwk::Activity::executing:
-            FWK_DEBUG("FleetChangeActivityReactor executing: " << activity_->name());
+            FWK_DEBUG("FleetChangeActivityReactor executing: " <<
+                activity_->name());
             fleet_->swapData();
             break;
         case Fwk::Activity::free:
             FWK_DEBUG("FleetChangeActivityReactor free");
              //run again in 24 hours
-            activity_->nextTimeIs(Fwk::Time(activity_->nextTime().value() + 24.0));
+            activity_->nextTimeIs(
+                Fwk::Time(activity_->nextTime().value()+24.0));
             activity_->statusIs(Fwk::Activity::nextTimeScheduled);
             break;
         case Fwk::Activity::nextTimeScheduled:
-            FWK_DEBUG("FleetChangeActivityReactor nextTimeScheduled: " << activity_->nextTime().value());
+            FWK_DEBUG("FleetChangeActivityReactor nextTimeScheduled: " <<
+                activity_->nextTime().value());
             virtualManager_->lastActivityIs(activity_);
             break;
         default: 
-            std::cerr << "FleetChangeActivityReator::onStatus out of range" << std::endl;
+            std::cerr << "FleetChangeActivityReator::onStatus out of range" <<
+                std::endl;
             throw(Fwk::RangeException("FleetChangeActivityReactor"));
         }
     } // try
     catch(Fwk::Exception e) {
-        std::cerr << "FleetChangeActivityReactor::onStatus(): " << e.what() << std::endl;
+        std::cerr << "FleetChangeActivityReactor::onStatus(): " << e.what() <<
+            std::endl;
         onNotificationException();
     }
 }

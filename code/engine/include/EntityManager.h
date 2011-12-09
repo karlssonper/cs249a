@@ -32,7 +32,8 @@ namespace Shipping {
             virtual void onSegmentDel(Segment::PtrConst) {};
             virtual void onLocationNew(Location::PtrConst) {};
             virtual void onLocationDel(Location::PtrConst) {};
-            virtual void onLocationShipmentNew(Location::PtrConst, Shipment::Ptr) {};
+            virtual void onLocationShipmentNew(Location::PtrConst, 
+                                               Shipment::Ptr) {};
             virtual void onSegmentUpdate(Segment::PtrConst) {};
             virtual void onLocationUpdate(Location::PtrConst) {};
             virtual void onSegmentExpUpdate(Segment::PtrConst) {};

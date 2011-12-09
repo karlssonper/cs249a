@@ -7,7 +7,8 @@ using namespace Shipping;
 EngineManager::Ptr EngineManager::EngineManagerNew(std::string name) {
     Ptr p = new EngineManager(name);
     if (!p) {
-        std::cerr << "EngineManager::EngineManagerNew new() failed" << std::endl;
+        std::cerr <<
+            "EngineManager::EngineManagerNew new() failed" << std::endl;
         throw(Fwk::MemoryException("EngineManager::EngineManagerNew"));
     }
     return p;
@@ -30,8 +31,10 @@ Fwk::NamedInterface(_name)
         RealTimeActivityManager::RealTimeActivityManagerNew(
         std::string("RealTimeActivityManager")
         );
-    virtualTimeActivityManager_->realTimeActivityManagerIs(realTimeActivityManager_);
-    realTimeActivityManager_->virtualTimeActivityManagerIs(virtualTimeActivityManager_);
+    virtualTimeActivityManager_->realTimeActivityManagerIs(
+        realTimeActivityManager_);
+    realTimeActivityManager_->virtualTimeActivityManagerIs(
+        virtualTimeActivityManager_);
     fleet_ = Fleet::FleetNew(std::string("Fleet"), virtualTimeActivityManager_);
 };
 

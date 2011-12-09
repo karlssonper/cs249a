@@ -7,12 +7,14 @@
 using std::string;
 using namespace Shipping;
 
-Fleet::Fleet(const string &_name, Fwk::Ptr<VirtualTimeActivityManager> _vtam) 
+Fleet::Fleet(
+    const string &_name, Fwk::Ptr<VirtualTimeActivityManager> _vtam) 
     : Fwk::NamedInterface(_name), virtualTimeActivityManager_(_vtam) {
     FWK_DEBUG("Fleet constructor with name " << _name);
     string reactorName = _name;
     reactorName.append("Reactor");
-    FleetReactor::Ptr rp = FleetReactor::FleetReactorNew(reactorName, this, _vtam);
+    FleetReactor::Ptr rp = FleetReactor::FleetReactorNew(
+        reactorName, this, _vtam);
     notifieeIs("unusedName", rp);
 }
 
@@ -20,7 +22,8 @@ Fleet::~Fleet(){
     FWK_DEBUG("Fleet::~Fleet() with name: " << name());
 };
 
-Fleet::Ptr Fleet::FleetNew(const string &_name, Fwk::Ptr<VirtualTimeActivityManager> _vtam) {
+Fleet::Ptr Fleet::FleetNew(
+    const string &_name, Fwk::Ptr<VirtualTimeActivityManager> _vtam) {
     FWK_DEBUG("Fleet::FleetNew with name " << _name);
     Fleet::Ptr p = new Fleet(_name, _vtam);
     if (!p) {

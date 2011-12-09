@@ -29,25 +29,34 @@ FleetRep::~FleetRep(){
 
 string FleetRep::attribute(const string& attributeName) {
     FWK_DEBUG("FleetRep::attribute with attribute: " << attributeName);
-    FleetRep::FleetAttribute fleetAttribute = parseFleetAttribute(attributeName);
+    FleetRep::FleetAttribute fleetAttribute =
+        parseFleetAttribute(attributeName);
     ostringstream s;
     if (fleetAttribute.prop == "speed" ) {
-        s << fltPnt2str(engineManager_->fleet()->speed(fleetAttribute.vehicle).value());
+        s << fltPnt2str(
+            engineManager_->fleet()->speed(fleetAttribute.vehicle).value());
         return s.str();
     } else if (fleetAttribute.prop == "speedAlt") {
-        s << fltPnt2str(engineManager_->fleet()->speedBuffer(fleetAttribute.vehicle).value());
+        s << fltPnt2str(
+            engineManager_->fleet()->speedBuffer(
+            fleetAttribute.vehicle).value());
         return s.str();
     } else if (fleetAttribute.prop == "cost") {
-        s << fltPnt2str(engineManager_->fleet()->cost(fleetAttribute.vehicle).value());
+        s << fltPnt2str(
+            engineManager_->fleet()->cost(fleetAttribute.vehicle).value());
         return s.str();
     } else if (fleetAttribute.prop == "costAlt") {
-        s << fltPnt2str(engineManager_->fleet()->costBuffer(fleetAttribute.vehicle).value());
+        s << fltPnt2str(
+            engineManager_->fleet()->costBuffer(
+            fleetAttribute.vehicle).value());
         return s.str();
     } else if (fleetAttribute.prop == "capacity") {
-        s << fltPnt2str(engineManager_->fleet()->capacity(fleetAttribute.vehicle).value());
+        s << fltPnt2str(engineManager_->fleet()->capacity(
+            fleetAttribute.vehicle).value());
         return s.str();
     } else if (fleetAttribute.prop == "capacityAlt") {
-        s << fltPnt2str(engineManager_->fleet()->capacityBuffer(fleetAttribute.vehicle).value());
+        s << fltPnt2str(engineManager_->fleet()->capacityBuffer(
+            fleetAttribute.vehicle).value());
         return s.str();
     } else if (fleetAttribute.prop == "altTimeStart") {
         s << fltPnt2str(engineManager_->fleet()->bufferStart().value());
@@ -56,7 +65,8 @@ string FleetRep::attribute(const string& attributeName) {
         s << fltPnt2str(engineManager_->fleet()->bufferEnd().value());
         return s.str();
     } else {
-        cerr << "FleetRep::attribute: << " << attributeName << " invalid." << endl;
+        cerr << "FleetRep::attribute: << " <<
+            attributeName << " invalid." << endl;
         return ""; 
     }
 }
@@ -68,7 +78,8 @@ void FleetRep::attributeIs(const string& name, const string& _v) {
         
         deque<string> parseWords;
         istringstream iss(_v);
-        copy(std::istream_iterator<std::string>(iss), istream_iterator<std::string>(),
+        copy(std::istream_iterator<std::string>(iss), 
+            istream_iterator<std::string>(),
         back_inserter<deque<std::string> >(parseWords) );
 
         unsigned int firstTime = atoi(parseWords.front().c_str());
@@ -114,14 +125,16 @@ void FleetRep::attributeIs(const string& name, const string& _v) {
     }
 }
 
-FleetRep::FleetAttribute FleetRep::parseFleetAttribute(const string & attributeName) {
+FleetRep::FleetAttribute FleetRep::parseFleetAttribute(
+    const string & attributeName) {
     FWK_DEBUG("parseFleetAttribute on " << attributeName);
     FleetRep::FleetAttribute fleetAttribute;
     string mode;
     size_t modeLength;
     modeLength = attributeName.find_first_of(",");
     mode = attributeName.substr(0,modeLength);
-    fleetAttribute.prop = attributeName.substr(modeLength+2,attributeName.size()-modeLength+2);
+    fleetAttribute.prop = attributeName.substr(
+        modeLength+2,attributeName.size()-modeLength+2);
     if (mode == "Truck") {
         fleetAttribute.vehicle = Fleet::truck();
     } else if (mode == "Boat") {
@@ -129,7 +142,8 @@ FleetRep::FleetAttribute FleetRep::parseFleetAttribute(const string & attributeN
     } else if (mode == "Plane") {
         fleetAttribute.vehicle = Fleet::plane();
     } else {
-        cerr << "FleetRep error: " << attributeName << " is an invalid vehicle" << endl;
+        cerr << "FleetRep error: " << attributeName <<
+            " is an invalid vehicle" << endl;
         throw(Fwk::RangeException("FleetRep::parseFleetAttribute"));
     }
     return fleetAttribute;

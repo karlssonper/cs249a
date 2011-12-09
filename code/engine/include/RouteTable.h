@@ -29,7 +29,8 @@ public:
     RouteTable(map<string, Fwk::Ptr<Location const> > *,
              map<string, Fwk::Ptr<Segment const> > *,
              Conn *);
-    Fwk::Ptr<Location const> nextLocation (Fwk::Ptr<Location const>,Fwk::Ptr<Location const>);
+    Fwk::Ptr<Location const> nextLocation (Fwk::Ptr<Location const>,
+                                           Fwk::Ptr<Location const>);
 
     Status status() const { return status_;};
     void statusIs(Status s);

@@ -22,7 +22,9 @@ namespace Shipping {
 
         void onStatus();
 
-        Fwk::Ptr<VirtualTimeActivityManager> virtualManager() const { return virtualManager_; }
+        Fwk::Ptr<VirtualTimeActivityManager> virtualManager() const {
+            return virtualManager_; 
+        }
         Fwk::Activity::Ptr activity() { return activity_; }
         string destination() { return destination_; }
         TransferRate transferRate() { return transferRate_; }

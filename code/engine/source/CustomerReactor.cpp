@@ -17,7 +17,8 @@ CustomerReactor::CustomerReactor(
     entityManager_(_entityManager),
     activity_(NULL),
     status_(notActive()) {
-        FWK_DEBUG("CustomerReactor constructor, name(): " << name() << " notifier: " << notifier()->name());  
+        FWK_DEBUG("CustomerReactor constructor, name(): "
+            << name() << " notifier: " << notifier()->name());  
 }
 
 CustomerReactor::Ptr CustomerReactor::CustomerReactorNew(
@@ -43,7 +44,7 @@ void CustomerReactor::onAttributeUpdate() {
             if (notifier()->transferRate().value() != 0 &&
                 notifier()->destination() != "" &&
                 notifier()->shipmentSize().value() != 0) {
-                    FWK_DEBUG("All three attribs set, setting CustomerReactor to active");
+                    FWK_DEBUG("All three attribs set, setting active");
                     status_ = active();
                     string injectorName = name();
                     injectorName.append("Injector");
@@ -73,7 +74,7 @@ void CustomerReactor::onAttributeUpdate() {
             if (notifier()->transferRate().value() == 0 ||
                 notifier()->destination() == "" ||
                 notifier()->shipmentSize().value() == 0) {
-                    FWK_DEBUG("All three attribs not set, setting CustomerReactor to notActive");
+                    FWK_DEBUG("All three attribs not set, setting notActive");
                     status_ = notActive();
                     activity_->notifieeIs("",0);
                     activityManager_->activityDel(activity_->name());
@@ -88,7 +89,8 @@ void CustomerReactor::onAttributeUpdate() {
         }
     } // try 
     catch(Fwk::Exception e) {
-        std::cerr << "Exception in CustomerReactor::onAttributeUpdate(): " << e.what() << std::endl;
+        std::cerr << "Exception in CustomerReactor::onAttributeUpdate(): " 
+            << e.what() << std::endl;
         onNotificationException();
     }
 }

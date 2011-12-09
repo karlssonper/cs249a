@@ -15,14 +15,16 @@ namespace Shipping {
         typedef Fwk::Ptr<Stats const> PtrConst;
         typedef Fwk::Ptr<Stats> Ptr;
 
-        class ExpeditedPercentage : public Ordinal<ExpeditedPercentage, double> {
+        class ExpeditedPercentage : 
+            public Ordinal<ExpeditedPercentage, double> {
         public:
             ExpeditedPercentage() : Ordinal<ExpeditedPercentage, double>(0.f) {}
-            ExpeditedPercentage(double value) : Ordinal<ExpeditedPercentage, double>(value) {
+            ExpeditedPercentage(double value) :
+            Ordinal<ExpeditedPercentage, double>(value) {
                 if (value < 0.0 || value > 100.0)
                 {
-                    std::cerr << "ExpeditedPercentage out of range, setting default value (0.0)" << std::endl;
-                    value = 0.0;
+                    std::cerr << "ExpPercentage out of range" << std::endl;
+                    throw(Fwk::RangeException("ExpeditedPercentage"));
                 }
             };
         };

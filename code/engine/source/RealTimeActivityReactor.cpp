@@ -35,7 +35,8 @@ void RealTimeActivityReactor::onStatus() {
             manager_->lastActivityIs(activity_);
             break;
         default:
-            std::cerr << "RealTimeActivityReactor::onStatus out of range" << std::endl;
+            std::cerr << 
+                "RealTimeActivityReactor::onStatus out of range" << std::endl;
             throw(Fwk::RangeException("RealTimeActivityReactor::onStatus"));
     }
 };

@@ -42,25 +42,21 @@ ShortestDistance::Ptr BreadthFirstSearch::shortestDistance(
             Location::PtrConst next;
             for (unsigned int i = 0; i < p->paths(); ++i, ++it){
                 Path::PathItemIteratorConst pit = (*it)->pathItemIterConst();
-                //cout << "source: " << source << " dest: " << lIt->second->name() << std::endl;
                 Miles dist = 0;
                 for (unsigned int j = 0; j < (*it)->pathItems(); ++j, ++pit){
                     if (pit->seg){
                         dist = dist.value() + pit->seg->length().value();
                     }
-                    //cout << pit->loc->name() << " ";
                 }
-                //std::cout << std::endl ;
                 if (dist < minDist) {
                     minDist = dist;
-                    Path::PathItemIteratorConst temp = (*it)->pathItemIterConst();
+                    Path::PathItemIteratorConst temp = 
+                        (*it)->pathItemIterConst();
                     ++temp;
                     next = temp->loc;
                 }
             }
             s->next[lIt->second->name()] = next;
-            FWK_DEBUG("SOURCE: " << source << " DEST: " << lIt->second->name() << " NEXT: " <<
-                next->name() << " DIST : " << minDist.value());
             ++lIt;
         };
         return s;

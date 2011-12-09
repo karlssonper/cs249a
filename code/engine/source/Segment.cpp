@@ -10,7 +10,9 @@
 using namespace Shipping;
 
 Segment::Segment(const string &_name, SegmentType _st,
-        VirtualTimeActivityManager::Ptr vtam, Fleet::PtrConst _fleet, EntityManager::Ptr _entityManager) :
+        VirtualTimeActivityManager::Ptr vtam,
+        Fleet::PtrConst _fleet,
+        EntityManager::Ptr _entityManager) :
     Fwk::NamedInterface(_name),
     source_(""),
     returnSegment_(""),
@@ -95,7 +97,8 @@ void Segment::shipmentEnq(Fwk::Ptr<Shipment> _s, Location::Ptr _nextLocation) {
 
 void Segment::shipmentDeq() {
     FWK_DEBUG("Segment::shipmentEnq with name: " << name());
-    shipment_.front().shipment->transferedPackagesDec(shipment_.front().shipment->packages());
+    shipment_.front().shipment->transferedPackagesDec(
+        shipment_.front().shipment->packages());
     shipment_.pop_front();
 
     FWK_DEBUG("Notifying -> " << notifiee_->name());

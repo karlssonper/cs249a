@@ -11,7 +11,7 @@ namespace Shipping {
     class FleetChangeActivityReactor : public Fwk::Activity::Notifiee {
     public:
         FleetChangeActivityReactor(const string &_name, 
-                                  Fwk::Ptr<VirtualTimeActivityManager> _virtualManager,
+                                  Fwk::Ptr<VirtualTimeActivityManager> _vm,
                                   Fwk::Ptr<Fwk::Activity> _activity,
                                   Fleet* _fleet,
                                   TimeOfDay _timeToSwap);
@@ -25,7 +25,9 @@ namespace Shipping {
 
         ~FleetChangeActivityReactor() {}
 
-        void activityIs(Fwk::Ptr<Fwk::Activity> _activity) { activity_ = _activity; }
+        void activityIs(Fwk::Ptr<Fwk::Activity> _activity) { 
+            activity_ = _activity; 
+        }
 
     protected:
         FleetChangeActivityReactor();

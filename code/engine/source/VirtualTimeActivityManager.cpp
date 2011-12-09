@@ -12,11 +12,13 @@ Fwk::Activity::Ptr VirtualTimeActivityManager::activityNew(const string &_name){
     Fwk::Activity::Ptr activity = activities_[_name];
     if (activity != NULL) {
         std::cerr << "Activity already exists!" << std::endl;
-        throw(Fwk::NameInUseException("VirtualTimeActivityManager::activityNew"));
+        throw(Fwk::NameInUseException(
+            "VirtualTimeActivityManager::activityNew"));
     }
     activity = new Fwk::Activity(_name, this);
     if (!activity) {
-        std::cerr << "VirtualTimeActivityManager::activityNew new() failed" << std::endl;
+        std::cerr << "VirtualTimeActivityManager::activityNew new() failed" << 
+            std::endl;
         throw(Fwk::MemoryException("VirtualTimeActivityManager::activityNew"));
     }
     activities_[_name] = activity;
@@ -39,9 +41,11 @@ void VirtualTimeActivityManager::activityDel(const string &_name) {
 }
 
 void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
-    FWK_DEBUG("VirtualTimeActivityManager::lastActivityIs " << _activity->name());
+    FWK_DEBUG("VirtualTimeActivityManager::lastActivityIs " <<
+        _activity->name());
     scheduledActivities_.push(_activity);
-    SIM(_activity->name() << " is queued for execution at: " << _activity->nextTime().value());
+    SIM(_activity->name() << " is queued for execution at: " <<
+        _activity->nextTime().value());
     ++idx;
 
     std::stringstream ss;
@@ -49,7 +53,8 @@ void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
     Fwk::Activity::Ptr realTimeActivity = realTimeActMgr_->activityNew(ss.str());
     Fwk::Time nextTime =
             _activity->nextTime().value() * realTimeActMgr_->scale().value();
-    realTimeActivity->nextTimeIs(_activity->nextTime().value() * realTimeActMgr_->scale().value());
+    realTimeActivity->nextTimeIs(_activity->nextTime().value() *
+        realTimeActMgr_->scale().value());
     realTimeActivity->lastNotifieeIs(
             new RealTimeActivityReactor(
                 ss.str() + std::string("Reactor"),

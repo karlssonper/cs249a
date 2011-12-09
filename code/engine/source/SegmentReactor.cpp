@@ -39,9 +39,11 @@ SegmentReactor::~SegmentReactor() {
 };
 
 
-void SegmentReactor::onShipmentEnq(Shipment::Ptr _shipment, Location::Ptr _nextLocation) {
+void SegmentReactor::onShipmentEnq(
+    Shipment::Ptr _shipment, Location::Ptr _nextLocation) {
     FWK_DEBUG("SegmentReactor::onShipmentEnq() for name " << name());
-        SIM(owner_->name() << " has " << owner_->shipments() << " shipments enqueued.");
+        SIM(owner_->name() << " has " << owner_->shipments() <<
+            " shipments enqueued.");
     if (owner_->activePackages().value() < owner_->capacity().value()){
         createActivity(_shipment,_nextLocation);
     } 
@@ -59,10 +61,12 @@ void SegmentReactor::onActivePackageInc(PackageCount c) {
 
 void SegmentReactor::onActivePackageDec(PackageCount c) {
     FWK_DEBUG("SegmentReactor::onActivePackageDec() for name " << name());
-    SIM(owner_->name() << " has " << owner_->shipments() << " shipments enqueued.");
+    SIM(owner_->name() << " has " << owner_->shipments() <<
+        " shipments enqueued.");
 };
 
-void SegmentReactor::createActivity(Shipment::Ptr _shipment, Location::Ptr _nextLocation) {
+void SegmentReactor::createActivity(
+    Shipment::Ptr _shipment, Location::Ptr _nextLocation) {
 
     PackageCount availableSegmentCapacity = owner_->capacity().value() -
                                             owner_->activePackages().value();
@@ -73,7 +77,8 @@ void SegmentReactor::createActivity(Shipment::Ptr _shipment, Location::Ptr _next
     PackageCount availableCapacity =
             availableVehicleCapacity <  availableSegmentCapacity ?
 availableVehicleCapacity : availableSegmentCapacity;
-    FWK_SIM_DEBUG("SegmentReactor::createActivity availableCapacity: " << availableCapacity.value());
+    FWK_SIM_DEBUG("SegmentReactor::createActivity availableCapacity: " << 
+        availableCapacity.value());
     if (availableCapacity == 0) return;
 
     PackageCount queuedPackages =
@@ -102,7 +107,8 @@ availableVehicleCapacity : availableSegmentCapacity;
 };
 
 void SegmentReactor::addShipmentFromQueue() {
-    SIM(owner_->name() << " has " << owner_->shipments() << " shipments enqueued.");
+    SIM(owner_->name() << " has " << owner_->shipments() << 
+        " shipments enqueued.");
 
     PackageCount packages = owner_->activePackages();
     Segment::ShipmentIteratorConst it = owner_->shipmentIterConst();

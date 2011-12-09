@@ -17,8 +17,11 @@ Location::~Location(){
 
 };
 
-Location::OutSegmentIteratorConst Location::outSegmenterIterConst(const unsigned int n) const {
-    if (n >= outSegment_.size()) FWK_DEBUG("ERROR outSegmenterIterConst(int n) where n > size");
+Location::OutSegmentIteratorConst Location::outSegmenterIterConst(
+    const unsigned int n) const {
+    if (n >= outSegment_.size()) {
+        FWK_DEBUG("ERROR outSegmenterIterConst(int n) where n > size");
+    }
     OutSegmentIteratorConst it = outSegment_.begin();
     for (unsigned int i=0; i < n; ++i) it++;
     return it;
@@ -46,13 +49,15 @@ void Location::outSegmentNew(Segment::Ptr _p) {
 }
 
 void Location::outSegmentDel(Segment::Ptr _p) {
-    FWK_DEBUG("Location::outSegmentDel removing " << _p->name() << " from outgoing segments list");
+    FWK_DEBUG("Location::outSegmentDel removing " << _p->name() << 
+        " from outgoing segments list");
     Location::OutSegmentIterator it = outSegmenterIter();
     for (unsigned int i = 0; i < outSegments(); ++i, it++) {
         if ((*it)->name() == _p->name()) break;
     }
     if (it == outSegment_.end()) {
-        FWK_DEBUG("Location::outSegmentDel  " << _p->name() << " not found in outgoing segments list");
+        FWK_DEBUG("Location::outSegmentDel  " << _p->name() <<
+            " not found in outgoing segments list");
         return;
     }
     outSegment_.erase(it);
@@ -61,11 +66,13 @@ void Location::outSegmentDel(Segment::Ptr _p) {
 Customer::Customer(const string &_name,
                    VirtualTimeActivityManager::Ptr vtAm, 
                    Fwk::Ptr<EntityManager> _entityManager)
-                   : Location(_name,customer()), entityManager_(_entityManager) {
+                   : Location(_name,customer()),entityManager_(_entityManager){
                        FWK_DEBUG("Customer constructor with name " << _name);
                        string reactorName = _name;
                        reactorName.append("Reactor");
-                       CustomerReactor::Ptr p = CustomerReactor::CustomerReactorNew(reactorName, this, vtAm, _entityManager);
+                       CustomerReactor::Ptr p = 
+                           CustomerReactor::CustomerReactorNew(
+                           reactorName, this, vtAm, _entityManager);
                        notifieeIs("unusedName",p);
 }
 
@@ -127,7 +134,8 @@ void Customer::recievedShipmentsIs(ShipmentCount _recievedShipments) {
 
 void Customer::recievedShipmentsInc() {
     recievedShipments_ = recievedShipments_.value() + 1;
-    SIM(name() << " recievedShipmentsInc(), total now is " << recievedShipments().value());
+    SIM(name() << " recievedShipmentsInc(), total now is " <<
+        recievedShipments().value());
 }
 
 void Customer::averageLatencyIs(Hours _averageLatency) {

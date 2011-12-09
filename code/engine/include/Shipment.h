@@ -24,7 +24,9 @@ namespace Shipping {
         typedef Fwk::Ptr<Shipment const> PtrConst;
         typedef Fwk::Ptr<Shipment> Ptr;
         Shipment(PackageCount _packages, Fwk::Ptr<Location const> _dest);
-        PackageCount waitingPackages() const { return total_.value() - transfered_.value() - queued_.value(); } ;
+        PackageCount waitingPackages() const { 
+            return total_.value() - transfered_.value() - queued_.value(); 
+        } ;
         PackageCount transferedPackages() const { return transfered_; } ;
         PackageCount queuedPackages() const { return queued_; } ;
         PackageCount packages() const { return total_; } ;

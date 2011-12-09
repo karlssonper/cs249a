@@ -25,7 +25,8 @@ void SegmentRep::del() {
 }
 
 
-TruckSegmentRep::TruckSegmentRep(const string &_name, EngineManager::Ptr _engineManager)
+TruckSegmentRep::TruckSegmentRep(
+    const string &_name, EngineManager::Ptr _engineManager)
     : SegmentRep(_name, _engineManager) {
     FWK_DEBUG("TruckSegmentRep::TruckSegmentRep with _name: " << _name);
         TruckSegment::Ptr p = TruckSegment::TruckSegmentNew(_name,
@@ -42,7 +43,8 @@ TruckSegmentRep::~TruckSegmentRep(){
     FWK_DEBUG("TruckSegmentRep::~TruckSegmentRep()");
 }
 
-BoatSegmentRep::BoatSegmentRep(const string &_name, Ptr<EngineManager> _engineManager)
+BoatSegmentRep::BoatSegmentRep(
+    const string &_name, Ptr<EngineManager> _engineManager)
     : SegmentRep(_name, _engineManager) {
     FWK_DEBUG("BoatSegmentRep::BoatSegmentRep with _name: " << _name);
         BoatSegment::Ptr p = BoatSegment::BoatSegmentNew(_name,
@@ -59,7 +61,8 @@ BoatSegmentRep::~BoatSegmentRep(){
     FWK_DEBUG("BoatSegmentRep::~BoatSegmentRep()");
 }
 
-PlaneSegmentRep::PlaneSegmentRep(const string &_name, Ptr<EngineManager> _engineManager)
+PlaneSegmentRep::PlaneSegmentRep(
+    const string &_name, Ptr<EngineManager> _engineManager)
     : SegmentRep(_name, _engineManager) {
     FWK_DEBUG("PlaneSegmentRep::PlaneSegmentRep with _name: " << _name);
         PlaneSegment::Ptr p = PlaneSegment::PlaneSegmentNew(_name,
@@ -88,39 +91,51 @@ string SegmentRep::attribute(const string &_attributeName) {
     if (_attributeName == "source") {
         return engineManager_->entityManager()->segment(name())->source();
     } else if (_attributeName == "length") {
-        s << fltPnt2str(engineManager_->entityManager()->segment(name())->length().value());
+        s << fltPnt2str(
+            engineManager_->entityManager()->segment(name())->length().value());
         return s.str();
     } else if (_attributeName == "return segment") {
-        return engineManager_->entityManager()->segment(name())->returnSegment();
+        return engineManager_->entityManager()->
+            segment(name())->returnSegment();
     } else if (_attributeName == "difficulty") {
-        s << fltPnt2str(engineManager_->entityManager()->segment(name())->difficulty().value());
+        s << fltPnt2str(
+            engineManager_->entityManager()->
+            segment(name())->difficulty().value());
         return s.str();
     } else if(_attributeName == "expedite support") {
         Shipping::Segment::ExpediteSupport exp = 
-            engineManager_->entityManager()->segment(name())->expediteSupport();
+            engineManager_->entityManager()->
+            segment(name())->expediteSupport();
         if (exp == Shipping::Segment::fullExpediteSupport()) {
             return "yes";
         } else {
             return "no";
         }
     } else if (_attributeName == "shipments recieved") {
-        s << fltPnt2str(engineManager_->entityManager()->segment(name())->recievedShipments().value());
+        s << fltPnt2str(
+            engineManager_->entityManager()->
+            segment(name())->recievedShipments().value());
         return s.str();
     } else if (_attributeName == "shipments refused") {
-        s << fltPnt2str(engineManager_->entityManager()->segment(name())->refusedShipments().value());
+        s << fltPnt2str(
+            engineManager_->entityManager()->
+            segment(name())->refusedShipments().value());
         return s.str();
     } else if (_attributeName == "capacity" ) {
-        s << fltPnt2str(engineManager_->entityManager()->segment(name())->capacity().value());
+        s << fltPnt2str(
+            engineManager_->entityManager()->
+            segment(name())->capacity().value());
         return s.str();
     } else {  
-        cerr << "SegmentRep::attribute: SegmentRep error: " << _attributeName << " is an invalid attribute." << endl;
+        cerr << "SegmentRep::attribute: SegmentRep error: " << 
+            _attributeName << " is an invalid attribute." << endl;
         throw(Fwk::UnknownArgException("SegmentRep::attribute"));
     }
 }
 
 void SegmentRep::attributeIs(const string &_name, const string &_v) {
 
-    FWK_DEBUG("SegmentRep::attributeIs with name: " << _name << " and v: " << _v);
+    FWK_DEBUG("SegmentRep::attributeIs with name: " <<_name << " and v: "<< _v);
 
     if (engineManager_->entityManager()->segment(name()) == NULL) {
         cerr << "SegmentRep::attributeIs: " << name() << " not found";
@@ -153,7 +168,8 @@ void SegmentRep::attributeIs(const string &_name, const string &_v) {
         }
         engineManager_->entityManager()->segmentExpediteSupportIs(name(),exp);
     } else {
-        cerr << "SegmentRep::attributeIs error: " << _name << " is an invalid attribute name" << endl;
+        cerr << "SegmentRep::attributeIs error: " << _name <<
+            " is an invalid attribute name" << endl;
         throw(Fwk::UnknownArgException("SegmentRep::attributeIs"));
     }
 }

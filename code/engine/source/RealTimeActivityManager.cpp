@@ -13,12 +13,14 @@ long unsigned int RealTimeActivityManager::idx = 0;
 Fwk::Activity::Ptr RealTimeActivityManager::activityNew(const string &_name) {
     Fwk::Activity::Ptr activity = activities_[_name];
     if (activity != NULL) {
-        std::cerr << "RealTimeActivityManager::activityNew already exists!" << std::endl;
+        std::cerr <<
+            "RealTimeActivityManager::activityNew already exists!" << std::endl;
         throw(Fwk::NameInUseException("RealTimeActivityManager::activityNew"));
     }
     activity = new Fwk::Activity(_name, this);
     if (!activity) {
-        std::cerr << "RealTimeActivityManagerNew::activityNew new() failed" << std::endl;
+        std::cerr <<
+            "RealTimeActivityManagerNew::activityNew new() failed" << std::endl;
         throw(Fwk::MemoryException("RealTimeActivityManager"));
     }
     activities_[_name] = activity;
@@ -69,7 +71,7 @@ void RealTimeActivityManager::nowIs(Fwk::Time t) {
         }
 
         //calculate amount of time to sleep
-	    Fwk::Time diff = Fwk::Time(nextToRun->nextTime().value() - now_.value());
+	    Fwk::Time diff = Fwk::Time(nextToRun->nextTime().value()-now_.value());
 #ifdef WIN32
 	    Sleep( static_cast<int>((diff.value() * 3600000)));
 #else
@@ -100,8 +102,10 @@ RealTimeActivityManager::virtualTimeActivityManager() {
     if (virtualTimeActMgr_) { 
         return virtualTimeActMgr_;
     } else {
-        std::cerr << "RealTimeActivityManager::virtualTimeActivityManager() vtmgr not found" << std::endl;
-        throw(Fwk::EntityNotFoundException("RealTimeActivityManager::virtualTimeActivityManager"));
+        std::cerr << "RTAMvirtualTimeActivityManager() vtmgr not found" << 
+            std::endl;
+        throw(Fwk::EntityNotFoundException(
+            "RealTimeActivityManager::virtualTimeActivityManager"));
     }
 }
 

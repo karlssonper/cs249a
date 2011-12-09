@@ -74,7 +74,8 @@ string StatsRep::attribute(const string& _attributeName) {
         s << fltPnt2str(engineManager_->stats()->expeditedPercentage().value());
         return s.str();
     } else {
-        cerr << "StatsRep::attribute: " << _attributeName << " is an invalid attribute." << endl;
+        cerr << "StatsRep::attribute: " << _attributeName <<
+            " is an invalid attribute." << endl;
         return "";
     }
 };

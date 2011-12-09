@@ -26,7 +26,8 @@ InjectActivityReactor::InjectActivityReactor(
         FWK_DEBUG("InjectActivityReactor " << name() << " constructor");
 }
 
-    void InjectActivityReactor::virtualManagerIs(VirtualTimeActivityManager::Ptr _virtualManager) {
+    void InjectActivityReactor::virtualManagerIs(
+        VirtualTimeActivityManager::Ptr _virtualManager) {
     virtualManager_ = _virtualManager;
 }
 
@@ -55,16 +56,20 @@ void InjectActivityReactor::onStatus() {
     switch(activity_->status()) {
 
     case Fwk::Activity::executing:
-        SIM(customer_ << " creating shipment, size " << shipmentSize_.value() << ", destinaton " << destination_);
-        shipment = new Shipment(shipmentSize_, entityManager_->location(destination_));
+        SIM(customer_ << " creating shipment, size " <<
+            shipmentSize_.value() << ", destinaton " << destination_);
+        shipment = new Shipment(
+            shipmentSize_, entityManager_->location(destination_));
         shipment->timeStampSentIs(activity_->nextTime());
         entityManager_->locationShipmentNew(customer_, shipment);
         FWK_DEBUG(name() << " executing");
-        FWK_DEBUG(name() << " d: " << destination_ << " sz: " << shipmentSize_.value() << " tr: " << transferRate_.value());
+        FWK_DEBUG(name() << " d: " << destination_ << " sz: " <<
+            shipmentSize_.value() << " tr: " << transferRate_.value());
         break;
     case Fwk::Activity::free:
         FWK_DEBUG(name() << " enqueueing itself");
-        activity_->nextTimeIs(Fwk::Time(activity_->nextTime().value() + 24.0/double(transferRate_.value())));
+        activity_->nextTimeIs(Fwk::Time(
+            activity_->nextTime().value()+24.0/double(transferRate_.value())));
         activity_->statusIs(Fwk::Activity::nextTimeScheduled);
         break;
     case Fwk::Activity::nextTimeScheduled:
@@ -72,7 +77,8 @@ void InjectActivityReactor::onStatus() {
         virtualManager_->lastActivityIs(activity_);
         break;
     default:
-        std::cerr << "InjectActivityReactor::onStatus out of range" << std::endl;
+        std::cerr << "InjectActivityReactor::onStatus out of range" 
+            << std::endl;
         throw(Fwk::RangeException("InjectActivityReactor"));
     }
 

@@ -39,7 +39,8 @@ namespace Shipping {
         void scaleIs(TimeScale);
         virtual void nowIs(Fwk::Time time);
         virtual void lastActivityIs(Fwk::Activity::Ptr activity);
-        void virtualTimeActivityManagerIs(Fwk::Ptr<VirtualTimeActivityManager>);
+        void virtualTimeActivityManagerIs(
+            Fwk::Ptr<VirtualTimeActivityManager>);
         Fwk::Ptr<VirtualTimeActivityManager> virtualTimeActivityManager();
         static long unsigned int activityIndex() { return idx; };
     protected:

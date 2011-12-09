@@ -24,7 +24,8 @@ namespace Shipping {
     class SegmentDifficulty : public Ordinal<SegmentDifficulty, float> {
     public:
         SegmentDifficulty() : Ordinal<SegmentDifficulty, float>(1.f) {}
-        SegmentDifficulty(float value) : Ordinal<SegmentDifficulty, float>(value) {
+        SegmentDifficulty(float value) : 
+        Ordinal<SegmentDifficulty, float>(value) {
             if (value < 1.0 || value > 5.0 )
             {
                 std:cerr << "SegmentDifficulty out of range" << std::endl;

@@ -32,7 +32,7 @@ namespace Shipping {
                 throw(Fwk::RangeException("MilesPerHour"));
             }
         }
-        static MilesPerHour max() { return std::numeric_limits<double>::max(); }
+        static MilesPerHour max() {return std::numeric_limits<double>::max();}
     };
 
     class Dollars : public Ordinal<Dollars, double> {
@@ -77,19 +77,22 @@ namespace Shipping {
     class TransferRate : public Ordinal<TransferRate, unsigned int> {
     public:
         TransferRate() : Ordinal<TransferRate, unsigned int>(0) {}
-        TransferRate(unsigned int value) : Ordinal<TransferRate, unsigned int>(value) {}
+        TransferRate(unsigned int value)
+            : Ordinal<TransferRate, unsigned int>(value) {}
     };
 
     class PackageCount : public Ordinal<PackageCount, unsigned int> {
     public:
         PackageCount() : Ordinal<PackageCount, unsigned int>(0) {}
-        PackageCount(unsigned int value) : Ordinal<PackageCount, unsigned int>(value) {}
+        PackageCount(unsigned int value)
+            : Ordinal<PackageCount, unsigned int>(value) {}
     };
 
     class ShipmentCount : public Ordinal<ShipmentCount, unsigned int> {
     public:
         ShipmentCount() : Ordinal<ShipmentCount, unsigned int>(0) {}
-        ShipmentCount(unsigned int value) : Ordinal<ShipmentCount, unsigned int>(value) {}
+        ShipmentCount(unsigned int value)
+            : Ordinal<ShipmentCount, unsigned int>(value) {}
     };
 
     class Latency : public Ordinal<Latency, double> {
@@ -108,7 +111,8 @@ namespace Shipping {
     class TimeOfDay : public Ordinal<TimeOfDay, unsigned int> {
     public:
         TimeOfDay() : Ordinal<TimeOfDay, unsigned int>(0) {}
-        TimeOfDay(unsigned int value) : Ordinal<TimeOfDay, unsigned int>(value){
+        TimeOfDay(unsigned int value)
+            : Ordinal<TimeOfDay, unsigned int>(value){
              if (value > 23)
             {
                 cerr << "TimeOfDay out of range" << std::endl;

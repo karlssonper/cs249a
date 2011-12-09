@@ -58,13 +58,15 @@ void FleetReactor::onTimeChange() {
                 tempName = name();
                 tempName.append("Swapper1Reactor");
                 reactor1_->activityIs(activity1_);
-                activity1_->nextTimeIs(Fwk::Time(notifier()->bufferStart().value()));
+                activity1_->nextTimeIs(Fwk::Time(
+                    notifier()->bufferStart().value()));
                 activity1_->notifieeIs(tempName, reactor1_);
                 activity1_->statusIs(Fwk::Activity::nextTimeScheduled);
                 tempName = name();
                 tempName.append("Swapper2Reactor");
                 reactor2_->activityIs(activity2_);
-                activity2_->nextTimeIs(Fwk::Time(notifier()->bufferEnd().value()));
+                activity2_->nextTimeIs(Fwk::Time
+                    (notifier()->bufferEnd().value()));
                 activity2_->notifieeIs(tempName, reactor2_);
                 activity2_->statusIs(Fwk::Activity::nextTimeScheduled);
             } 
@@ -94,7 +96,8 @@ void FleetReactor::onTimeChange() {
     } // try
 
     catch(Fwk::Exception e) {
-        std::cerr << "Exception in FleetReactor::onTimeChange: " << e.what() << std::endl;
+        std::cerr << "Exception in FleetReactor::onTimeChange: " <<
+            e.what() << std::endl;
         onNotificationException();
     }
 }

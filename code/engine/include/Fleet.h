@@ -37,16 +37,22 @@ public:
     static Vehicle plane() { return plane_; }
     static Vehicle undefined() { return undefined_; }
 
-    MilesPerHour speed(Vehicle _vehicle) const { return vehicleData_[_vehicle].speed_; }
-    MilesPerHour speedBuffer(Vehicle _vehicle) const { return vehicleBufferData_[_vehicle].speed_; }
+    MilesPerHour speed(Vehicle _vehicle) const {
+        return vehicleData_[_vehicle].speed_; }
+    MilesPerHour speedBuffer(Vehicle _vehicle) const {
+        return vehicleBufferData_[_vehicle].speed_; }
     void speedIs(Vehicle _vehicle, MilesPerHour _speed);
     void speedBufferIs(Vehicle _vehicle, MilesPerHour _speed);
-    DollarsPerMile cost(Vehicle _vehicle) const { return vehicleData_[_vehicle].cost_; }
-    DollarsPerMile costBuffer(Vehicle _vehicle) const { return vehicleBufferData_[_vehicle].cost_; }
+    DollarsPerMile cost(Vehicle _vehicle) const {
+        return vehicleData_[_vehicle].cost_; }
+    DollarsPerMile costBuffer(Vehicle _vehicle) const {
+        return vehicleBufferData_[_vehicle].cost_; }
     void costIs(Vehicle _vehicle, DollarsPerMile _cost);
     void costBufferIs(Vehicle _vehicle, DollarsPerMile _cost);
-    PackageCount capacity(Vehicle _vehicle) const { return vehicleData_[_vehicle].capacity_; }
-    PackageCount capacityBuffer(Vehicle _vehicle) const { return vehicleBufferData_[_vehicle].capacity_; }
+    PackageCount capacity(Vehicle _vehicle) const {
+        return vehicleData_[_vehicle].capacity_; }
+    PackageCount capacityBuffer(Vehicle _vehicle) const {
+        return vehicleBufferData_[_vehicle].capacity_; }
     void capacityIs(Vehicle _vehicle, PackageCount capacity_);
     void capacityBufferIs(Vehicle _vehicle, PackageCount capacity_);
 

@@ -47,7 +47,8 @@ void ForwardActivityReactor::onStatus() {
             removeActivePackagesFromSegment();
             if (queuedPackages_ > 0){
                 if (shipment_->transferedPackages().value() == 0) {
-                    SIM("A shipment has been shipped from: " << segment_->source() 
+                    SIM("A shipment has been shipped from: " <<
+                        segment_->source() 
                         << "->" << nextLocation_->name() << " . Dest: " << 
                         shipment_->destination()->name());
                 }
@@ -60,19 +61,28 @@ void ForwardActivityReactor::onStatus() {
                 }
                 segment_->shipmentDeq();
                 if (nextLocation_->name() != shipment_->destination()->name()) {
-                    entityManager_->locationShipmentNew(nextLocation_->name(), shipment_);
+                    entityManager_->locationShipmentNew(
+                        nextLocation_->name(), shipment_);
                 } else {
-                    SIM("A shipment has reached its destination: " << shipment_->destination()->name());
+                    SIM("A shipment has reached its destination: " <<
+                        shipment_->destination()->name());
                     Customer::PtrConst destConst;
-                    destConst = static_cast<const Customer*>(entityManager_->location(shipment_->destination()->name()).ptr());
+                    destConst = static_cast<const Customer*>(
+                        entityManager_->location(
+                        shipment_->destination()->name()).ptr());
                     Customer::Ptr dest;
                     dest = const_cast<Customer*>(destConst.ptr());
                     dest->recievedShipmentsInc();
                     shipment_->timeStampArrivedIs(activity_->nextTime());
 
-                    Hours latency(shipment_->timeStampArrived().value() - shipment_->timeStampSent().value()); 
-                    dest->totalLatencyIs(dest->totalLatency().value() + latency.value());
-                    dest->averageLatencyIs(dest->totalLatency().value() / (double)dest->recievedShipments().value());
+                    Hours latency(
+                        shipment_->timeStampArrived().value()-shipment_->
+                        timeStampSent().value()); 
+                    dest->totalLatencyIs(
+                        dest->totalLatency().value() + latency.value());
+                    dest->averageLatencyIs(
+                        dest->totalLatency().value() / 
+                        (double)dest->recievedShipments().value());
 
                 }
 
@@ -91,26 +101,33 @@ void ForwardActivityReactor::onStatus() {
             manager_->lastActivityIs(activity_);
             break;
         default: 
-            std::cerr << "ForwardActivityReactor::onStatus() out of range" << std::endl;
+            std::cerr << "ForwardActivityReactor::onStatus() out of range" << 
+                std::endl;
             throw(Fwk::RangeException("ForwardActivityReactor::onStatus()"));
         }
     } // try
     catch (Fwk::Exception e) {
-        std::cerr << "Exception in ForwardActivityReactor::onStatus(): " << e.what() << std::endl;
+        std::cerr << "Exception in ForwardActivityReactor::onStatus(): " <<
+            e.what() << std::endl;
         onNotificationException();
     }
 }
 
 void ForwardActivityReactor::removeActivePackagesFromSegment() {
-    FWK_SIM_DEBUG("ForwardActivityReactor::removeActivePackagesFromSegment - Active Packages: " << activePackages_.value());
+    FWK_SIM_DEBUG(
+        "removeActivePackagesFromSegment - Active Packages: " <<
+        activePackages_.value());
     if (activePackages_.value() > 0) {
-        SIM("Removing " << activePackages_.value() << " packages from " << segment_->name());
+        SIM("Removing " << activePackages_.value() << " packages from " <<
+            segment_->name());
         segment_->activePackageDec(activePackages_.value());
-        shipment_->arrivedPackagesIs(shipment_->arrivedPackages().value() + activePackages_.value());
+        shipment_->arrivedPackagesIs(shipment_->arrivedPackages().value() + 
+            activePackages_.value());
         activePackages_ = 0;
     } else {
      //   SIM(segment_->source() << " has no active packages. Destination: " <<
-     //       shipment_->destination()->name() << ". Next Location: " << nextLocation_->name());
+     //   shipment_->destination()->name() << ". Next Location: " << 
+        //nextLocation_->name());
     }
 };
 
@@ -121,8 +138,10 @@ void ForwardActivityReactor::addActivePackagesToSegment() {
         segTypeToFleetVehicle(segment_->type())
         );
     SIM(segment_->name());
-    SIM("Capacity available on the segment: " << availableSegmentCapacity.value());
-    SIM("Vehicle can at most transport: " << availableVehicleCapacity.value());
+    SIM("Capacity available on the segment: " <<
+        availableSegmentCapacity.value());
+    SIM("Vehicle can at most transport: " <<
+        availableVehicleCapacity.value());
 
     PackageCount availableCapacity =
         availableVehicleCapacity <  availableSegmentCapacity ?
@@ -134,12 +153,14 @@ availableVehicleCapacity : availableSegmentCapacity;
         << " waiting packages at " << segment_->source());
     if (shipment_->waitingPackages() > availableCapacity) {
         shipment_->transferedPackagesInc(availableCapacity);
-        SIM("Adding " << availableCapacity.value() << " packages to the segment (didn't get all).");
+        SIM("Adding " << availableCapacity.value() <<
+            " packages to the segment (didn't get all).");
         segment_->activePackageInc(availableCapacity);
         activePackages_ = availableCapacity;
     } else {
         activePackages_ = shipment_->waitingPackages();
-        SIM("Adding " << shipment_->waitingPackages().value() << " packages to the segment (last ones).");
+        SIM("Adding " << shipment_->waitingPackages().value() <<
+            " packages to the segment (last ones).");
         PackageCount temp = shipment_->waitingPackages();
         shipment_->transferedPackagesInc(temp);
         segment_->activePackageInc(temp);

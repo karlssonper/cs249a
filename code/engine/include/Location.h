@@ -43,8 +43,10 @@ namespace Shipping {
         typedef list<Segment::Ptr>::iterator OutSegmentIterator;
         typedef list<Segment::Ptr>::const_iterator OutSegmentIteratorConst;
 
-        OutSegmentIteratorConst outSegmenterIterConst() const { return outSegment_.begin(); };
-        OutSegmentIteratorConst outSegmenterIterConst(const unsigned int) const;
+        OutSegmentIteratorConst outSegmenterIterConst() const {
+            return outSegment_.begin();
+        };
+        OutSegmentIteratorConst outSegmenterIterConst(const unsigned int)const;
 
         OutSegmentIterator outSegmenterIter() { return outSegment_.begin(); };
         OutSegmentIterator outSegmenterIter(const unsigned int) ;

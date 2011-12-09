@@ -29,7 +29,6 @@ void Conn::routingIs(Routing _routing){
         routing_ = _routing;
     }
     if (routing_ == djikstras) {
-        FWK_DEBUG("Conn::routingIs() routeTable_->statusIs(RouteTable::performDjikstras)");
         routeTable_->statusIs(RouteTable::performDjikstras);
     } else if (routing_ == breadthFirstSearch) {
         routeTable_->statusIs(RouteTable::performBFS);
@@ -123,25 +122,33 @@ void Conn::onSegmentUpdate(Segment::PtrConst seg0) {
         FWK_DEBUG("Conn::onSegmentUpdate() did not find any segment called "
             << seg0->name() << " in the graph");
         if (isInsertable(seg0) == insertable_){
-            Segment::PtrConst seg1 = owner_->entityManager()->segment(seg0->returnSegment());
-            FWK_DEBUG("Conn::onSegmentUpdate() Adding " << seg0->name() << " to graph");
+            Segment::PtrConst seg1 = 
+                owner_->entityManager()->segment(seg0->returnSegment());
+            FWK_DEBUG("Conn::onSegmentUpdate() Adding " << 
+                seg0->name() << " to graph");
             graphSegment_[seg0->name()] = seg0;
-            FWK_DEBUG("Conn::onSegmentUpdate() Adding " << seg1->name() << " to graph");
+            FWK_DEBUG("Conn::onSegmentUpdate() Adding " <<
+                seg1->name() << " to graph");
             graphSegment_[seg1->name()] = seg1;
             if (graphLocation_.find(seg0->source()) == graphLocation_.end()) {
-                Location::PtrConst loc0 = owner_->entityManager()->location(seg0->source());
-                FWK_DEBUG("Conn::onSegmentUpdate() Adding " << loc0->name() << " to graph");
+                Location::PtrConst loc0 =
+                    owner_->entityManager()->location(seg0->source());
+                FWK_DEBUG("Conn::onSegmentUpdate() Adding " << 
+                    loc0->name() << " to graph");
                 graphLocation_[loc0->name()] = loc0;
                 routeTable_->statusIs(RouteTable::needsUpdate);
             }
             if (graphLocation_.find(seg1->source()) == graphLocation_.end()){
-                Location::PtrConst loc1 = owner_->entityManager()->location(seg1->source());
-                FWK_DEBUG("Conn::onSegmentUpdate() Adding " << loc1->name() << " to graph");
+                Location::PtrConst loc1 = 
+                    owner_->entityManager()->location(seg1->source());
+                FWK_DEBUG("Conn::onSegmentUpdate() Adding " <<
+                    loc1->name() << " to graph");
                 graphLocation_[loc1->name()] = loc1;
                 routeTable_->statusIs(RouteTable::needsUpdate);
             }
         } else {
-            FWK_DEBUG("Conn::onSegmentUpdate() " << seg0->name() << " is not insertable");
+            FWK_DEBUG("Conn::onSegmentUpdate() " << seg0->name() <<
+                " is not insertable");
             return;
         }
     }

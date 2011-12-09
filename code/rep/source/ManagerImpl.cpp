@@ -21,12 +21,14 @@ ManagerImpl::~ManagerImpl() {
     FWK_DEBUG("~ManagerImpl::ManagerImpl()");
 }
 
-Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type) {
+Ptr<Instance> ManagerImpl::instanceNew(
+    const string& _name, const string& _type) {
 
     FWK_DEBUG("ManagerImpl::instanceNew(" << _name << ", " << _type << ")");
 
     if (instance_.find(_name) != instance_.end()) {
-        cerr << "ManagerImpl::instanceNew: " << _name << " already exists" << endl;
+        cerr << "ManagerImpl::instanceNew: " <<
+            _name << " already exists" << endl;
         throw(Fwk::NameInUseException("ManagerImpl::instanceNew"));
     }
 
@@ -126,7 +128,8 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
         } else {
             Ptr<TimeManagerRep> p = new TimeManagerRep(_name, engineManager_);
             if (!p) {
-                cerr << "ManagerImpl::instanceNew TimeManager new() failed" << endl;
+                cerr << "ManagerImpl::instanceNew TimeManager new() failed" <<
+                    endl;
                 throw(Fwk::MemoryException("ManagerImpl::instanceNew"));
             }
             instance_[_name] = p;
@@ -148,7 +151,8 @@ Ptr<Instance> ManagerImpl::instanceNew(const string& _name, const string& _type)
         }
     }
 
-    cerr << "ManagerImpl::instanceNew: " << _type << " is an invalid type, returning NULL." << endl;
+    cerr << "ManagerImpl::instanceNew: " << _type << 
+        " is an invalid type, returning NULL." << endl;
     throw(Fwk::UnknownArgException("ManagerImpl::instanceNew"));
 }
 
@@ -157,14 +161,18 @@ void ManagerImpl::instanceDel(const string &_name) {
 
     map<string,Ptr<Instance> >::iterator instIt = instance_.find(_name);
     if (instIt == instance_.end()) {
-        cerr << "ManagerImpl::instanceDel: " << _name << " was not found." << endl;
+        cerr << "ManagerImpl::instanceDel: " <<
+            _name << " was not found." << endl;
         return;
     }
-    Ptr<DeletableInstance> deletablePtr= static_cast<DeletableInstance*>(instIt->second.ptr());
+    Ptr<DeletableInstance> deletablePtr= 
+        static_cast<DeletableInstance*>(instIt->second.ptr());
     deletablePtr->del();
 
     instance_.erase(instIt);
-    if (instance_.find(_name) == instance_.end()) FWK_DEBUG (_name << " deleted from instance_");
+    if (instance_.find(_name) == instance_.end()) {
+        FWK_DEBUG (_name << " deleted from instance_");
+    }
 }
 
 Ptr<Instance> ManagerImpl::instance(const string& name){

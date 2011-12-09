@@ -38,7 +38,8 @@ string LocationRep::attribute(const string& attributeName) {
 
     FWK_DEBUG("LocationRep::attribute " << attributeName);
 
-    Location::PtrConst locPtr = engineManager_->entityManager()->location(name());
+    Location::PtrConst locPtr =
+        engineManager_->entityManager()->location(name());
 
     if (locPtr == NULL) {
         cerr << name() << " not found in LocationRep::attribute" << endl;
@@ -52,7 +53,8 @@ string LocationRep::attribute(const string& attributeName) {
             throw(Fwk::UnknownArgException("LocationRep::attribute"));
         }
         Location::OutSegmentIteratorConst it = 
-            engineManager_->entityManager()->location(name())->outSegmenterIterConst(segNr);
+            engineManager_->entityManager()->location(
+            name())->outSegmenterIterConst(segNr);
         string attr = locPtr->outSegment(it)->name();
 
         return attr;
@@ -60,7 +62,8 @@ string LocationRep::attribute(const string& attributeName) {
         
         // only valid for customers
         if (locPtr->type() != Location::customer()) {
-            cerr << name() << " is not a customer, only segment attributes are valid" << endl;
+            cerr << name() <<
+                " is not a customer, only segment attributes are valid" << endl;
             return "";
         }
         Customer::PtrConst cusPtr = static_cast<const Customer*>(locPtr.ptr());
@@ -83,7 +86,8 @@ string LocationRep::attribute(const string& attributeName) {
             s << cusPtr->totalCost().value();
             return s.str();
         } else {
-            cerr << attributeName << " is an invalid attrib name for customer" << endl;
+            cerr << attributeName << 
+                " is an invalid attrib name for customer" << endl;
             return "";
         }
         
@@ -92,7 +96,8 @@ string LocationRep::attribute(const string& attributeName) {
 
 
 void LocationRep::attributeIs(const string& _name, const string& v) {
-    FWK_DEBUG("LocationRep::attributeIs with _name: " << _name << " and v: " << v);
+    FWK_DEBUG("LocationRep::attributeIs with _name: " << 
+        _name << " and v: " << v);
 
     if (_name == "transfer rate") {
         float r = atof(v.c_str());
@@ -111,7 +116,9 @@ void LocationRep::attributeIs(const string& _name, const string& v) {
 CustomerRep::CustomerRep(const string &_name, EngineManager::Ptr _engineManager)
     : LocationRep(_name, _engineManager) {
         FWK_DEBUG("CustomerRep::CustomerRep with _name: " << _name);
-        Customer::Ptr p = Customer::CustomerNew(_name, _engineManager->virtualTimeActivityManager(), _engineManager->entityManager() );
+        Customer::Ptr p = Customer::CustomerNew(
+            _name, _engineManager->virtualTimeActivityManager(),
+            _engineManager->entityManager() );
         engineManager_->entityManager()->locationIs(_name, p);
 };
 
@@ -130,7 +137,8 @@ PortRep::~PortRep() {
     FWK_DEBUG("PortRep::~PortRep()");
 };
 
-TruckTerminalRep::TruckTerminalRep(const string &_name, EngineManager::Ptr _engineManager)
+TruckTerminalRep::TruckTerminalRep(
+    const string &_name, EngineManager::Ptr _engineManager)
     : LocationRep(_name, _engineManager) {
         FWK_DEBUG("TruckTerminalRep::TruckTerminalRep with _name: " << _name);
         TruckTerminal::Ptr p = TruckTerminal::TruckTerminalNew(_name);
@@ -141,7 +149,8 @@ TruckTerminalRep::~TruckTerminalRep(){
     FWK_DEBUG("TruckTerminalRep::~TruckTerminalRep()");
 };
 
-BoatTerminalRep::BoatTerminalRep(const string &_name, EngineManager::Ptr _engineManager)
+BoatTerminalRep::BoatTerminalRep(
+    const string &_name, EngineManager::Ptr _engineManager)
     : LocationRep(_name, _engineManager) {
         FWK_DEBUG("BoatTerminalRep::BoatTerminalRep with _name: " << _name);
         BoatTerminal::Ptr p = BoatTerminal::BoatTerminalNew(_name);
@@ -152,7 +161,8 @@ BoatTerminalRep::~BoatTerminalRep() {
     FWK_DEBUG("BoatTerminalRep::~BoatTerminalRep()");
 };
 
-PlaneTerminalRep::PlaneTerminalRep(const string &_name, EngineManager::Ptr _engineManager)
+PlaneTerminalRep::PlaneTerminalRep(
+    const string &_name, EngineManager::Ptr _engineManager)
     : LocationRep(_name, _engineManager) {
         FWK_DEBUG("PlaneTerminalRep::PlaneTerminalRep with _name: " << _name);
         PlaneTerminal::Ptr p = PlaneTerminal::PlaneTerminalNew(_name);
