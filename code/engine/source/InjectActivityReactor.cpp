@@ -3,6 +3,7 @@
 #include "Exception.h"
 #include "Shipment.h"
 #include "EntityManager.h"
+#include "Output.h"
 
 using namespace Shipping;
 

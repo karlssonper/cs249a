@@ -4,6 +4,7 @@
 #include "VirtualTimeActivityManager.h"
 #include "Exception.h"
 #include "EntityManager.h"
+#include "Output.h"
 
 using namespace Shipping;
 

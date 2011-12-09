@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <queue>
+#include <iostream>
 #include "Activity.h"
 #include "Exception.h"
 

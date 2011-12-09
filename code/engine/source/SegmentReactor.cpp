@@ -13,6 +13,7 @@
 #include <sstream>
 #include "Location.h"
 #include "EntityManager.h"
+#include "Output.h"
 using namespace Shipping;
 
 SegmentReactor::SegmentReactor(std::string _name, Segment * seg,

@@ -9,6 +9,7 @@
 #include "VirtualTimeActivityManager.h"
 #include "RealTimeActivityManager.h"
 #include "Exception.h"
+#include "Output.h"
 
 using namespace Shipping;
 
