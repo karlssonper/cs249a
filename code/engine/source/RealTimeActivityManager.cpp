@@ -1,7 +1,7 @@
 #include "RealTimeActivityManager.h"
 #include "VirtualTimeActivityManager.h"
 #include "Exception.h"
-#include "Debug.h"
+#include "Outputh"
 #ifdef WIN32
     #include <windows.h>
 #else

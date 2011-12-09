@@ -8,7 +8,7 @@
 #include "StatsRep.h"
 #include "Engine.h"
 #include <stdlib.h>
-#include "Debug.h"
+#include "Outputh"
 #include <sstream>
 #include "OutputFloatingPoint.h"
 

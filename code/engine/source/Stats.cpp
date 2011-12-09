@@ -6,7 +6,7 @@
 */
 
 #include "Stats.h"
-#include "Debug.h"
+#include "Outputh"
 #include "Engine.h"
 #include "Exception.h"
 

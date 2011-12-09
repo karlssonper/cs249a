@@ -8,7 +8,7 @@
 #include "FleetRep.h"
 #include "Engine.h"
 #include <stdlib.h>
-#include "Debug.h"
+#include "Outputh"
 #include <sstream>
 #include "OutputFloatingPoint.h"
 #include "Exception.h"
