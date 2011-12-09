@@ -8,6 +8,7 @@
 #include "Instance.h"
 #include "Exception.h"
 #include <vector>
+#include <stdlib.h>
 
 using std::cout;
 using std::cerr;
@@ -75,6 +76,10 @@ int main(int argc, char *argv[]) {
         segments["destTermSegA"]->attributeIs("source", "destination");
         segments["destTermSegB"]->attributeIs("source", "firstTerminal");
         segments["destTermSegA"]->attributeIs("return segment", "destTermSegB");
+        segments["destTermSegA"]->attributeIs("length", "10");
+        segments["destTermSegB"]->attributeIs("length", "10");
+        segments["destTermSegA"]->attributeIs("capacity", "300");
+        segments["destTermSegB"]->attributeIs("capacity", "300");
 
         // create the first layer of terminals
         std::ostringstream s;
@@ -93,6 +98,10 @@ int main(int argc, char *argv[]) {
             segments[segmentNameA]->attributeIs("source", "firstTerminal");
             segments[segmentNameB]->attributeIs("source", terminalName);
             segments[segmentNameA]->attributeIs("return segment", segmentNameB);
+            segments[segmentNameA]->attributeIs("length", "10");
+            segments[segmentNameB]->attributeIs("length", "10");
+            segments[segmentNameA]->attributeIs("capacity", "300");
+            segments[segmentNameB]->attributeIs("capacity", "300");
 
             // 10 sources for each terminal
             for (int j=0; j<10; ++j) {
@@ -103,7 +112,8 @@ int main(int argc, char *argv[]) {
                 string transferRate = s.str();
 
                 s.str("");
-                int size = 100;
+                int size = rand() % 1000 + 1;
+                cout << "size: " << size << endl;
                 s << size;
                 string shipmentSize = s.str();
 
@@ -130,12 +140,17 @@ int main(int argc, char *argv[]) {
                 segments[segmentNameA]->attributeIs("source", terminalName);
                 segments[segmentNameB]->attributeIs("source", sourceName);
                 segments[segmentNameA]->attributeIs("return segment", segmentNameB);
+                segments[segmentNameA]->attributeIs("length", "10");
+                segments[segmentNameB]->attributeIs("length", "10");
+                segments[segmentNameA]->attributeIs("capacity", "300");
+                segments[segmentNameB]->attributeIs("capacity", "300");
             }
         }
 
         timeManager->attributeIs("simulation end", "10");
 
         // print some stats
+        cout << endl;
         cout << "STATS:" << endl;
         cout << "Destination shipments recieved: " << destination->attribute("shipments recieved") << endl;
         cout << "Destination average latency: " << destination->attribute("average latency") << endl;
