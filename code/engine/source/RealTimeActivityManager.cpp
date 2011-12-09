@@ -2,7 +2,11 @@
 #include "VirtualTimeActivityManager.h"
 #include "Exception.h"
 #include "Debug.h"
-#include <windows.h>
+#ifdef WIN32
+    #include <windows.h>
+#else
+    #include <time.h>
+#endif
 
 using namespace Shipping;
 long unsigned int RealTimeActivityManager::idx = 0;
@@ -66,7 +70,11 @@ void RealTimeActivityManager::nowIs(Fwk::Time t) {
 
         //calculate amount of time to sleep
 	    Fwk::Time diff = Fwk::Time(nextToRun->nextTime().value() - now_.value());
+#ifdef WIN32
 	    Sleep( static_cast<int>((diff.value() * 3600000)));
+#else
+        usleep(static_cast<int>((diff.value() * 3600000000)));
+#endif
 
         now_ = nextToRun->nextTime();
         scheduledActivities_.pop();

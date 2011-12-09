@@ -86,8 +86,8 @@ void Segment::shipmentEnq(Fwk::Ptr<Shipment> _s, Location::Ptr _nextLocation) {
     shipmentAndNextLoc item;
     item.shipment = _s;
     item.nextLocation = _nextLocation;
-
     shipment_.push_back(item);
+    recievedShipmentsInc();
 
     FWK_DEBUG("Notifying -> " << notifiee_->name());
     notifiee_->onShipmentEnq(_s, _nextLocation);
