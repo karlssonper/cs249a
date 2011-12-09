@@ -16,6 +16,7 @@ Segment::Segment(const string &_name, SegmentType _st,
     returnSegment_(""),
     expediteSupport_(Segment::noExpediteSupport()),
     capacity_(10),
+    activePackages_(0),
     type_(_st) {
     FWK_DEBUG("Segment constructor with name " << _name);
     notifiee_ = SegmentReactor::SegmentReactorNew(_name +std::string("Reactor"),

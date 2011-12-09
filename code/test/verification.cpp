@@ -63,9 +63,9 @@ int main(int argc, char *argv[]) {
         timmernabben->attributeIs("shipment size", "100");
         timmernabben->attributeIs("destination", "DH");
 
-        //hyssna->attributeIs("transfer rate", "20");
-        //hyssna->attributeIs("shipment size", "50");
-        //hyssna->attributeIs("destination", "Gotland");
+        hyssna->attributeIs("transfer rate", "20");
+        hyssna->attributeIs("shipment size", "50");
+        hyssna->attributeIs("destination", "Gotland");
 
         Ptr<Instance> tim_osk = manager->instanceNew("tim_osk", "Truck segment");
         Ptr<Instance> osk_tim = manager->instanceNew("osk_tim", "Truck segment");
