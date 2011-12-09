@@ -20,7 +20,7 @@ SET(SOURCE source/Location
            source/RealTimeActivityManager
            source/RealTimeActivityReactor
            source/RouteTable
-           source/ShortestDistance
+           #source/ShortestDistance
            source/DjikstrasAlgorithm
            source/BreadthFirstSearch
            source/FleetReactor
