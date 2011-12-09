@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
             "myTimeManager", "Time manager");
 
         // make one virtual hour run in a 10 000th of the time
-        timeManager->attributeIs("time scale", "0.000001");
+        timeManager->attributeIs("time scale", "0.00001");
 
         fleet->attributeIs("Boat, speed", "20");
         fleet->attributeIs("Boat, speedAlt", "20");
