@@ -18,15 +18,11 @@ int main(int argc, char *argv[]) {
 
     try {
 
-      
-
-        Ptr<Instance::Manager> m = shippingInstanceManager();
-        Ptr<Instance> stats = m->instanceNew("myStats", "Stats");
-        Ptr<Instance> conn = m->instanceNew("myConn", "Conn");
-        Ptr<Instance> fleet = m->instanceNew("myFleet", "Fleet");
-        Ptr<Instance> timeManager = m->instanceNew("myTimeManager", "Time manager");
-
-          /*
+        Ptr<Instance::Manager> manager = shippingInstanceManager();
+        Ptr<Instance> stats = manager->instanceNew("myStats", "Stats");
+        Ptr<Instance> conn = manager->instanceNew("myConn", "Conn");
+        Ptr<Instance> fleet = manager->instanceNew("myFleet", "Fleet");
+        Ptr<Instance> timeManager = manager->instanceNew("myTimeManager", "Time manager");
 
         // make one virtual hour run in a 10 000th of the time
         timeManager->attributeIs("time scale", "0.000001");
@@ -174,98 +170,6 @@ int main(int argc, char *argv[]) {
         std::cout << "DH recieved shipments: " << dh->attribute("shipments recieved") << std::endl;
         std::cout << "DH average latency: " << dh->attribute("average latency") << std::endl;
         std::cout << std::endl;
-
-        */
-
-   // Ptr<Instance::Manager> m = shippingInstanceManager();
-    //Ptr<Instance> fleet = m->instanceNew("fleet", "Fleet");
-  
-    /* Create a tree-shaped network that branches out from a 
-       single root node */
-    m->instanceNew("a", "Port");
-    m->instanceNew("b", "Port");
-    m->instanceNew("c", "Port");
-    m->instanceNew("d", "Port");
-    m->instanceNew("e", "Port");
-    m->instanceNew("f", "Port");
-    m->instanceNew("g", "Port");
-
-    Ptr<Instance> s;
-
-    s = m->instanceNew("1", "Truck segment");
-    s->attributeIs("source", "a");
-    s->attributeIs("length", "1");
-    s->attributeIs("difficulty", "1");
-    s = m->instanceNew("1r", "Truck segment");
-    s->attributeIs("source", "b");
-    s->attributeIs("length", "1");
-    s->attributeIs("difficulty", "1");
-    s->attributeIs("return segment", "1");
-    s->attributeIs("expedite support", "yes");
-
-    s = m->instanceNew("2", "Truck segment");
-    s->attributeIs("source", "a");
-    s->attributeIs("length", "1");
-    s->attributeIs("difficulty", "1");
-    s->attributeIs("expedite support", "yes");
-    s = m->instanceNew("2r", "Truck segment");
-    s->attributeIs("source", "c");
-    s->attributeIs("length", "1");
-    s->attributeIs("difficulty", "1");
-    s->attributeIs("return segment", "2");
-    
-    s = m->instanceNew("3", "Truck segment");
-    s->attributeIs("source", "b");
-    s->attributeIs("length", "1");
-    s->attributeIs("difficulty", "1");
-    s = m->instanceNew("3r", "Truck segment");
-    s->attributeIs("source", "d");
-    s->attributeIs("length", "1");
-    s->attributeIs("difficulty", "1");
-    s->attributeIs("return segment", "3");
-    s->attributeIs("expedite support", "yes");
-
-    s = m->instanceNew("4", "Truck segment");
-    s->attributeIs("source", "b");
-    s->attributeIs("length", "1");
-    s->attributeIs("difficulty", "1");
-    s = m->instanceNew("4r", "Truck segment");
-    s->attributeIs("source", "e");
-    s->attributeIs("length", "1");
-    s->attributeIs("difficulty", "1");
-    s->attributeIs("return segment", "4");
-
-    s = m->instanceNew("5", "Truck segment");
-    s->attributeIs("source", "c");
-    s->attributeIs("length", "1");
-    s->attributeIs("difficulty", "1");
-    s = m->instanceNew("5r", "Truck segment");
-    s->attributeIs("source", "f");
-    s->attributeIs("length", "1");
-    s->attributeIs("difficulty", "1");
-    s->attributeIs("return segment", "5");
-
-    s = m->instanceNew("6", "Truck segment");
-    s->attributeIs("source", "c");
-    s->attributeIs("length", "1");
-    s->attributeIs("difficulty", "1");
-    s->attributeIs("expedite support", "yes");
-    s = m->instanceNew("6r", "Truck segment");
-    s->attributeIs("source", "g");
-    s->attributeIs("length", "1");
-    s->attributeIs("difficulty", "1");
-    s->attributeIs("return segment", "6");
-
-    fleet->attributeIs("Truck, cost", "10");
-    fleet->attributeIs("Truck, speed", "10");
-    fleet->attributeIs("Truck, capacity", "10");
-
-    /* The graph created above is a tree, with "a" at the root.
-     * All links have length 1 and difficulty 1 */
-    //Ptr<Instance> conn = m->instanceNew("conn", "Conn");
-    std::cout << conn->attribute("explore a : distance 1");
-
-
 
         std::cout << "Done!" << std::endl;
 
