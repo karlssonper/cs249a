@@ -30,7 +30,7 @@ namespace Shipping {
         TransferRate transferRate() { return transferRate_; }
         PackageCount shipmentSize() { return shipmentSize_; }
 
-        void virtualManagerIs(Fwk::Ptr<VirtualTimeActivityManager> _virtualManager);
+        void virtualManagerIs(Fwk::Ptr<VirtualTimeActivityManager>);
         void activityIs(Fwk::Activity::Ptr _activity);
         void destinationIs(const string &_destination);
         void transferRateIs(TransferRate _transferRate);

@@ -17,8 +17,8 @@ Path::Ptr Path::cloneIs() {
 
 void Path::nextPathItemIs(PathItem pI) {
     if (pI.seg && pI.loc) {
-        FWK_DEBUG("Conn::Path::nextPathItemIs() with : " << pI.seg->source() << "->" <<
-            pI.seg->name() << "->" << pI.loc->name());
+        FWK_DEBUG("Conn::Path::nextPathItemIs() with : " << pI.seg->source()
+                << "->" << pI.seg->name() << "->" << pI.loc->name());
     } else {
         FWK_DEBUG("Conn::Path::nextPathItemIs() with : " << "" << "->" <<
             "" << "->" << pI.loc->name());
@@ -62,21 +62,26 @@ ExplorePathTree::ExplorePathTree(ExploreData _ed,
     Location::PtrConst _root, Conn * _owner) : 
 PathTree(_root, _owner) , exploreData_(_ed)   
 {
-    FWK_DEBUG("Conn::ExplorePathTree::ExplorePathTree() with root: " << _root->name());
+    FWK_DEBUG("Conn::ExplorePathTree::ExplorePathTree() with root: " <<
+            _root->name());
     while(!queue_.empty()){
-        FWK_DEBUG("Conn::ExplorePathTree::ExplorePathTree() queue size: " << queue_.size());
+        FWK_DEBUG("Conn::ExplorePathTree::ExplorePathTree() queue size: "
+                << queue_.size());
         processQueueFront();
         queue_.pop();
     }
     if (path_.front()->pathItems() == 1) path_.clear(); //if only starter root
 };
 
-ConnectPathTree::ConnectPathTree(Location::PtrConst _root, Location::PtrConst _end, 
-    Conn * _owner) : PathTree(_root, _owner), end_(_end)
+ConnectPathTree::ConnectPathTree(Location::PtrConst _root,
+        Location::PtrConst _end, Conn * _owner) :
+        PathTree(_root, _owner), end_(_end)
 {
-    FWK_DEBUG("Conn::ConnectPathTree::ConnectPathTree() with root: " << _root->name());
+    FWK_DEBUG("Conn::ConnectPathTree::ConnectPathTree() with root: " <<
+            _root->name());
     while(!queue_.empty()){
-        FWK_DEBUG("Conn::ConnectPathTree::ConnectPathTree() queue size: " << queue_.size());
+        FWK_DEBUG("Conn::ConnectPathTree::ConnectPathTree() queue size: " <<
+                queue_.size());
         processQueueFront();
         queue_.pop();
     }
@@ -85,12 +90,9 @@ ConnectPathTree::ConnectPathTree(Location::PtrConst _root, Location::PtrConst _e
     unsigned int n =paths();
     while (i < n){
         PathIterator curIt = path_.end();
-        //std::cout << (*it)->lastPathItem().loc->name() << " " << end_->name();
-        if ((*it)->lastPathItem().loc->name() != end_->name()) {// || (*curIt)->pathItems() == 1)
+        if ((*it)->lastPathItem().loc->name() != end_->name()) {
             curIt = it;
-            //std::cout << " DELETE";
         }
-        //std::cout << std::endl;
         ++it; ++i;
         if (curIt != path_.end())
             path_.erase(curIt);
@@ -99,7 +101,8 @@ ConnectPathTree::ConnectPathTree(Location::PtrConst _root, Location::PtrConst _e
 
 void ExplorePathTree::processQueueFront() {
     Path::Ptr frontPath = queue_.front();
-    FWK_DEBUG("Conn::ExplorePathTree::processQueueFront() with path: " << frontPath->lastPathItem().loc->name() );
+    FWK_DEBUG("Conn::ExplorePathTree::processQueueFront() with path: " <<
+            frontPath->lastPathItem().loc->name() );
     unsigned int children = 0;
     Location::PtrConst curLoc = frontPath->lastPathItem().loc;
     Location::OutSegmentIteratorConst it = curLoc->outSegmenterIterConst();
@@ -127,40 +130,51 @@ PathTree::Addable ExplorePathTree::isAddable(Path::Ptr p, PathItem pI) {
     Path::PathItemIterator it = p->pathItemIter();
     for (unsigned int i= 0 ; i < p->pathItems(); ++i, ++it){
         if (it->loc->name() == pI.loc->name()){
-            FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns false(locAlreadyExists_)");
+            FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() <<
+                    " returns false(locAlreadyExists_)");
             return locAlreadyExists_;
         }
     }
     if (!pI.seg){
-        FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns true");
+        FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() <<
+                " returns true");
         return addable_;//root
     }
     if ((exploreData_.expedited() == Segment::fullExpediteSupport()) &&
         pI.seg->expediteSupport() == Segment::noExpediteSupport()){
-            FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns false(expeditedNotMatching_)");
+            FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() <<
+                    " returns false(expeditedNotMatching_)");
             return expeditedNotMatching_;
     }
-    if (p->cost() + segmentCost(pI.seg, p->expediteSupport()) > exploreData_.cost()){
-        FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns false(moneyLimitReached_)");
+    if (p->cost() + segmentCost(pI.seg, p->expediteSupport()) >
+            exploreData_.cost()){
+        FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() <<
+                " returns false(moneyLimitReached_)");
         return moneyLimitReached_;
     }
-    if (p->time() + segmentTime(pI.seg, p->expediteSupport()) > exploreData_.time()){
-        FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns false(timeLimitReached_)");
+    if (p->time() + segmentTime(pI.seg, p->expediteSupport()) >
+            exploreData_.time()){
+        FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() <<
+                " returns false(timeLimitReached_)");
         return timeLimitReached_;
     }
     if (p->distance() + pI.seg->length() > exploreData_.distance()) {
-        FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns false(lengthMaxReached)");
-        std::cout << p->distance().value() + pI.seg->length().value() << std::endl;;
+        FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() <<
+                " returns false(lengthMaxReached)");
+        std::cout << p->distance().value() + pI.seg->length().value() <<
+                std::endl;;
         return lengthMaxReached_;
     }
-    FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns true");
+    FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() <<
+            " returns true");
     return addable_;
 };
 
 void ConnectPathTree::processQueueFront() {
     Path::Ptr frontPath = queue_.front();
     if (frontPath->lastPathItem().loc->name() == end_->name()) return;
-    FWK_DEBUG("Conn::ExplorePathTree::processQueueFront() with path: " << frontPath->lastPathItem().loc->name() );
+    FWK_DEBUG("Conn::ExplorePathTree::processQueueFront() with path: " <<
+            frontPath->lastPathItem().loc->name() );
     unsigned int children = 0;
     Location::PtrConst curLoc = frontPath->lastPathItem().loc;
     Location::OutSegmentIteratorConst it = curLoc->outSegmenterIterConst();
@@ -171,18 +185,25 @@ void ConnectPathTree::processQueueFront() {
         if (isAddable(frontPath, pI) == addable_) {
             ++children;
             Path::Ptr newPath = addChildren(children, curPath, frontPath, pI);
-            if (queue_.back()->lastPathItem().seg->expediteSupport() == Segment::noExpediteSupport() &&
-                queue_.back()->expediteSupport() == Segment::fullExpediteSupport()) {
+            if (queue_.back()->lastPathItem().seg->expediteSupport() ==
+                    Segment::noExpediteSupport() &&
+                queue_.back()->expediteSupport() ==
+                        Segment::fullExpediteSupport()) {
                 queue_.back()->expediteSupportIs( Segment::noExpediteSupport());
             } 
             
-            if (queue_.back()->expediteSupport() == Segment::fullExpediteSupport() &&
+            if (queue_.back()->expediteSupport() ==
+                    Segment::fullExpediteSupport() &&
                 queue_.back()->lastPathItem().loc->name() == end_->name()) {
                 ++children;
                 addChildren(children, curPath, frontPath, pI);
                 queue_.back()->expediteSupportIs( Segment::noExpediteSupport());
-                queue_.back()->costIs(Dollars(queue_.back()->cost().value() * (2.0/3.0)));
-                queue_.back()->timeIs(Hours(queue_.back()->time().value()  * 1.3));
+                queue_.back()->costIs(
+                        Dollars(queue_.back()->cost().value() * (2.0/3.0))
+                        );
+                queue_.back()->timeIs(
+                        Hours(queue_.back()->time().value()  * 1.3)
+                        );
             }
         }
     }
@@ -195,25 +216,34 @@ void Path::expediteSupportIs(Segment::ExpediteSupport es){
 Path::Ptr PathTree::addChildren(unsigned int children, 
     Path::Ptr curPath, Path::Ptr frontPath, PathItem pI) {
         if (children > 1){
-            FWK_DEBUG("Conn::ExplorePathTree::processQueueFront() adding new Path to queue");
+            FWK_DEBUG("Conn::ExplorePathTree::processQueueFront()" <<
+                    " adding new Path to queue");
             Path::Ptr newPath = curPath->cloneIs();
-            newPath->costIs(Dollars(newPath->cost().value() + segmentCost(pI.seg, newPath->expediteSupport())));
-            newPath->timeIs(Hours(newPath->time().value() + segmentTime(pI.seg, newPath->expediteSupport())));
-            newPath->distanceIs(Miles(newPath->distance().value() + pI.seg->length().value()));
+            newPath->costIs(Dollars(newPath->cost().value() +
+                    segmentCost(pI.seg, newPath->expediteSupport())));
+            newPath->timeIs(Hours(newPath->time().value() +
+                    segmentTime(pI.seg, newPath->expediteSupport())));
+            newPath->distanceIs(Miles(newPath->distance().value() +
+                    pI.seg->length().value()));
             path_.push_back(newPath);
             queue_.push(path_.back());
         } else {
-            FWK_DEBUG("Conn::ExplorePathTree::processQueueFront() adding same Path to queue");
-            frontPath->costIs(Dollars(frontPath->cost().value() + segmentCost(pI.seg, frontPath->expediteSupport())));
-            frontPath->timeIs(Hours(frontPath->time().value() + segmentTime(pI.seg, frontPath->expediteSupport())));
-            frontPath->distanceIs(Miles(frontPath->distance().value() + pI.seg->length().value()));
+            FWK_DEBUG("Conn::ExplorePathTree::processQueueFront() " <<
+                    "adding same Path to queue");
+            frontPath->costIs(Dollars(frontPath->cost().value() +
+                    segmentCost(pI.seg, frontPath->expediteSupport())));
+            frontPath->timeIs(Hours(frontPath->time().value() +
+                    segmentTime(pI.seg, frontPath->expediteSupport())));
+            frontPath->distanceIs(Miles(frontPath->distance().value() +
+                    pI.seg->length().value()));
             queue_.push(frontPath);
         }
         queue_.back()->nextPathItemIs(pI);
         return queue_.back();
 };
 
-Path::Path() : cost_(0), time_(0), distance_(0), expediteSupport_(Segment::fullExpediteSupport()){};
+Path::Path() : cost_(0), time_(0), distance_(0), expediteSupport_(
+        Segment::fullExpediteSupport()){};
 
 PathItem PathTree::pathItem(Segment::PtrConst p) {
     Segment::PtrConst retSeg = seg(p->returnSegment());
@@ -228,11 +258,13 @@ PathTree::Addable ConnectPathTree::isAddable(Path::Ptr p, PathItem pI) {
     Path::PathItemIterator it = p->pathItemIter();
     for (unsigned int i= 0 ; i < p->pathItems(); ++i, ++it){
         if (it->loc->name() == pI.loc->name()){
-            FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns false(locAlreadyExists_)");
+            FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() <<
+                    " returns false(locAlreadyExists_)");
             return locAlreadyExists_;
         }
     }
-    FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() << " returns true");
+    FWK_DEBUG("Conn::isAddable() with curLoc: " << pI.loc->name() <<
+            " returns true");
     return addable_;
 };
 
@@ -264,18 +296,22 @@ DollarsPerMile PathTree::cost(Segment::SegmentType st) const{
     }
 };
 
-float PathTree::segmentCost(Segment::PtrConst s, Segment::ExpediteSupport expediteSupport) const{
+float PathTree::segmentCost(Segment::PtrConst s,
+        Segment::ExpediteSupport expediteSupport) const{
     Segment::SegmentType st = s->type();
-    float newCost = s->length().value() * cost(st).value() * s->difficulty().value();
-    if (s->expediteSupport() == Segment::fullExpediteSupport() && expediteSupport == Segment::fullExpediteSupport()){
-        newCost*= 1.5;
+    float nCost = s->length().value()*cost(st).value()*s->difficulty().value();
+    if (s->expediteSupport() == Segment::fullExpediteSupport() &&
+            expediteSupport == Segment::fullExpediteSupport()){
+        nCost*= 1.5;
     };
-    return newCost;
+    return nCost;
 };
-float PathTree::segmentTime(Segment::PtrConst s,Segment::ExpediteSupport expediteSupport) const{
+float PathTree::segmentTime(Segment::PtrConst s,
+        Segment::ExpediteSupport expediteSupport) const{
     Segment::SegmentType st = s->type();
     float tSpeed = speed(st).value();
-    if (s->expediteSupport() == Segment::fullExpediteSupport() && expediteSupport == Segment::fullExpediteSupport()){
+    if (s->expediteSupport() == Segment::fullExpediteSupport() &&
+            expediteSupport == Segment::fullExpediteSupport()){
         tSpeed *= 1.3;
     };
     return s->length().value() / tSpeed;

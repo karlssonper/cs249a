@@ -85,7 +85,8 @@ void EntityManager::segmentSourceIs(const string &_segmentName,
 
         } else { // not deletion
 
-            map<string, Location::Ptr>::iterator locIt = location_.find(_sourceName);
+            map<string, Location::Ptr>::iterator locIt =
+                    location_.find(_sourceName);
             if (locIt == location_.end()) {
                 FWK_DEBUG("EntityManager::segmentSourceIs, "
                     << _sourceName << " not found in location_");
@@ -174,7 +175,7 @@ void EntityManager::segmentReturnSegmentIs(const string &_segmentName,
         // handle deletion case
         if (_returnSegmentName == "" ) {
 
-            FWK_DEBUG("EntityManager::segmentReturnSegmentIs detaching returnSegment");
+            FWK_DEBUG("EntityManager::segmentReturnSegmentIs detaching retSeg");
 
             // if there is a returnSegment specified for _segmentName,
             // remove that first and then remove for _segmentName
@@ -197,8 +198,8 @@ void EntityManager::segmentReturnSegmentIs(const string &_segmentName,
 
         } else if (_segmentName == _returnSegmentName) { // self loop
 
-            // in the case of self loop, detach returnsegment if there is one and set 
-            // return segment to self
+            // in the case of self loop, detach returnsegment if there is one
+            // and set return segment to self
             sp = segIt->second;
             if (sp->returnSegment() != "") {
                 map<string, Segment::Ptr>::iterator returnIt =

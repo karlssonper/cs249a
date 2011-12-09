@@ -55,10 +55,12 @@ namespace Shipping {
         typedef list<PathItem>::iterator PathItemIterator;
         typedef list<PathItem>::const_iterator PathItemIteratorConst;
         PathItemIterator pathItemIter() { return traversedItems_.begin(); };
-        PathItemIteratorConst pathItemIterConst() const{ return traversedItems_.begin(); };
+        PathItemIteratorConst pathItemIterConst() const{
+            return traversedItems_.begin(); };
         unsigned int pathItems() const { return traversedItems_.size(); };
         void expediteSupportIs(Segment::ExpediteSupport);
-        Segment::ExpediteSupport expediteSupport() const { return expediteSupport_;};
+        Segment::ExpediteSupport expediteSupport() const {
+            return expediteSupport_;};
         PathItem pathItem(PathItemIterator it) const { return *it; };
     private:
         Path(const Path&);

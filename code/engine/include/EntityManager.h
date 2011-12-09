@@ -53,7 +53,7 @@ namespace Shipping {
             return NULL;
         }
         Location::PtrConst location(string _name) const { 
-            map<string, Location::Ptr>::const_iterator it = location_.find(_name);
+            map<string, Location::Ptr>::const_iterator it=location_.find(_name);
             if (it != location_.end()) {
                 const Location * locPtr = it->second.ptr();
                 return Location::PtrConst(locPtr);  
@@ -68,23 +68,37 @@ namespace Shipping {
         void locationDel(const string &_name);
         void locationShipmentNew(string _name, Fwk::Ptr<Shipment> _shipment);
         void segmentDel(const string &_name);
-        void segmentSourceIs(const string &_segmentName, const string &_sourceName);
-        void segmentReturnSegmentIs(const string &_segmentName, const string &_returnSegmentName);
-        void segmentDifficultyIs(const string &_segmentName, SegmentDifficulty _sd);
+        void segmentSourceIs(const string &_segmentName,
+                const string &_sourceName);
+        void segmentReturnSegmentIs(const string &_segmentName,
+                const string &_returnSegmentName);
+        void segmentDifficultyIs(const string &_segmentName,
+                SegmentDifficulty _sd);
         void segmentLengthIs(const string &_segmentName, Miles _length);
-        void segmentExpediteSupportIs(const string &_segmentName,Segment::ExpediteSupport _exp);
-        void segmentCapacityIs(const string &_segmentName, PackageCount _capacity);
-        void segmentShipmentEnq(const string & _segmentName, Fwk::Ptr<Shipment>, Fwk::Ptr<Location>);
+        void segmentExpediteSupportIs(const string &_segmentName,
+                Segment::ExpediteSupport _exp);
+        void segmentCapacityIs(const string &_segmentName,
+                PackageCount _capacity);
+        void segmentShipmentEnq(const string & _segmentName,
+                Fwk::Ptr<Shipment>, Fwk::Ptr<Location>);
         void segmentShipmentDeq(const string & _segmentName);
-        void segmentPackageInc(const string & _segmentName, PackageCount pc);
-        void segmentPackageDec(const string & _segmentName, PackageCount pc);
-        void customerTransferRateIs(const string &_customerName, TransferRate _transferRate);
-        void customerShipmentSizeIs(const string &_customerName, PackageCount _shipmentSize);
-        void customerDestinationIs(const string &_customerName, const string &_destination);
-        void customerRecievedShipmentsIs(const string &_customerName, ShipmentCount _recievedShipments);
+        void segmentPackageInc(const string & _segmentName,
+                PackageCount pc);
+        void segmentPackageDec(const string & _segmentName,
+                PackageCount pc);
+        void customerTransferRateIs(const string &_customerName,
+                TransferRate _transferRate);
+        void customerShipmentSizeIs(const string &_customerName,
+                PackageCount _shipmentSize);
+        void customerDestinationIs(const string &_customerName,
+                const string &_destination);
+        void customerRecievedShipmentsIs(const string &_customerName,
+                ShipmentCount _recievedShipments);
         void customerRecievedShipmentsInc(const string &_customerName);
-        void customerAverageLatencyIs(const string &_customerName, Hours _averageLatency);
-        void customerTotalCostIs(const string &_customerName, Dollars _totalCost);
+        void customerAverageLatencyIs(const string &_customerName,
+                Hours _averageLatency);
+        void customerTotalCostIs(const string &_customerName,
+                Dollars _totalCost);
 
         virtual ~EntityManager();
         static EntityManager::Ptr EntityManagerNew(std::string _name);
