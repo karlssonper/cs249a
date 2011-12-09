@@ -139,6 +139,8 @@ int main(int argc, char *argv[]) {
         
     } catch (Fwk::Exception e) {
         std::cerr << "Exception in main: " << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Unknown exception in main" << std::endl;
     }
     return 0;
 }

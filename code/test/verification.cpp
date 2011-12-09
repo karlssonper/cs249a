@@ -196,10 +196,10 @@ int main(int argc, char *argv[]) {
         gote_gotl->attributeIs("capacity", "200");
         gotl_gote->attributeIs("capacity", "200");
 
-        conn->attributeIs("routing", "bfs");
+        conn->attributeIs("routing", "djikstras");
 
         // runs the simulation until the virtual time is 100
-        timeManager->attributeIs("simulation end", "40");
+        timeManager->attributeIs("simulation end", "100");
 
         std::cout << std::endl;
         std::cout << " -- STATS -- " << std::endl;
