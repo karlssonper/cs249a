@@ -4,6 +4,8 @@
 #include "Debug.h"
 #ifdef WIN32
     #include <windows.h>
+#else
+    #include <time.h>
 #endif
 
 using namespace Shipping;
@@ -68,7 +70,11 @@ void RealTimeActivityManager::nowIs(Fwk::Time t) {
 
         //calculate amount of time to sleep
 	    Fwk::Time diff = Fwk::Time(nextToRun->nextTime().value() - now_.value());
+#ifdef WIN32
 	    Sleep( static_cast<int>((diff.value() * 3600000)));
+#else
+        usleep(static_cast<int>((diff.value() * 3600000000)));
+#endif
 
         now_ = nextToRun->nextTime();
         scheduledActivities_.pop();
