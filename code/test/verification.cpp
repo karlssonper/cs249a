@@ -22,7 +22,8 @@ int main(int argc, char *argv[]) {
         Ptr<Instance> stats = manager->instanceNew("myStats", "Stats");
         Ptr<Instance> conn = manager->instanceNew("myConn", "Conn");
         Ptr<Instance> fleet = manager->instanceNew("myFleet", "Fleet");
-        Ptr<Instance> timeManager = manager->instanceNew("myTimeManager", "Time manager");
+        Ptr<Instance> timeManager = manager->instanceNew(
+            "myTimeManager", "Time manager");
 
         // make one virtual hour run in a 10 000th of the time
         timeManager->attributeIs("time scale", "0.000001");
@@ -50,14 +51,22 @@ int main(int argc, char *argv[]) {
         // (and then with 24 hour intervals)
         fleet->attributeIs("alt time", "10 22");
 
-        Ptr<Instance> timmernabben = manager->instanceNew("Timmernabben", "Customer");
-        Ptr<Instance> oskarshamn = manager->instanceNew("Oskarshamn", "Port");
-        Ptr<Instance> gotland = manager->instanceNew("Gotland", "Customer");
-        Ptr<Instance> goteborg = manager->instanceNew("Goteborg", "Port");
-        Ptr<Instance> hyssna = manager->instanceNew("Hyssna", "Customer");
-        Ptr<Instance> jonkoping = manager->instanceNew("Jonkoping", "Truck terminal");
-        Ptr<Instance> vaxjo = manager->instanceNew("Vaxjo", "Truck terminal");
-        Ptr<Instance> dh = manager->instanceNew("DH", "Customer");
+        Ptr<Instance> timmernabben = manager->instanceNew(
+            "Timmernabben", "Customer");
+        Ptr<Instance> oskarshamn = manager->instanceNew(
+            "Oskarshamn", "Port");
+        Ptr<Instance> gotland = manager->instanceNew(
+            "Gotland", "Customer");
+        Ptr<Instance> goteborg = manager->instanceNew(
+            "Goteborg", "Port");
+        Ptr<Instance> hyssna = manager->instanceNew(
+            "Hyssna", "Customer");
+        Ptr<Instance> jonkoping = manager->instanceNew(
+            "Jonkoping", "Port");
+        Ptr<Instance> vaxjo = manager->instanceNew(
+            "Vaxjo", "Truck terminal");
+        Ptr<Instance> dh = manager->instanceNew(
+            "DH", "Customer");
 
         timmernabben->attributeIs("transfer rate", "10");
         timmernabben->attributeIs("shipment size", "100");
@@ -67,8 +76,10 @@ int main(int argc, char *argv[]) {
         hyssna->attributeIs("shipment size", "50");
         hyssna->attributeIs("destination", "Gotland");
 
-        Ptr<Instance> tim_osk = manager->instanceNew("tim_osk", "Truck segment");
-        Ptr<Instance> osk_tim = manager->instanceNew("osk_tim", "Truck segment");
+        Ptr<Instance> tim_osk = manager->instanceNew(
+            "tim_osk", "Truck segment");
+        Ptr<Instance> osk_tim = manager->instanceNew(
+            "osk_tim", "Truck segment");
         tim_osk->attributeIs("return segment", "osk_tim");
         tim_osk->attributeIs("source", "Timmernabben");
         osk_tim->attributeIs("source", "Oskarshamn");
@@ -77,8 +88,10 @@ int main(int argc, char *argv[]) {
         tim_osk->attributeIs("capacity", "100");
         osk_tim->attributeIs("capacity", "100");
 
-        Ptr<Instance> osk_gotl = manager->instanceNew("osk_gotl", "Boat segment");
-        Ptr<Instance> gotl_osk = manager->instanceNew("gotl_osk", "Boat segment");
+        Ptr<Instance> osk_gotl = manager->instanceNew(
+            "osk_gotl", "Boat segment");
+        Ptr<Instance> gotl_osk = manager->instanceNew(
+            "gotl_osk", "Boat segment");
         osk_gotl->attributeIs("return segment", "gotl_osk");
         osk_gotl->attributeIs("source", "Oskarshamn");
         gotl_osk->attributeIs("source", "Gotland");
@@ -87,8 +100,10 @@ int main(int argc, char *argv[]) {
         osk_gotl->attributeIs("capacity", "1000");
         gotl_osk->attributeIs("capacity", "1000");
 
-        Ptr<Instance> osk_jon = manager->instanceNew("osk_jon", "Truck segment");
-        Ptr<Instance> jon_osk = manager->instanceNew("jon_osk", "Truck segment");
+        Ptr<Instance> osk_jon = manager->instanceNew(
+            "osk_jon", "Truck segment");
+        Ptr<Instance> jon_osk = manager->instanceNew(
+            "jon_osk", "Truck segment");
         osk_jon->attributeIs("return segment", "jon_osk");
         osk_jon->attributeIs("source", "Oskarshamn");
         jon_osk->attributeIs("source", "Jonkoping");
@@ -97,8 +112,10 @@ int main(int argc, char *argv[]) {
         osk_jon->attributeIs("capacity", "200");
         jon_osk->attributeIs("capacity", "200");
 
-        Ptr<Instance> tim_vax = manager->instanceNew("tim_vax", "Truck segment");
-        Ptr<Instance> vax_tim = manager->instanceNew("vax_tim", "Truck segment");
+        Ptr<Instance> tim_vax = manager->instanceNew(
+            "tim_vax", "Truck segment");
+        Ptr<Instance> vax_tim = manager->instanceNew(
+            "vax_tim", "Truck segment");
         tim_vax->attributeIs("return segment", "vax_tim");
         tim_vax->attributeIs("source", "Timmernabben");
         vax_tim->attributeIs("source", "Vaxjo");
@@ -107,8 +124,10 @@ int main(int argc, char *argv[]) {
         tim_vax->attributeIs("capacity", "80");
         vax_tim->attributeIs("capacity", "80");
 
-        Ptr<Instance> vax_jon = manager->instanceNew("vax_jon", "Truck segment");
-        Ptr<Instance> jon_vax = manager->instanceNew("jon_vax", "Truck segment");
+        Ptr<Instance> vax_jon = manager->instanceNew(
+            "vax_jon", "Truck segment");
+        Ptr<Instance> jon_vax = manager->instanceNew(
+            "jon_vax", "Truck segment");
         jon_vax->attributeIs("return segment", "vax_jon");
         jon_vax->attributeIs("source", "Jonkoping");
         vax_jon->attributeIs("source", "Vaxjo");
@@ -117,8 +136,22 @@ int main(int argc, char *argv[]) {
         jon_vax->attributeIs("capacity", "100");
         vax_jon->attributeIs("capacity", "100");
 
-        Ptr<Instance> jon_dh = manager->instanceNew("jon_dh", "Truck segment");
-        Ptr<Instance> dh_jon = manager->instanceNew("dh_jon", "Truck segment");
+        Ptr<Instance> tim_jon = manager->instanceNew(
+            "tim_jon", "Plane segment");
+        Ptr<Instance> jon_tim = manager->instanceNew(
+            "jon_tim", "Plane segment");
+        jon_tim->attributeIs("return segment", "tim_jon");
+        jon_tim->attributeIs("source", "Jonkoping");
+        tim_jon->attributeIs("source", "Timmernabben");
+        jon_tim->attributeIs("length", "300");
+        tim_jon->attributeIs("length", "300");
+        jon_tim->attributeIs("capacity", "1000");
+        tim_jon->attributeIs("capacity", "1000");
+
+        Ptr<Instance> jon_dh = manager->instanceNew(
+            "jon_dh", "Truck segment");
+        Ptr<Instance> dh_jon = manager->instanceNew(
+            "dh_jon", "Truck segment");
         jon_dh->attributeIs("return segment", "dh_jon");
         jon_dh->attributeIs("source", "Jonkoping");
         dh_jon->attributeIs("source", "DH");
@@ -127,8 +160,10 @@ int main(int argc, char *argv[]) {
         jon_dh->attributeIs("capacity", "130");
         dh_jon->attributeIs("capacity", "130");
 
-        Ptr<Instance> jon_gote = manager->instanceNew("jon_gote", "Truck segment");
-        Ptr<Instance> gote_jon = manager->instanceNew("gote_jon", "Truck segment");
+        Ptr<Instance> jon_gote = manager->instanceNew(
+            "jon_gote", "Truck segment");
+        Ptr<Instance> gote_jon = manager->instanceNew(
+            "gote_jon", "Truck segment");
         jon_gote->attributeIs("return segment", "gote_jon");
         jon_gote->attributeIs("source", "Jonkoping");
         gote_jon->attributeIs("source", "Goteborg");
@@ -137,8 +172,10 @@ int main(int argc, char *argv[]) {
         jon_gote->attributeIs("capacity", "200");
         gote_jon->attributeIs("capacity", "200");
 
-        Ptr<Instance> gote_hys = manager->instanceNew("gote_hys", "Truck segment");
-        Ptr<Instance> hys_gote = manager->instanceNew("hys_gote", "Truck segment");
+        Ptr<Instance> gote_hys = manager->instanceNew(
+            "gote_hys", "Truck segment");
+        Ptr<Instance> hys_gote = manager->instanceNew(
+            "hys_gote", "Truck segment");
         gote_hys->attributeIs("return segment", "hys_gote");
         gote_hys->attributeIs("source", "Goteborg");
         hys_gote->attributeIs("source", "Hyssna");
@@ -147,8 +184,10 @@ int main(int argc, char *argv[]) {
         gote_hys->attributeIs("capacity", "100");
         hys_gote->attributeIs("capacity", "100");
 
-        Ptr<Instance> gote_gotl = manager->instanceNew("gote_gotl", "Plane segment");
-        Ptr<Instance> gotl_gote = manager->instanceNew("gotl_gote", "Plane segment");
+        Ptr<Instance> gote_gotl = manager->instanceNew(
+            "gote_gotl", "Plane segment");
+        Ptr<Instance> gotl_gote = manager->instanceNew(
+            "gotl_gote", "Plane segment");
         gote_gotl->attributeIs("return segment", "gotl_gote");
         gote_gotl->attributeIs("source", "Goteborg");
         gotl_gote->attributeIs("source", "Gotland");
@@ -164,19 +203,24 @@ int main(int argc, char *argv[]) {
 
         std::cout << std::endl;
         std::cout << " -- STATS -- " << std::endl;
-        std::cout << "Gotland recieved shipments: " << gotland->attribute("shipments recieved") << std::endl;
-        std::cout << "Gotland average latency: " << gotland->attribute("average latency") << std::endl;
+        std::cout << "Gotland recieved shipments: " <<
+            gotland->attribute("shipments recieved") << std::endl;
+        std::cout << "Gotland average latency: " <<
+            gotland->attribute("average latency") << std::endl;
         std::cout << std::endl;
-        std::cout << "DH recieved shipments: " << dh->attribute("shipments recieved") << std::endl;
-        std::cout << "DH average latency: " << dh->attribute("average latency") << std::endl;
+        std::cout << "DH recieved shipments: " << 
+            dh->attribute("shipments recieved") << std::endl;
+        std::cout << "DH average latency: " << 
+            dh->attribute("average latency") << std::endl;
         std::cout << std::endl;
 
         std::cout << "Done!" << std::endl;
 
     } catch (Fwk::Exception e) {
         std::cerr << "Exception in main: " << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Unknown exception in main" << std::endl;
     }
-    int i;
-    std::cin >> i;
+
     return 0;
 }

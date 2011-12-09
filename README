@@ -114,6 +114,7 @@ Our testing network is based on actual locations in Sweden :)
    Gotland <-> Oskarshamn:   Boat segments   length 130   capacity
  Jonkoping <-> Oskarshamn:   Truck segments  length 180   capacity
  Jonkoping <-> Vaxjo:        Truck segments  length 120   capacity
+ Jonkoping <-> Timmernabben: Plane segments  length 300   capacity
 Oskarshamn <-> Timmernabben: Truck segments  length 50    capacity
      Vaxjo <-> Timmernabben: Truck segments  length 120   capacity
      
