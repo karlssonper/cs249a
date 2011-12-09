@@ -13,81 +13,246 @@ user: vsand
 					 ~~~~~~~~~ ASSIGNMENT 3 ~~~~~~~~~
 					 Per Karlsson (perk@stanford.edu)
 					 Victor Sand (vsand@stanford.edu)
+
+--------
+CONTENTS
+--------
+ 1. INTRODUCTION
+ 2. CLASS STRUCTURE AND HEIRARCHY
+    * ENGINE LAYER
+    * REP LAYER
+    * ENGINEMANAGER ENTRY
+ 3. SHIPMENT INJECTION
+ 4. SHIPMENT FORWARDING
+ 5. CAPACITY
+ 6. REAL TIME ACTIVITY MANAGER
+ 7. ROUTING ALGORITHMS
+ 8. EXCEPTION BASED ERROR HANDLING
+ 9. SCHEDULING FLEET UPDATES
+10. TESTING NETWORKS
+
 					 
-INTRODUCTION
+1. INTRODUCTION
 
-This application simulates a shipping network. It allows a user to set up a network using 'Location' and 'Segment' entities, and simulate the network's behaviour as 'Shipments' are injected into and transported around the network. 
+This application simulates a shipping network. It allows a user to set up a 
+network using 'Location' and 'Segment' entities, and simulate the network's
+ behaviour as 'Shipments' are injected into and transported around the network. 
 
-The Location entities can be Customers, (can send or recieve shipment), Terminals (connects segments of a certain type) or Ports (connects segments of any type).
+The Location entities can be Customers, (can send or recieve shipment), 
+Terminals (connects segments of a certain type) or Ports (connects segments 
+of any type).
 
-The Segments can be of Truck, Boat or Plane type and support vehicles (defined in the network-wide Fleet) of corresponding types.					  
+The Segments can be of Truck, Boat or Plane type and support vehicles 
+(defined in the network-wide Fleet) of corresponding types.					  
 																		 
-CLASS STRUCTURE AND HEIRARCHY
+2. CLASS STRUCTURE AND HEIRARCHY
 
 * ENGINE LAYER
 
 The Engine later is responsible for managing the actual entity and
 value objects. These classes reside in the Engine layer:
 
-	Location - Class that represent location, has a subclass for each specific location type. Each location object has a list of pointer to its outgoing segments. It also keeps track of its own type through a LocationType enum attrivute. This LocationType makes it easy for the Rep layer to make sure that Locations do not get connected to the wrong type of Segments, for example. 
+	Location - Class that represent location, has a subclass for each specific 
+    location type. Each location object has a list of pointer to its outgoing
+    segments. It also keeps track of its own type through a LocationType enum
+    attrivute. This LocationType makes it easy for the Rep layer to make sure
+    that Locations do not get connected to the wrong type of Segments,
+    for example. 
 	
-	Segment - In the same was as Location keeps track of its own type, the Segment subclasses for the different types of segments has a SegmentType enum attribute for the same reason (easy control of which segments that can be connected to which type of terminals and return segments). A segment also has a few more attributes (source, length, returnSegment, expeditite support) to fit the defined model.
+	Segment - In the same was as Location keeps track of its own type, 
+    the Segment subclasses for the different types of segments has a
+    SegmentType enum attribute for the same reason (easy control of which
+    segments that can be connected to which type of terminals and return
+    segments). A segment also has a few more attributes (source, length,
+    returnSegment, expeditite support) to fit the defined model.
 	
-	EntityManager - This is a class designed for keeping track of what we call "Entity object". Entity objects are, at this point, Locations and Segments (could be extended to handle more types of objects in the future). A network has one EntityManager (no more, no less). All operations from the Rep layer that has to do with Locations and Segments (adding, updating, reading or deleting) has to go trough here. The reason for that is that we want to be able to have several notifiees that all reacts to changes of these objects. To ensure that we don't accidentily change an Location or Segment directly using its pointer, all EntityManager accessors returns const pointers. To make this model possible, the EntityManager has collections keeping track of all Segments, Location and notifiees. It also has a set of mutators to read, create, update or delete these objects. For every relevant action taken, it sends notifications to all its notifiees (at this point these are fixed to Conn and Stats).
+	EntityManager - This is a class designed for keeping track of what we call
+    "Entity object". Entity objects are, at this point, Locations and Segments 
+    (could be extended to handle more types of objects in the future). A 
+    network has one EntityManager (no more, no less). All operations from 
+    the Rep layer that has to do with Locations and Segments (adding, 
+    updating, reading or deleting) has to go trough here. The reason for 
+    that is that we want to be able to have several notifiees that all 
+    reacts to changes of these objects. To ensure that we don't accidentily 
+    change an Location or Segment directly using its pointer, all EntityManager 
+    accessors returns const pointers. To make this model possible, the 
+    EntityManager has collections keeping track of all Segments, Location 
+    and notifiees. It also has a set of mutators to read, create, update 
+    or delete these objects. For every relevant action taken, it sends 
+    notifications to all its notifiees (at this point these are fixed to 
+    Conn and Stats).
 	
-	Fleet - The class is pretty small and fairly straight-forward implemented using an enum for type and and an array for storing the vehicle attribute values. The fleet cannot be deleted or changed from it's Instance manager and is in that sense fixed to a network. 
+	Fleet - The class is pretty small and fairly straight-forward implemented 
+    using an enum for type and and an array for storing the vehicle attribute 
+    values. The fleet cannot be deleted or changed from it's Instance manager 
+    and is in that sense fixed to a network. 
 	
-	Conn - Conn is a reactor class and reacts on changes notified by the EntityManager. In the Conn Object, we store collections of const smart pointers to Locations and Segments (we call them "valid" Locations and Segments). The reasons for this is to optimize the queries later (in case we have a lots of different segments and locations, but only a small amount is properly connected to each other). The queries are returned as 'PathTrees' (lists of different Paths and properties) which can be interpreted by the rep layer.
+	Conn - Conn is a reactor class and reacts on changes notified by the 
+    EntityManager. In the Conn Object, we store collections of const smart 
+    pointers to Locations and Segments (we call them "valid" Locations and 
+    Segments). The reasons for this is to optimize the queries later (in 
+    case we have a lots of different segments and locations, but only a 
+    small amount is properly connected to each other). The queries are 
+    returned as 'PathTrees' (lists of different Paths and properties) 
+    which can be interpreted by the rep layer.
 	
-	Stats - This class reacts to changes in the Locations and Segments in the network (it inherits from the EntityManager's notifiee class) to constantly keep updated attributes. 
+	Stats - This class reacts to changes in the Locations and Segments 
+    in the network (it inherits from the EntityManager's notifiee class) 
+    to constantly keep updated attributes. 
 	
-	EngineManager - This class is the entry point into the Engine layer and all it does is providing pointers to the networks' Conn, Fleet, Stats and EntityManager Classes.
+	EngineManager - This class is the entry point into the Engine layer and 
+    all it does is providing pointers to the networks' Conn, Fleet, Stats and 
+    EntityManager Classes.
 	
-As mentioned, the Conn, Fleet and Stats objects are fixed to an Instance manager. These cannot be changed or deleted. This is a decision made to ensure that the user gets consistent results (so that the client doesn't try to change Fleet or Stats instances mid-simulation, for exampele) and keeping the notifier structure intact. It would also be unpredictable to change the Conn object in the middle of a simulation as that object keeps track of the connectivity in the graph.
+As mentioned, the Conn, Fleet and Stats objects are fixed to an Instance 
+manager. These cannot be changed or deleted. This is a decision made to 
+ensure that the user gets consistent results (so that the client doesn't try 
+to change Fleet or Stats instances mid-simulation, for exampele) and keeping 
+the notifier structure intact. It would also be unpredictable to change the Conn
+ object in the middle of a simulation as that object keeps track of the 
+ connectivity in the graph.
 
 * REP LAYER
 
-The Rep layer has a class that corresponds to each class in the Engine layer. It's role is to parse the requests from the Client layer, and does so by making sure the input is correct and that the objects that it's trying to perform operations on actually exixts. We have tried to build the parsing in such a way that the program does not crash regardless of what the user tries to do. Any kind of invalid input should result in a cerr message, and all queries with invalid properties return empty strings. ConnRep returns '\n' if nothing is found (both valid and invalid inputs can return '\n'). 
+The Rep layer has a class that corresponds to each class in the Engine layer. 
+It's role is to parse the requests from the Client layer, and does so by 
+making sure the input is correct and that the objects that it's trying to 
+perform operations on actually exixts. We have tried to build the parsing 
+in such a way that the program does not crash regardless of what the user 
+tries to do. Any kind of invalid input should result in a cerr message, 
+and all queries with invalid properties return empty strings. ConnRep 
+returns '\n' if nothing is found (both valid and invalid inputs can 
+return '\n'). 
 
 * ENGINEMANAGER ENTRY
 
-The Rep layer classes all have a pointer to the EngineManager to be able to send instructions to the Engine objects. This pointer has to be provided when the Rep layer objects are constructed, and this is done in ManagerImpl's instanceNew function. 
+The Rep layer classes all have a pointer to the EngineManager to be able to 
+send instructions to the Engine objects. This pointer has to be provided 
+when the Rep layer objects are constructed, and this is done in ManagerImpl's 
+instanceNew function. 
 																		 
-SHIPMENT INJECTION
-The Customer location type has been equipped with a set of extra attributes in extension to the ones that the other Location types have in common , as well a notifiee class. The notifiees responds to changes in the 'shipment size', 'transfer rate' and 'destination' attributes. When all three are set, the notifiee (CustomerReactor) creates activities that when executed injects shipments into the network at the rate (via the InjectActivityReactor class that is a notifiee to the activites).
+3. SHIPMENT INJECTION
+The Customer location type has been equipped with a set of extra attributes 
+in extension to the ones that the other Location types have in common , as 
+well a notifiee class. The notifiees responds to changes in the 'shipment 
+size', 'transfer rate' and 'destination' attributes. When all three are set, 
+the notifiee (CustomerReactor) creates activities that when executed injects 
+shipments into the network at the rate (via the InjectActivityReactor class 
+that is a notifiee to the activites).
 
-SHIPMENT FORWARDING
-Before we start the simulation, we evaluate a Route Table. Given a current location and a destination location, this lookup table tells us the next location to go to. If the segment that connects the next segment is full, it will choose the second shortest neighbor location that also can transport packages to the final destination. If there are no better options available, the shipment gets enqueued on the most optimal segment, waiting for other shipments to finish. Once packages in a shipment has reached the next location, they will tell the segment they traveled along that space is available. If the shipment still has packages waiting in the previous location, these will be prioritized. 
+4. SHIPMENT FORWARDING
+Before we start the simulation, we evaluate a Route Table. Given a current 
+location and a destination location, this lookup table tells us the next 
+location to go to. If the segment that connects the next segment is full, 
+it will choose the second shortest neighbor location that also can transport 
+packages to the final destination. If there are no better options available, 
+the shipment gets enqueued on the most optimal segment, waiting for other 
+shipments to finish. Once packages in a shipment has reached the next location, 
+they will tell the segment they traveled along that space is available. 
+If the shipment still has packages waiting in the previous location, these 
+will be prioritized. 
 
-CAPACITY
-In our library, each segment has its capacity measured in the amount of packages it can carry and not the amount of shipment. Both approaches have their advantages and since we started writing code for the package based method, we decided it continue in that manner since it doens't change the problematic network simulation. 
+5. CAPACITY
+In our library, each segment has its capacity measured in the amount of 
+packages it can carry and not the amount of shipment. Both approaches 
+have their advantages and since we started writing code for the package 
+based method, we decided to continue in that manner since it doensn't 
+change the complex network simulation. 
 
-REAL TIME ACTIVITY MANAGER
-Activities are added to the virtual time manager, and corresponding activities are at the same time added to the real time activity manager. In the real time activity manager, the executing points are scaled with a factor. For example, a factor of 0.1 makes one hour in the virtual time manager run in a tenth of the time. With each activity executing, the real time activity manager sets nowIs() for the virtual time manager and sleeps the proper amount of time between calls. The user sets the time scale factor through the TimeManager instance in the client layer:
+6. REAL TIME ACTIVITY MANAGER
+Activities are added to the virtual time manager, and corresponding activities 
+are at the same time added to the real time activity manager. In the real 
+time activity manager, the executing points are scaled with a factor. For 
+example, a factor of 0.1 makes one hour in the virtual time manager run in a 
+tenth of the time. With each activity executing, the real time activity manager 
+sets nowIs() for the virtual time manager and sleeps the proper amount of 
+time between calls. The user sets the time scale factor through the TimeManager 
+instance in the client layer:
 
-    Ptr<Instance> timeManager = manager->instanceNew("myTimeManager", "Time manager");
+    Ptr<Instance> timeManager = manager->instanceNew("timeMgr", "Time manager");
     timeManager->attributeIs("time scale", "0.0001");
 		
-The time scale needs to be set at the beginning of the client program, so that following activites gets the initial time scaling right. When the network has been set up, the user starts the simulation and specifies the simulation end in virtual hours by setting the simulationEnd attribute:
+The time scale needs to be set at the beginning of the client program, so that 
+following activites gets the initial time scaling right. When the network has 
+been set up, the user starts the simulation and specifies the simulation end in 
+virtual hours by setting the simulationEnd attribute:
 	
 	timeManager->attributeIs("simulation end", "100"); 
 	
 																		  
-ROUTING ALGORITHMS
-The client can choose between two different routing algorithms, both used to generate a Route Table (see section 'Shipment Forwarding'). The first one is Dijkstra's algorithm (http://en.wikipedia.org/wiki/Dijkstra's_algorithm), with solves the shortest paths for all destinations in a graph, given a source node. We have also used a routing algorithm that we call 'modified breadth first search', which reminds of breadth depth search. When this method is generating a Route Table, it will rank the fastest path as the best one (compared to Djikastra's algorithm who uses the shortest path as the most optimal one). Unless some segments have low capacity, the modified breath first searcher algorithm tends to create network solutions that are fast but more expensive. If requested in the future, it would be easy to expand the modified breadth first search algorithm to distinguish between the fastest, shortest and cheapest paths. 
+7. ROUTING ALGORITHMS
+The client can choose between two different routing algorithms, both used to 
+generate a Route Table (see section 'Shipment Forwarding'). The first one is 
+Dijkstra's algorithm (http://en.wikipedia.org/wiki/Dijkstra's_algorithm), with 
+solves the shortest paths for all destinations in a graph, given a source node.
+We have also used a routing algorithm that we call 'modified breadth first 
+search', which reminds of breadth depth search. When this method is generating 
+a Route Table, it will rank the fastest path as the best one (compared to 
+Djikastra's algorithm who uses the shortest path as the most optimal one). 
+Unless some segments have low capacity, the modified breath first searcher 
+algorithm tends to create network solutions that are fast but more expensive. 
+If requested in the future, it would be easy to expand the modified breadth 
+first search algorithm to distinguish between the fastest, shortest and 
+cheapest paths. 
 
-EXCEPTION BASED ERROR HANDLING
-Our exception based error handling is based on the Fwk::Exception class, which have a set of derived exception types. When an error occurs anywhere in the engine or rep layer, the active function prints a meaningful error message to cerr with some information of what state the function had when the error occured. Then the function throws the proper type of exception. The exceptions are not caught until the client code (or in the case of exceptions in reactors, they are caught in the BaseNotifiee object which prints an error message and exits the application). 
-Instansiating functions and mutators can throw exceptions when new() allocations fails, or when entities are not found. We've chosen to throw exceptions for when entities are not found (rather then just ignoring the call and continuing) because a missing entity could corrupt a network and make it hard to track down. Therefore, it is better to throw an exception and let the user handle the error. The same argument holds for throwing a TypeMismatch exception when, for example, trying to connect a boat segment to a truck terminal or querying a port for shipments recieved.
-We have chosen to let deleting instances just continue (not throw exceptions) even if the entities to be deleted are not found, because the end result is the same (the entity does not exist anymore). In this case, the application can run as usual.
+8. EXCEPTION BASED ERROR HANDLING
+Our exception based error handling is based on the Fwk::Exception class, 
+which have a set of derived exception types. When an error occurs anywhere 
+in the engine or rep layer, the active function prints a meaningful error 
+message to cerr with some information of what state the function had when the 
+error occured. Then the function throws the proper type of exception.
+The exceptions are not caught until the client code (or in the case of 
+exceptions in reactors, they are caught in the BaseNotifiee object which 
+prints an error message and exits the application). 
+Instansiating functions and mutators can throw exceptions when new() 
+allocations fails, or when entities are not found. We've chosen to throw 
+exceptions for when entities are not found (rather then just ignoring the 
+call and continuing) because a missing entity could corrupt a network and 
+make it hard to track down. Therefore, it is better to throw an exception 
+and let the user handle the error. The same argument holds for throwing a 
+TypeMismatch exception when, for example, trying to connect a boat segment 
+to a truck terminal or querying a port for shipments recieved.
+We have chosen to let deleting instances just continue (not throw exceptions) 
+even if the entities to be deleted are not found, because the end result is 
+the same (the entity does not exist anymore). In this case, the application 
+can run as usual.
 
 
-SCHEDULING FLEET UPDATES
-To enable the fleet's stats to be updated at certain times, we have implemented a solution where the fleet instance keeps track of two different sets of data (for example, one for daytime and one for nighttime). The user specifies the alternate set of data by using "costAlt" instead of "cost" as fleet attributes. The time interval when this alternate set of data becomes active is specified via the "alt time" attribute, and the input should be formatted as a string with two integers. For example, fleet->attributeIs("alt time", "10 22") would make the simulation switch to the alternate data set at time 10, and then switch back at 22. Then the switches occurs with 24 hour intervals for as long as the simulation runs. The network queries the fleet object at different points in time and will always get the active set of data through the usual accessors.
+9. SCHEDULING FLEET UPDATES
+To enable the fleet's stats to be updated at certain times, we have implemented 
+a solution where the fleet instance keeps track of two different sets of data 
+(for example, one for daytime and one for nighttime). The user specifies the 
+alternate set of data by using "costAlt" instead of "cost" as fleet attributes.
+ The time interval when this alternate set of data becomes active is specified 
+ via the "alt time" attribute, and the input should be formatted as a string 
+ with two integers. For example, fleet->attributeIs("alt time", "10 22") 
+ would make the simulation switch to the alternate data set at time 10, 
+ and then switch back at 22. Then the switches occurs with 24 hour intervals 
+ for as long as the simulation runs. The network queries the fleet object at 
+ different points in time and will always get the active set of data through 
+ the usual accessors.
 
 
-TESTING NETWORKS
+10. TESTING NETWORKS
 ** Experiment
+
+STATS (shipment size 100):
+Destination shipments recieved: 148
+Destination average latency: 4.74234
+Last segment refused shipments: 773
+Average refused shipments: 6.14865
+
+STATS (shipment size 1-1000):
+Destination shipments recieved: 39
+Destination average latency: 4.6812
+Last segment refused shipments: 220
+Average refused shipments: 4.41892
+
+As we can see, the case with the random shipment sizes gives a much heavier 
+network congestion. One reason for this is that the average shipment size 
+is much larger, and also that the random sizing leads to breaking up of 
+shipment. For both cases, the biggest part of the shipment refusal occurs 
+in the final, single segment to the destination as expected.
 
 ** Verification network
 Our testing network is based on actual locations in Sweden :)
@@ -101,27 +266,50 @@ Our testing network is based on actual locations in Sweden :)
 			           |                          |
                        |                          |
         DH _________Jonkoping _____________  Oskarshamn 
-   (destination)  (truck terminal)             (port)   
-                       |                          |
-                       |                          |
+   (destination)  (truck terminal) __       (port)   
+                       |             \          |
+                       |              \___      |
                       Vaxjo _______________ Timmernabben
                 (truck terminal)               (producer)
 
-    Hyssna <-> Goteborg:      Truck segments  length 50    capacity
-  Goteborg <-> Gotland:      Plane segments  length 400   capacity
-  Goteborg <-> Jonkoping:     Truck segments  length 150   capacity 
-        DH <-> Jonkoping:     Truck segments  length 5     capacity
-   Gotland <-> Oskarshamn:   Boat segments   length 130   capacity
- Jonkoping <-> Oskarshamn:   Truck segments  length 180   capacity
- Jonkoping <-> Vaxjo:        Truck segments  length 120   capacity
- Jonkoping <-> Timmernabben: Plane segments  length 300   capacity
-Oskarshamn <-> Timmernabben: Truck segments  length 50    capacity
-     Vaxjo <-> Timmernabben: Truck segments  length 120   capacity
+    Hyssna <-> Goteborg:     Truck segments  length 50    capacity 100
+  Goteborg <-> Gotland:      Plane segments  length 400   capacity 200
+  Goteborg <-> Jonkoping:    Truck segments  length 150   capacity 200 
+        DH <-> Jonkoping:    Truck segments  length 5     capacity 130
+   Gotland <-> Oskarshamn:   Boat segments   length 130   capacity 1000
+ Jonkoping <-> Oskarshamn:   Truck segments  length 180   capacity 200
+ Jonkoping <-> Vaxjo:        Truck segments  length 120   capacity 100
+ Jonkoping <-> Timmernabben: Plane segments  length 300   capacity 1000
+Oskarshamn <-> Timmernabben: Truck segments  length 50    capacity 100
+     Vaxjo <-> Timmernabben: Truck segments  length 120   capacity 80
      
-Timmernabben produces with DH as destination
-Hyssna produces with Gotland as destination
+Timmernabben produces at rate 10, size 100 with DH as destination
+Hyssna produces at rate 20, size 50 with Gotland as destination
 
 All segments have identical return segments (same length and capacity).
+
+When running for 100 virtual hours, we get the following stats:
+
+ -- STATS (BFS) -- 
+Gotland recieved shipments: 83
+Gotland average latency: 1.31679
+
+DH recieved shipments: 42
+DH average latency: 0.532691
+
+-- STATS (Djikstras) -- 
+Gotland recieved shipments: 83
+Gotland average latency: 1.31679
+
+DH recieved shipments: 41
+DH average latency: 3.2771
+
+The differences between the algorithms occur because the different criteria 
+for the routing alrogithms (time versus length). For the second case, the 
+fast plane route between Timmernabben and Jonkoping will be preferred over 
+the slightly shorter truck route. 
+
+The number of recieved shipments and average latencies look like expected.
 
 
 
