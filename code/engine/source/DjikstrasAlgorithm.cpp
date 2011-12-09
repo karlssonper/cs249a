@@ -9,7 +9,7 @@
 #include "ShortestDistance.h"
 #include "Location.h"
 #include <set>
-#include "Outputh"
+#include "Output.h"
 using namespace Shipping;
 
 DjikstrasAlgorithm::DjikstrasAlgorithm(
