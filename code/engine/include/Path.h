@@ -50,6 +50,8 @@ namespace Shipping {
         void costIs(Dollars);
         Hours time() const { return time_; };
         void timeIs(Hours);
+        Miles distance() const { return distance_;};
+        void distanceIs(Miles);
         typedef list<PathItem>::iterator PathItemIterator;
         typedef list<PathItem>::const_iterator PathItemIteratorConst;
         PathItemIterator pathItemIter() { return traversedItems_.begin(); };
@@ -62,6 +64,7 @@ namespace Shipping {
         Path(const Path&);
         list<PathItem> traversedItems_;
         Dollars cost_;
+        Miles distance_;
         Hours time_;
         Segment::ExpediteSupport expediteSupport_;
     };
@@ -87,7 +90,8 @@ namespace Shipping {
             locAlreadyExists_ = 1,
             expeditedNotMatching_ = 2,
             moneyLimitReached_ = 3,
-            timeLimitReached_ = 4
+            timeLimitReached_ = 4,
+            lengthMaxReached_ = 5
         };
         PathItem pathItem(Segment::PtrConst) ;
         Path::Ptr addChildren(unsigned int, Path::Ptr, Path::Ptr, PathItem);
