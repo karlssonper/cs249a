@@ -4,6 +4,7 @@
 #include "Output.h"
 #include "Exception.h"
 #include <sstream>
+#include <math.h>
 
 using namespace Shipping;
 long unsigned int VirtualTimeActivityManager::idx = 0;
@@ -76,7 +77,10 @@ void VirtualTimeActivityManager::nowIs(Fwk::Time t) {
         }
         Fwk::Time diff = Fwk::Time(nextToRun->nextTime().value() -now_.value());
         now_ = nextToRun->nextTime();
-        SIM(std::endl << "[" << now_.value() << "] " << nextToRun->name());
+
+        unsigned int hours = floor(now_.value());
+        unsigned int min = (now_.value() - hours) * 60;
+        SIM(std::endl << "[" << hours << ":" << min << "] " << nextToRun->name());
         scheduledActivities_.pop();
         nextToRun->statusIs(Fwk::Activity::executing);
         nextToRun->statusIs(Fwk::Activity::free);

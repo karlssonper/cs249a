@@ -44,6 +44,7 @@ void ForwardActivityReactor::onStatus() {
         switch (activity_->status()) {
         case Fwk::Activity::executing: {
             FWK_DEBUG("ForwardActivityReactor executing");
+            SIM("Segment: " << segment_->name());
             removeActivePackagesFromSegment();
             if (queuedPackages_ > 0){
                 if (shipment_->transferedPackages().value() == 0) {
@@ -137,10 +138,9 @@ void ForwardActivityReactor::addActivePackagesToSegment() {
     PackageCount availableVehicleCapacity = fleet_->capacity(
         segTypeToFleetVehicle(segment_->type())
         );
-    SIM(segment_->name());
-    SIM("Capacity available on the segment: " <<
+    FWK_SIM_DEBUG("Capacity available on the segment: " <<
         availableSegmentCapacity.value());
-    SIM("Vehicle can at most transport: " <<
+    FWK_SIM_DEBUG("Vehicle can at most transport: " <<
         availableVehicleCapacity.value());
 
     PackageCount availableCapacity =
@@ -149,7 +149,7 @@ availableVehicleCapacity : availableSegmentCapacity;
 
     if (availableCapacity.value() == 0) return;
 
-    SIM("The shipmen still has: " << shipment_->waitingPackages().value() 
+    SIM("The shipment still has: " << shipment_->waitingPackages().value()
         << " waiting packages at " << segment_->source());
     if (shipment_->waitingPackages() > availableCapacity) {
         shipment_->transferedPackagesInc(availableCapacity);

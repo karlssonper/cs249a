@@ -69,23 +69,18 @@ void RealTimeActivityManager::nowIs(Fwk::Time t) {
         if (nextToRun->nextTime() > t) {
             break;
         }
-
         //calculate amount of time to sleep
 	    Fwk::Time diff = Fwk::Time(nextToRun->nextTime().value()-now_.value());
 
-	    //std::cout << nextToRun->nextTime().value() << std::endl;
-	    //std::cout << now_.value() << std::endl;
-	    //std::cout << diff.value() << std::endl;
 #ifdef WIN32
-	    Sleep( static_cast<int>((diff.value() * 3600000)));
+	    Sleep( static_cast<int>((diff.value() * 3600000.0)));
 #else
-        usleep(static_cast<int>((abs(diff.value()) * 3600000000)));
+	    usleep(static_cast<int>(diff.value() *  3600000000.0));
 #endif
 
         now_ = nextToRun->nextTime();
         scheduledActivities_.pop();
         nextToRun->statusIs(Fwk::Activity::executing);
-        //nextToRun->statusIs(Fwk::Activity::free);
     }
     now_ = t;
 }

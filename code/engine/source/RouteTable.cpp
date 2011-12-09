@@ -60,11 +60,6 @@ Location::PtrConst RouteTable::nextLocation (Location::PtrConst cur,
             //error;
         }
     };
-
-    std::cout << "Active packages: "  << out->activePackages().value() << 
-        std::endl;
-    std::cout << "Capacity: "  << out->capacity().value() << std::endl;
-
     if (out->activePackages() != out->capacity()) {
         return next;
     } else {

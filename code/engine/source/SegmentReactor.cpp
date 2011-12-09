@@ -43,7 +43,7 @@ SegmentReactor::~SegmentReactor() {
 void SegmentReactor::onShipmentEnq(
     Shipment::Ptr _shipment, Location::Ptr _nextLocation) {
     FWK_DEBUG("SegmentReactor::onShipmentEnq() for name " << name());
-        SIM(owner_->name() << " has " << owner_->shipments() <<
+    FWK_SIM_DEBUG(owner_->name() << " has " << owner_->shipments() <<
             " shipments enqueued.");
     if (owner_->activePackages().value() < owner_->capacity().value()){
         createActivity(_shipment,_nextLocation);
@@ -62,7 +62,7 @@ void SegmentReactor::onActivePackageInc(PackageCount c) {
 
 void SegmentReactor::onActivePackageDec(PackageCount c) {
     FWK_DEBUG("SegmentReactor::onActivePackageDec() for name " << name());
-    SIM(owner_->name() << " has " << owner_->shipments() <<
+    FWK_SIM_DEBUG(owner_->name() << " has " << owner_->shipments() <<
         " shipments enqueued.");
 };
 
@@ -108,7 +108,7 @@ availableVehicleCapacity : availableSegmentCapacity;
 };
 
 void SegmentReactor::addShipmentFromQueue() {
-    SIM(owner_->name() << " has " << owner_->shipments() << 
+    FWK_SIM_DEBUG(owner_->name() << " has " << owner_->shipments() <<
         " shipments enqueued.");
 
     PackageCount packages = owner_->activePackages();
