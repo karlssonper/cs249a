@@ -2,7 +2,7 @@
 #include "SegmentRep.h"
 #include <stdlib.h>
 #include <sstream>
-#include "Outputh"
+#include "Output.h"
 #include "Exception.h"
 #include "OutputFloatingPoint.h"
 
