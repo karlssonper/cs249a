@@ -4,10 +4,14 @@ PROJECT (CS249A_ASSIGNMENT_2_CODE_TEST)
 INCLUDE_DIRECTORIES(../rep/include)
 
 ADD_EXECUTABLE(test1 test1)
+ADD_EXECUTABLE(test_cases test_cases)
 #ADD_EXECUTABLE(example example)
 
+TARGET_LINK_LIBRARIES(test_cases rep engine)
 TARGET_LINK_LIBRARIES(test1 rep engine)
+
 #TARGET_LINK_LIBRARIES(example rep engine)
 
+INSTALL (TARGETS test_cases DESTINATION bin)
 INSTALL (TARGETS test1 DESTINATION bin)
 #INSTALL (TARGETS example DESTINATION bin)
