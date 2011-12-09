@@ -50,7 +50,7 @@ void VirtualTimeActivityManager::lastActivityIs(Fwk::Activity::Ptr _activity) {
 
     std::stringstream ss;
     ss << "RealTimeActivity" << VirtualTimeActivityManager::activityIndex();
-    Fwk::Activity::Ptr realTimeActivity = realTimeActMgr_->activityNew(ss.str());
+    Fwk::Activity::Ptr realTimeActivity =realTimeActMgr_->activityNew(ss.str());
     Fwk::Time nextTime =
             _activity->nextTime().value() * realTimeActMgr_->scale().value();
     realTimeActivity->nextTimeIs(_activity->nextTime().value() *

@@ -66,7 +66,8 @@ namespace Shipping {
         typedef Fwk::Ptr<Customer const> PtrConst;
         typedef Fwk::Ptr<Customer> Ptr;
         virtual ~Customer();
-        static Ptr CustomerNew(const string &_name, Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<EntityManager> _entityManager);
+        static Ptr CustomerNew(const string &_name,
+                Fwk::Ptr<VirtualTimeActivityManager>,Fwk::Ptr<EntityManager> );
 
         class Notifiee : public Fwk::BaseNotifiee<Customer> {
         public:
@@ -101,7 +102,8 @@ namespace Shipping {
         void totalCostIs(Dollars _totalCost);
 
     protected:
-        Customer(const string &_name, Fwk::Ptr<VirtualTimeActivityManager>, Fwk::Ptr<EntityManager> _entityManager);
+        Customer(const string &_name, Fwk::Ptr<VirtualTimeActivityManager>,
+                Fwk::Ptr<EntityManager> );
         Customer();
         Customer(const Customer&);
 

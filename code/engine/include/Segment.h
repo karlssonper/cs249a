@@ -93,7 +93,8 @@ namespace Shipping {
 
         void shipmentEnq(Shipment::Ptr, Fwk::Ptr<Location>);
         void shipmentDeq();
-        typedef std::deque<shipmentAndNextLoc>::const_iterator ShipmentIteratorConst;
+        typedef std::deque<shipmentAndNextLoc>::const_iterator
+                                                        ShipmentIteratorConst;
         ShipmentIteratorConst shipmentIterConst() const {
             return shipment_.begin();
         };

@@ -71,7 +71,9 @@ namespace Shipping {
                 throw(Fwk::RangeException("DollarsPerMile"));
             }
         }
-        static DollarsPerMile max() { return std::numeric_limits<double>::max(); }
+        static DollarsPerMile max() {
+            return std::numeric_limits<double>::max();
+        }
     };
 
     class TransferRate : public Ordinal<TransferRate, unsigned int> {
