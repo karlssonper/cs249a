@@ -19,10 +19,10 @@ SET(SOURCE source/Location
            source/VirtualTimeActivityManager
            source/RealTimeActivityManager
            source/RealTimeActivityReactor
-           source/RouteTable
            #source/ShortestDistance
            source/DjikstrasAlgorithm
            source/BreadthFirstSearch
+           source/RouteTable
            source/FleetReactor
            source/FleetChangeActivityReactor
            )
