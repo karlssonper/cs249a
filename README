@@ -107,7 +107,10 @@ value objects. These classes reside in the Engine layer:
 As mentioned, the Conn, Fleet and Stats objects are fixed to an Instance 
 manager. These cannot be changed or deleted. This is a decision made to 
 ensure that the user gets consistent results (so that the client doesn't try 
-to change Fleet or Stats instances mid-simulation, for exampele) and keeping the notifier structure intact. It would also be unpredictable to change the Conn object in the middle of a simulation as that object keeps track of the connectivity in the graph.
+to change Fleet or Stats instances mid-simulation, for exampele) and keeping 
+the notifier structure intact. It would also be unpredictable to change the Conn
+ object in the middle of a simulation as that object keeps track of the 
+ connectivity in the graph.
 
 * REP LAYER
 
