@@ -6,9 +6,9 @@
  */
 
 #include "RouteTable.h"
-#include "ShortestDistance.h"
 #include "DjikstrasAlgorithm.h"
 #include "BreadthFirstSearch.h"
+#include "ShortestDistance.h"
 #include "Location.h"
 #include "Segment.h"
 #include "Debug.h"
