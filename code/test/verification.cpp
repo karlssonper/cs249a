@@ -114,8 +114,8 @@ int main(int argc, char *argv[]) {
         vax_jon->attributeIs("source", "Vaxjo");
         jon_vax->attributeIs("length", "120");
         vax_jon->attributeIs("length", "120");
-        jon_vax->attributeIs("capacity", "5");
-        vax_jon->attributeIs("capacity", "5");
+        jon_vax->attributeIs("capacity", "100");
+        vax_jon->attributeIs("capacity", "100");
 
         Ptr<Instance> jon_dh = manager->instanceNew("jon_dh", "Truck segment");
         Ptr<Instance> dh_jon = manager->instanceNew("dh_jon", "Truck segment");
